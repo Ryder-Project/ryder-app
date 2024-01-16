@@ -1,2 +1,0 @@
-# Ryder App
-Server Side
