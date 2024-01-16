@@ -1,8 +1,0 @@
-{
-  "name": "Ryder-App",
-  "version": "1.0.0",
-  "description": "A fast, reliable and quality dispatch service.",
-  "main": "app.ts",
-  "repository": "https://github.com/Ryder-Project/ryder-app",
-  "license": "MIT"
-}
