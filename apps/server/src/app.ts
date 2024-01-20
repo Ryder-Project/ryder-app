@@ -3,14 +3,17 @@ import createError, { HttpError } from "http-errors";
 import path from "path";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
-import _ from "lodash";
 import cors from "cors";
 import logger from "morgan";
-import { db } from "./config";
+import { db, ENV } from "./config";
+import swaggerUi from "swagger-ui-express";
+import specs from "./swagger";
 
 dotenv.config();
 
 const app = express();
+
+const port = ENV.PORT || 5500
 
 app.use(cors());
 app.use((_req, res, next) => {
@@ -29,6 +32,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "../public")));
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 
 db.sync({})
   .then(() => {
@@ -57,4 +61,9 @@ app.use(function (
   res.render("error");
 });
 
-module.exports = app;
+app.listen(port, () => {
+  console.log(
+    `\n\nRyder Server:\n\nApi docs, open @  http://localhost:${port}/api-docs`
+  )
+  console.log(`\nLocal baseUrl, use @ http://localhost:${port}/api/`)
+})

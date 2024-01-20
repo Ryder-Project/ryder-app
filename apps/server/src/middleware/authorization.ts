@@ -1,6 +1,6 @@
 import { Response, NextFunction } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import { APP_SECRET } from "../config";
+import { APP_SECRET } from "../config/env";
 
 export const auth = async (
   req: JwtPayload,
