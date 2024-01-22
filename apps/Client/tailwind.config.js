@@ -8,7 +8,7 @@ export const theme = {
   extend: {
     colors: {
       orange: {
-        500: '#ff9900', // Adjust the hex color code as needed
+        500: '#ff9900', 
       },
     },
   },
