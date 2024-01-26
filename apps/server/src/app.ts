@@ -8,6 +8,8 @@ import logger from "morgan";
 import { db, ENV } from "./config";
 import swaggerUi from "swagger-ui-express";
 import specs from "./swagger";
+import { registerCustomer } from './controllers/customerController';
+import { registerRider } from './controllers/riderController';
 
 dotenv.config();
 
@@ -68,6 +70,10 @@ app.use(function (err: HttpError, req: Request, res: Response) {
   res.status(err.status || 500);
   res.render("error");
 });
+
+// Define routes for registering as a customer or a rider
+app.post('/register/customer', registerCustomer);
+app.post('/register/rider', registerRider);
 
 app.listen(port, () => {
   console.log(
