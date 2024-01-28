@@ -1,3 +1,6 @@
 /node_modules
 /dist
-.env
+
+# dotenv environment variable files
+**/.env*
+!**/.env.sample
