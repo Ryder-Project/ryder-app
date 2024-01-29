@@ -3,34 +3,51 @@ import createError, { HttpError } from "http-errors";
 import path from "path";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
-import _ from "lodash";
 import cors from "cors";
 import logger from "morgan";
-import { db } from "./config";
+import { db, ENV } from "./config";
+import swaggerUi from "swagger-ui-express";
+import specs from "./swagger";
+import apiV1Routes from "./routes/v1";
 
 dotenv.config();
 
 const app = express();
 
-app.use(cors());
-app.use((_req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // Allow requests from any origin
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+const port = ENV.PORT || 5500;
+
+const allowedOrigins: Array<string> = [
+  ENV.FE_BASE_URL as string,
+  // CORS allow use of swagger on local environment
+  ENV.IS_PROD ? "" : `http://localhost:${port}`,
+].filter(Boolean);
+
+const corsOptions: cors.CorsOptions = {
+  origin: allowedOrigins,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
+app.use((_req: Request, res: Response, next: NextFunction) => {
   res.header(
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept"
   );
+  res.header("Referrer-Policy", "no-referrer-when-downgrade"); // this header is needed when using http and not https
   next();
 });
-
-app.use(cors());
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "../public")));
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
+app.use("/api/v1", apiV1Routes);
 
-db.sync({})
+db.sync({
+  // force:true
+})
   .then(() => {
     console.log("Database is connected");
   })
@@ -38,16 +55,14 @@ db.sync({})
     console.log(err);
   });
 
+
 // catch 404 and forward to error handler
 app.use(function (_req: Request, _res: Response, next: NextFunction) {
   next(createError(404));
 });
 
 // error handler
-app.use(function (
-  err: HttpError,
-  req: Request,
-  res: Response) {
+app.use(function (err: HttpError, req: Request, res: Response) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};
@@ -57,4 +72,9 @@ app.use(function (
   res.render("error");
 });
 
-module.exports = app;
+app.listen(port, () => {
+  console.log(
+    `\n\nRyder Server:\n\nApi docs, open @  http://localhost:${port}/api-docs`
+  );
+  console.log(`\nLocal baseUrl, use @ http://localhost:${port}/api/`);
+});
