@@ -9,7 +9,7 @@ import { db, ENV } from "./config";
 import swaggerUi from "swagger-ui-express";
 import specs from "./swagger";
 import { registerCustomer } from './controllers/customerController';
-import { registerRider } from './controllers/riderController';
+import { registerRider, getRiderDetails, getRiderById } from './controllers/riderController';
 
 dotenv.config();
 
@@ -72,8 +72,21 @@ app.use(function (err: HttpError, req: Request, res: Response) {
 });
 
 // Define routes for registering as a customer or a rider
-app.post('/register/customer', registerCustomer);
-app.post('/register/rider', registerRider);
+app.post('/register/customer', async (req, res) => {
+  await registerCustomer(req, res);
+});
+
+app.post('/register/rider', async (req, res) => {
+  await registerRider(req, res);
+});
+
+// Define route for retrieving rider details
+app.get('/riders', async (req, res) => {
+  await getRiderDetails(req, res);
+});
+app.get('/rider:id', async (req, res) => {
+  await getRiderById(req, res);
+});
 
 app.listen(port, () => {
   console.log(
