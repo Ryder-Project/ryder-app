@@ -8,6 +8,7 @@ import logger from "morgan";
 import { db, ENV } from "./config";
 import swaggerUi from "swagger-ui-express";
 import specs from "./swagger";
+import apiV1Routes from "./routes/v1";
 
 dotenv.config();
 
@@ -42,6 +43,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "../public")));
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
+app.use("/api/v1", apiV1Routes);
 
 db.sync({
   // force:true
@@ -52,6 +54,7 @@ db.sync({
   .catch((err: HttpError) => {
     console.log(err);
   });
+
 
 // catch 404 and forward to error handler
 app.use(function (_req: Request, _res: Response, next: NextFunction) {
