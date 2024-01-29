@@ -8,8 +8,7 @@ import logger from "morgan";
 import { db, ENV } from "./config";
 import swaggerUi from "swagger-ui-express";
 import specs from "./swagger";
-import { registerCustomer } from './controllers/customerController';
-import { registerRider, getRiderDetails, getRiderById } from './controllers/riderController';
+import apiV1Routes from "./routes/v1"
 
 dotenv.config();
 
@@ -54,6 +53,8 @@ db.sync({
   .catch((err: HttpError) => {
     console.log(err);
   });
+
+app.use("/api/v1", apiV1Routes);
 
 // catch 404 and forward to error handler
 app.use(function (_req: Request, _res: Response, next: NextFunction) {
