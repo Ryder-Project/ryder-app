@@ -8,7 +8,7 @@ import logger from "morgan";
 import { db, ENV } from "./config";
 import swaggerUi from "swagger-ui-express";
 import specs from "./swagger";
-import apiV1Routes from "./routes/v1"
+import apiV1Routes from "./routes/v1";
 
 dotenv.config();
 
@@ -43,6 +43,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "../public")));
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
+app.use("/api/v1", apiV1Routes);
 
 db.sync({
   // force:true
@@ -54,7 +55,6 @@ db.sync({
     console.log(err);
   });
 
-app.use("/api/v1", apiV1Routes);
 
 // catch 404 and forward to error handler
 app.use(function (_req: Request, _res: Response, next: NextFunction) {
@@ -70,23 +70,6 @@ app.use(function (err: HttpError, req: Request, res: Response) {
   // render the error page
   res.status(err.status || 500);
   res.render("error");
-});
-
-// Define routes for registering as a customer or a rider
-app.post('/register/customer', async (req, res) => {
-  await registerCustomer(req, res);
-});
-
-app.post('/register/rider', async (req, res) => {
-  await registerRider(req, res);
-});
-
-// Define route for retrieving rider details
-app.get('/riders', async (req, res) => {
-  await getRiderDetails(req, res);
-});
-app.get('/rider:id', async (req, res) => {
-  await getRiderById(req, res);
 });
 
 app.listen(port, () => {
