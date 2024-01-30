@@ -1,5 +1,11 @@
-// tailwind.config.js
-export const content = [
-  "./src/**/*.{js,ts,jsx,tsx}",
-  "./public/index.html",
-];
+export default {
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  theme: {
+    extend: {
+      fontFamily: {
+        sans: ["var(--font-sans)"],
+      },
+    },
+  },
+  plugins: [],
+};
