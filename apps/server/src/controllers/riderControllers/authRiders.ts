@@ -66,7 +66,4 @@ export const registerRyder = async (req: Request, res: Response) => {
       ],
     });
   }
-
 };
-};
-
