@@ -105,7 +105,7 @@ const Settings: React.FC = () => {
 
             <button
               type="submit"
-              className="bg-orange-500 w-full text-white py-2 px-4 rounded-none hover:bg-orange-600 focus:outline-none focus:ring focus:border-orange-300"
+              className="bg-orange-500 w-full text-white  mt-4 py-2 px-4 rounded-none hover:bg-orange-600 focus:outline-none focus:ring focus:border-orange-300"
             >
               Save
             </button>
