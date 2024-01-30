@@ -7,7 +7,7 @@ Welcome to the Ryder App! This documentation provides details on setting up and 
 Before you begin, ensure you have the following installed on your machine:
 
 - [Node.js](https://nodejs.org/) (version 16 or later)
-- [npm](https://www.npmjs.com/) or [Yarn](https://yarnpkg.com/)
+- [Yarn](https://yarnpkg.com/)
 
 ## Installation
 
@@ -23,9 +23,6 @@ Before you begin, ensure you have the following installed on your machine:
 2. **Install Dependencies:**
 
     ```bash
-    # Using npm
-    npm install
-
     # Using yarn
     yarn
     ```
@@ -42,9 +39,6 @@ In the `package.json` file, you'll find the following scripts:
 
 ## Running the App
 To start the development server, run:
-# Using npm
-npm run dev
-
 # Using yarn
 yarn dev
 
