@@ -1,11 +1,10 @@
-import riderLogo from "../../Auth/Images/Logo.png"
-import riderPhoto from "../../Auth/Images/image 4.png"
-import { Button,InputField } from "../../../routes/Auth";
+import riderLogo from "../../Auth/Images/Logo.png";
+import riderPhoto from "../../Auth/Images/image 4.png";
+import { Button, InputField } from "../../../../routes/Auth";
 import "./index.css";
 
-const SignUpPage = () => {
-
-const inputFieldsData = [
+const RiderSignUpPage = () => {
+  const inputFieldsData = [
     { label: "Name", placeholder: "Enter your name", icon: "icon1.png" },
     {
       label: "Phonenumber",
@@ -33,10 +32,8 @@ const inputFieldsData = [
       placeholder: "Enter your email",
     },
   ];
-  
 
-
-const mapInput = inputFieldsData.map((field, index) => (
+  const mapInput = inputFieldsData.map((field, index) => (
     <InputField
       key={index}
       label={field.label}
@@ -45,7 +42,7 @@ const mapInput = inputFieldsData.map((field, index) => (
       onChange={() => {}}
     />
   ));
-  
+
   const handleButtonClick = () => {};
   return (
     <div className="register__container section padding">
@@ -66,6 +63,4 @@ const mapInput = inputFieldsData.map((field, index) => (
   );
 };
 
-export default SignUpPage;
-
-
+export default RiderSignUpPage;
