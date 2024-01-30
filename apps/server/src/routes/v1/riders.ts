@@ -6,5 +6,4 @@ const router = Router();
 router.post("/registerRider", registerRyder);
 router.get("/getRiders", getRiders);
 
-
 export default router;
