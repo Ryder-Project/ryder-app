@@ -17,7 +17,7 @@ const HeroSection: FC = () => {
             Register as a Rider
           </button>
         </Link>
-        <Link to="/signup/rider">
+        <Link to="/signup/customer">
           <button className="border-2 border-white hover:bg-orange-400 px-8 py-4 rounded-md transition duration-300">
             Register as a Customer
           </button>
