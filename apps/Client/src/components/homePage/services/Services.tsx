@@ -17,7 +17,7 @@ const Services: FC = () => {
         <div className="text-orange-500 text-4xl font-bold">
           Top Notch Services
         </div>
-        <div className="text-center text-gray-700 text-sm font-normal">
+        <div className="text-center text-blue-950 text-sm font-normal">
           Quickly integrate powerful solutions that give you more flexibility
           and control
           <br /> over your parcel shipping and logistics processes.

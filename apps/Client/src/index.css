@@ -13,7 +13,7 @@ html, body{
 
 .hero-background{
   align-items: center;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.50), rgba(0, 0, 0, 0.50)),url('../public/images/heroImage.jpg');
+  background-image: linear-gradient(rgba(0, 0, 0, 0.50), rgba(0, 0, 0, 0.50)),url('./images/heroImage.jpg');
   background-size: cover;
   background-position: center;
   color: white;
