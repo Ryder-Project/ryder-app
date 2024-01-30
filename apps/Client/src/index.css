@@ -6,6 +6,8 @@
 /* Your custom styles go here */
 :root {
   --font-sans: 'Inter', sans-serif;
+  --color-primary:#FB8500 ;
+
 }
 html, body{
     font-family: var(--font-sans);
