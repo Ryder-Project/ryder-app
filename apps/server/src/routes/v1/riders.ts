@@ -1,6 +1,5 @@
 import { Router } from "express";
-import { registerRyder } from "../../controllers/riderControllers";
-import { getRiders } from "../../controllers/riderControllers/getRiderDetails";
+import { registerRyder, getRiders } from "../../controllers/riderControllers";
 
 const router = Router();
 
