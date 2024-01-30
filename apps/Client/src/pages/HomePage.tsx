@@ -6,9 +6,11 @@ import NavBar from "../components/homePage/common/navBar/NavBar";
 import Services from "../components/homePage/services/Services";
 import Testimonial from "../components/homePage/testimonial/Testimonial";
 
+
 const HomePage: FC = () => {
   return (
     <div>
+     
       <NavBar />
       <HeroSection />
       <Services />
