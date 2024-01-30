@@ -15,9 +15,7 @@ Before you begin, ensure you have the following installed on your machine:
 
     ```bash
     git clone https://github.com/Ryder-Project/ryder-app.git
-    cd ryder-app
-    cd apps
-    cd client
+    cd ryder-app/apps/client
     ```
 
 2. **Install Dependencies:**
