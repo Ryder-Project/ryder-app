@@ -15,7 +15,7 @@ const NavLink: FC<NavLinkProps> = ({ to, children }) => {
   return (
     <Link
       to={to}
-      className={`text-blue-900 hover:text-orange-400 font-normal ${activeClassName}`}
+      className={`text-sky-950 hover:text-orange-400 font-normal ${activeClassName}`}
     >
       {children}
     </Link>

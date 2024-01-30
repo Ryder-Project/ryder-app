@@ -1,1 +1,2 @@
-export * from './authRiders'
+export * from './authRiders';
+export * from './getRiderDetails';
