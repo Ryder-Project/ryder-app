@@ -2,6 +2,7 @@ import { FC } from "react";
 import NavLink from "./NavLink";
 import { RyderLogo } from "../../../../assets/svg";
 import MaxContainer from "../MaxContainer";
+import { Link } from "react-router-dom";
 const NavBar: FC = () => {
   return (
     <nav className="">
@@ -9,7 +10,7 @@ const NavBar: FC = () => {
         {/* Ryder Logo and Text */}
         <div className="flex items-center bg-none">
           <RyderLogo />
-          <span className="font-bold text-3xl pl-2">Ryder</span>
+          <span className="font-bold text-3xl pl-2 text-zinc-900">Ryder</span>
         </div>
 
         {/* Navigation Links */}
@@ -21,7 +22,9 @@ const NavBar: FC = () => {
         </div>
 
         {/* Login Button */}
-        <button className="text-blue-900 font-normal">Login</button>
+        <Link to="/login">
+          <button className="text-sky-950 font-normal">Login</button>
+        </Link>
       </MaxContainer>
     </nav>
   );
