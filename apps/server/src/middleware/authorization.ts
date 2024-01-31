@@ -24,6 +24,7 @@ export const auth = async (
     }
     const decoded = jwt.verify(pin, `${APP_SECRET}`);
     req.user = decoded;
+    console.log("req.user",req.user)
     return next();
   } catch (err) {
     console.log("ERROR:", err);
