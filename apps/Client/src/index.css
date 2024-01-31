@@ -6,6 +6,8 @@
 /* Your custom styles go here */
 :root {
   --font-sans: 'Inter', sans-serif;
+  --color-primary:#FB8500 ;
+
 }
 html, body{
     font-family: var(--font-sans);
@@ -13,7 +15,7 @@ html, body{
 
 .hero-background{
   align-items: center;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.50), rgba(0, 0, 0, 0.50)),url('../public/images/heroImage.jpg');
+  background-image: linear-gradient(rgba(0, 0, 0, 0.50), rgba(0, 0, 0, 0.50)),url('./images/heroImage.jpg');
   background-size: cover;
   background-position: center;
   color: white;
