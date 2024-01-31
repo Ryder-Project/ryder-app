@@ -10,7 +10,7 @@ export const editProfile = async (req: Request, res: Response) => {
   const userValidate = registerSchema.strict().safeParse(req.body);
 
   if (!userValidate.success) {
-    return res.status(HTTP_STATUS_CODE.BAD_REQUEST).json({ error: 'Invalid user data', details: userValidate.error });
+    return res.status(HTTP_STATUS_CODE.BAD_REQUEST).json({ message: 'Invalid user data', details: userValidate.error });
   }
 
   const { firstName, lastName, email, phone } = userValidate.data;
@@ -20,7 +20,7 @@ export const editProfile = async (req: Request, res: Response) => {
     const user = await Ryder.findByPk(userId);
 
     if (!user) {
-      return res.status(HTTP_STATUS_CODE.NOT_FOUND).json({ error: 'User not found' });
+      return res.status(HTTP_STATUS_CODE.NOT_FOUND).json({ message: 'User not found' });
     }
 
     user.firstName = firstName;
@@ -40,6 +40,6 @@ export const editProfile = async (req: Request, res: Response) => {
   } catch (error) {
     console.error(error);
     logger.error('Error updating user profile', error);
-    res.status(HTTP_STATUS_CODE.INTERNAL_SERVER).json({ error: 'Internal server error' });
+    res.status(HTTP_STATUS_CODE.INTERNAL_SERVER).json({ message: 'Internal server error' });
   }
 };
