@@ -6,6 +6,9 @@ import { passwordUtils, PasswordHarsher } from "../../utilities/helpers";
 import logger from "../../utilities/logger";
 import { registerSchema } from "../../utilities/validators";
 import Ryder from "../../models/ryder";
+import * as jwt from 'jsonwebtoken';
+import * as bcrypt from 'bcrypt';
+import { APP_SECRET } from "../../config/env";
 
 export const registerRyder = async (req: Request, res: Response) => {
   const passwordRegex = passwordUtils.regex;
@@ -65,5 +68,40 @@ export const registerRyder = async (req: Request, res: Response) => {
         { message: `This is our fault, our team are working to resolve this.` },
       ],
     });
+  }
+};
+
+
+export const login = async (req: Request, res: Response) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(HTTP_STATUS_CODE.BAD_REQUEST).json({ message: 'Email and password are required' });
+  }
+
+  try {
+    const rider = await Ryder.findOne({ where: { email } });
+
+    if (!rider) {
+      return res.status(HTTP_STATUS_CODE.NOT_FOUND).json({ message: 'Rider not found' });
+    }
+
+    const isValidPassword = await bcrypt.compare(password, rider.password);
+
+    if (!isValidPassword) {
+      return res.status(HTTP_STATUS_CODE.CONFLICT).json({ message: 'Wrong password' });
+    }
+
+    const token = jwt.sign({ userId: rider.id }, `${APP_SECRET}`, {
+      expiresIn: '1d', 
+    });
+
+    res.cookie('sessionToken', token, { httpOnly: true });
+
+    res.status(HTTP_STATUS_CODE.SUCCESS).json({ message: 'Login successful', userId: rider.id, token:token});
+  } catch (error) {
+    console.error('Error during login:', error);
+    logger.error('Error updating user profile', error);
+    res.status(HTTP_STATUS_CODE.INTERNAL_SERVER).json({ message: 'Internal Server Error' });
   }
 };
