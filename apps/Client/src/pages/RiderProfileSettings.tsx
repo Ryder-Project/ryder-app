@@ -1,7 +1,85 @@
-import React from "react";
+import React, { useState } from "react";
 import { TiPencil } from "react-icons/ti";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Settings: React.FC = () => {
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    phone: "",
+    email: "",
+  });
+
+  const [isSaving, setIsSaving] = useState(false);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [id]: value,
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (
+      !formData.firstName ||
+      !formData.lastName ||
+      !formData.phone ||
+      !formData.email
+    ) {
+      toast.error("All fields are required");
+      return;
+    }
+
+    const userId = document.cookie.replace(
+      /(?:(?:^|.*;\s*)userId\s*=\s*([^;]*).*$)|^.*$/,
+      "$1"
+    );
+
+    function getCookie(name: string) {
+      const match = document.cookie.match(
+        new RegExp("(^| )" + name + "=([^;]+)")
+      );
+      return match ? match[2] : "";
+    }
+
+    const token = getCookie("token");
+
+    if (userId) {
+      try {
+        setIsSaving(true);
+        const response = await fetch(
+          `http://localhost:3333/api/v1/riders/editriderprofile/${userId}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(formData),
+          }
+        );
+
+        if (response.ok) {
+          setTimeout(() => {
+            setIsSaving(false);
+          }, 1000);
+          toast.success("Profile updated successfully");
+        } else {
+          setIsSaving(false);
+          toast.error("Failed to update profile");
+        }
+      } catch (error) {
+        setIsSaving(false);
+        console.error("Error:", error);
+        toast.error("An error occurred while updating your profile");
+      }
+    }
+  };
+
   return (
     <div className="flex items-center justify-center h-screen bg-white">
       <div className="max-w-md w-full  rounded-md pt-2">
@@ -19,7 +97,7 @@ const Settings: React.FC = () => {
             </h5>
           </div>
 
-          <form className="max-w-md w-full">
+          <form className="max-w-md w-full" onSubmit={handleSubmit}>
             <div className="mb-4">
               <label
                 htmlFor="firstName"
@@ -33,6 +111,8 @@ const Settings: React.FC = () => {
                   id="firstName"
                   placeholder="Matthew"
                   className="bg-gray-100 mt-1 pl-4 pt-2 pr-2 pb-2 w-full border rounded-none focus:outline-none focus:border-orange-500"
+                  onChange={handleChange}
+                  required
                 />
                 <span className="absolute right-6 text-gray-400">
                   <TiPencil />
@@ -40,7 +120,6 @@ const Settings: React.FC = () => {
               </div>
             </div>
 
-           
             <div className="mb-4">
               <label
                 htmlFor="lastName"
@@ -54,6 +133,8 @@ const Settings: React.FC = () => {
                   id="lastName"
                   placeholder="Adebayo"
                   className="bg-gray-100 mt-1 pl-4 pt-2 pr-2 pb-2 w-full border rounded-none focus:outline-none focus:border-orange-500"
+                  onChange={handleChange}
+                  required
                 />
                 <span className="absolute right-6 text-gray-400">
                   <TiPencil />
@@ -61,10 +142,9 @@ const Settings: React.FC = () => {
               </div>
             </div>
 
-            
             <div className="mb-4">
               <label
-                htmlFor="phoneNumber"
+                htmlFor="phone"
                 className="block text-sm font-medium text-gray-600"
               >
                 Phone Number
@@ -72,9 +152,11 @@ const Settings: React.FC = () => {
               <div className="relative flex items-center">
                 <input
                   type="tel"
-                  id="phoneNumber"
+                  id="phone"
                   placeholder="07032892347"
                   className="bg-gray-100 mt-1 pl-4 pt-2 pr-2 pb-2 w-full border rounded-none focus:outline-none focus:border-orange-500"
+                  onChange={handleChange}
+                  required
                 />
                 <span className="absolute right-6 text-gray-400">
                   <TiPencil />
@@ -82,7 +164,6 @@ const Settings: React.FC = () => {
               </div>
             </div>
 
-            {/* Email */}
             <div className="mb-4">
               <label
                 htmlFor="email"
@@ -96,6 +177,8 @@ const Settings: React.FC = () => {
                   id="email"
                   placeholder="ryder@gmail.com"
                   className="mt-1 pl-4 pt-2 pr-2 pb-2 w-full border rounded-none focus:outline-none focus:border-orange-500 bg-gray-100"
+                  onChange={handleChange}
+                  required
                 />
                 <span className="absolute right-6 text-gray-400">
                   <TiPencil />
@@ -105,18 +188,18 @@ const Settings: React.FC = () => {
 
             <button
               type="submit"
-              className="bg-orange-500 w-full text-white  mt-4 py-2 px-4 rounded-none hover:bg-orange-600 focus:outline-none focus:ring focus:border-orange-300"
+              className={`bg-orange-500 w-full text-white mt-4 py-2 px-4 rounded-none hover:bg-orange-600 focus:outline-none focus:ring focus:border-orange-300 ${
+                isSaving ? "saving-animation" : ""
+              }`}
             >
-              Save
+              {isSaving ? "Saving..." : "Save"}
             </button>
           </form>
         </div>
       </div>
+      <ToastContainer position="top-right" autoClose={3000} />
     </div>
   );
 };
 
 export default Settings;
-
-
-

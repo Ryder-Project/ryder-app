@@ -3,7 +3,7 @@ import "./index.css";
 import HomePage from "./pages/HomePage";
 import RequestRiderPage from "./pages/RequestRiderPage";
 import RiderSignUpPage from "./pages/Auth/Rider/SignUp";
-import UserprofileSettings from "./pages/UserprofileSettings";
+ import RiderProfileSettings from "./pages/RiderProfileSettings";
 
 function App() {
   return (
@@ -12,7 +12,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/request-rider" element={<RequestRiderPage />} />
         <Route path="/signup/rider" element={<RiderSignUpPage />} />
-        <Route path="/userprofilesettings" element={<UserprofileSettings />} />
+        <Route path="/userprofilesettings" element={<RiderProfileSettings />} />
       </Routes>
     </Router>
   );
