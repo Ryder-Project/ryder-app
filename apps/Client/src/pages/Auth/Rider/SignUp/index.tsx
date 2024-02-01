@@ -1,5 +1,5 @@
-import riderLogo from "../../Auth/Images/Logo.png";
-import riderPhoto from "../../Auth/Images/image 4.png";
+import riderLogo from "../../Images/Logo.png";
+import riderPhoto from "../../Images/image 4.png";
 import { Button, InputField } from "../../../../routes/Auth";
 import "./index.css";
 
