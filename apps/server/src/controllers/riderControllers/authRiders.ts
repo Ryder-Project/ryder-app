@@ -96,12 +96,17 @@ export const login = async (req: Request, res: Response) => {
       expiresIn: '1d', 
     });
 
-    res.cookie('sessionToken', token, { httpOnly: true });
+    res.cookie('userId', token, { httpOnly: true, secure:true });
+    res.cookie('token', token, { httpOnly: true, secure:true });
+    res.cookie('firstName', rider.firstName, { httpOnly: true, secure:true });
+    res.cookie('lastName', rider.lastName, { httpOnly: true, secure:true});
+    res.cookie('phone', rider.phone, { httpOnly: true, secure:true });
+    res.cookie('email', rider.email, { httpOnly: true, secure:true });
+    
 
     res.status(HTTP_STATUS_CODE.SUCCESS).json({ message: 'Login successful', userId: rider.id, token:token});
   } catch (error) {
     console.error('Error during login:', error);
-    logger.error('Error updating user profile', error);
     res.status(HTTP_STATUS_CODE.INTERNAL_SERVER).json({ message: 'Internal Server Error' });
   }
 };

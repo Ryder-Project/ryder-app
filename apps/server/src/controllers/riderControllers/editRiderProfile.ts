@@ -1,19 +1,18 @@
 import { Request, Response } from "express";
 import Ryder from "../../models/ryder";
-import logger from "../../utilities/logger";
-import { registerSchema } from "../../utilities/validators";
+import { editRiderProfileSchema } from "../../utilities/validators";
 import { HTTP_STATUS_CODE } from "../../constants/httpStatusCode";
 
-export const editProfile = async (req: Request, res: Response) => {
+export const editRiderProfile = async (req: Request, res: Response) => {
   const userId = req.params.userId;
 
-  const userValidate = registerSchema.strict().safeParse(req.body);
+ const userValidate = editRiderProfileSchema.strict().safeParse(req.body);
 
   if (!userValidate.success) {
     return res.status(HTTP_STATUS_CODE.BAD_REQUEST).json({ message: 'Invalid user data', details: userValidate.error });
   }
 
-  const { firstName, lastName, email, phone } = userValidate.data;
+ const { firstName, lastName, phone, email} = userValidate.data;
 
   try {
     
@@ -38,8 +37,7 @@ export const editProfile = async (req: Request, res: Response) => {
       userId: user.id
     } });
   } catch (error) {
-    console.error(error);
-    logger.error('Error updating user profile', error);
+    console.error('Error updating user profile', error);
     res.status(HTTP_STATUS_CODE.INTERNAL_SERVER).json({ message: 'Internal server error' });
   }
 };
