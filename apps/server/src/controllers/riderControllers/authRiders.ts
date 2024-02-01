@@ -96,7 +96,7 @@ export const login = async (req: Request, res: Response) => {
       expiresIn: '1d', 
     });
 
-    res.cookie('userId', token, { httpOnly: true, secure:true });
+    res.cookie('userId', rider.id, { httpOnly: true, secure:true });
     res.cookie('token', token, { httpOnly: true, secure:true });
     res.cookie('firstName', rider.firstName, { httpOnly: true, secure:true });
     res.cookie('lastName', rider.lastName, { httpOnly: true, secure:true});
