@@ -95,7 +95,6 @@ const Settings: React.FC = () => {
 
   return (
     <>
-  
       <div className="flex items-center justify-center h-screen bg-white">
         <div className="max-w-md w-full  rounded-md pt-2">
           <h1
@@ -124,9 +123,12 @@ const Settings: React.FC = () => {
                   <input
                     type="text"
                     id="firstName"
-                    placeholder="Matthew"
+                    placeholder={
+                      formData.firstName === "" ? "First Name" : formData.firstName
+                    }
                     className="bg-gray-100 mt-1 pl-4 pt-2 pr-2 pb-2 w-full border rounded-none focus:outline-none focus:border-orange-500"
                     onChange={handleChange}
+                    value={formData.firstName}
                     required
                   />
                   <span className="absolute right-6 text-gray-400">
@@ -146,9 +148,12 @@ const Settings: React.FC = () => {
                   <input
                     type="text"
                     id="lastName"
-                    placeholder="Adebayo"
+                    placeholder={
+                      formData.lastName === "" ? "Last Name" : formData.lastName
+                    }
                     className="bg-gray-100 mt-1 pl-4 pt-2 pr-2 pb-2 w-full border rounded-none focus:outline-none focus:border-orange-500"
                     onChange={handleChange}
+                    value={formData.lastName}
                     required
                   />
                   <span className="absolute right-6 text-gray-400">
@@ -168,9 +173,12 @@ const Settings: React.FC = () => {
                   <input
                     type="tel"
                     id="phone"
-                    placeholder="07032892347"
+                    placeholder={
+                      formData.phone === "" ? "Phone Number" : formData.phone
+                    }
                     className="bg-gray-100 mt-1 pl-4 pt-2 pr-2 pb-2 w-full border rounded-none focus:outline-none focus:border-orange-500"
                     onChange={handleChange}
+                    value={formData.phone}
                     required
                   />
                   <span className="absolute right-6 text-gray-400">
@@ -190,9 +198,12 @@ const Settings: React.FC = () => {
                   <input
                     type="email"
                     id="email"
-                    placeholder="ryder@gmail.com"
+                    placeholder={
+                      formData.email === "" ? "Your Email" : formData.email
+                    }
                     className="mt-1 pl-4 pt-2 pr-2 pb-2 w-full border rounded-none focus:outline-none focus:border-orange-500 bg-gray-100"
                     onChange={handleChange}
+                    value={formData.email}
                     required
                   />
                   <span className="absolute right-6 text-gray-400">
