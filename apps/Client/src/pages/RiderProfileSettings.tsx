@@ -3,6 +3,11 @@ import { TiPencil } from "react-icons/ti";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+const getCookie = (name: string)=> {
+  const match = document.cookie.match(new RegExp("(^| )" + name + "=([^;]+)"));
+  return match ? match[2] : "";
+}
+
 const Settings: React.FC = () => {
   const [formData, setFormData] = useState({
     firstName: "",
@@ -24,28 +29,10 @@ const Settings: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (
-      !formData.firstName ||
-      !formData.lastName ||
-      !formData.phone ||
-      !formData.email
-    ) {
-      toast.error("All fields are required");
-      return;
-    }
-
     const userId = document.cookie.replace(
       /(?:(?:^|.*;\s*)userId\s*=\s*([^;]*).*$)|^.*$/,
       "$1"
     );
-
-    function getCookie(name: string) {
-      const match = document.cookie.match(
-        new RegExp("(^| )" + name + "=([^;]+)")
-      );
-      return match ? match[2] : "";
-    }
-
     const token = getCookie("token");
 
     if (userId) {
@@ -79,19 +66,21 @@ const Settings: React.FC = () => {
       }
     }
   };
+
   useEffect(() => {
-    let timeoutId: NodeJS.Timeout;
+    const firstNameCookie = getCookie("firstName");
+    const lastNameCookie = getCookie("lastName");
+    const phoneCookie = getCookie("phone");
+    const emailCookie = getCookie("email");
 
-    if (isSaving) {
-      timeoutId = setTimeout(() => {
-        setIsSaving(false);
-      }, 1000);
-    }
-
-    return () => {
-      clearTimeout(timeoutId);
-    };
-  }, [isSaving]);
+    setFormData((prevData) => ({
+      ...prevData,
+      firstName: firstNameCookie || "",
+      lastName: lastNameCookie || "",
+      phone: phoneCookie || "",
+      email: emailCookie || "",
+    }));
+  }, []); 
 
   return (
     <>
@@ -124,12 +113,13 @@ const Settings: React.FC = () => {
                     type="text"
                     id="firstName"
                     placeholder={
-                      formData.firstName === "" ? "First Name" : formData.firstName
+                      formData.firstName === ""
+                        ? "First Name"
+                        : formData.firstName
                     }
                     className="bg-gray-100 mt-1 pl-4 pt-2 pr-2 pb-2 w-full border rounded-none focus:outline-none focus:border-orange-500"
                     onChange={handleChange}
                     value={formData.firstName}
-                    required
                   />
                   <span className="absolute right-6 text-gray-400">
                     <TiPencil />
@@ -154,7 +144,6 @@ const Settings: React.FC = () => {
                     className="bg-gray-100 mt-1 pl-4 pt-2 pr-2 pb-2 w-full border rounded-none focus:outline-none focus:border-orange-500"
                     onChange={handleChange}
                     value={formData.lastName}
-                    required
                   />
                   <span className="absolute right-6 text-gray-400">
                     <TiPencil />
@@ -179,7 +168,6 @@ const Settings: React.FC = () => {
                     className="bg-gray-100 mt-1 pl-4 pt-2 pr-2 pb-2 w-full border rounded-none focus:outline-none focus:border-orange-500"
                     onChange={handleChange}
                     value={formData.phone}
-                    required
                   />
                   <span className="absolute right-6 text-gray-400">
                     <TiPencil />
@@ -204,7 +192,6 @@ const Settings: React.FC = () => {
                     className="mt-1 pl-4 pt-2 pr-2 pb-2 w-full border rounded-none focus:outline-none focus:border-orange-500 bg-gray-100"
                     onChange={handleChange}
                     value={formData.email}
-                    required
                   />
                   <span className="absolute right-6 text-gray-400">
                     <TiPencil />
