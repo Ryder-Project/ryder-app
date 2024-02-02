@@ -3,6 +3,7 @@ import "./index.css";
 import HomePage from "./pages/HomePage";
 import RequestRiderPage from "./pages/riderForm/RequestRiderPage";
 import RiderSignUpPage from "./pages/Auth/Rider/SignUp";
+import LoginPage from "./pages/Login/LoginPage";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/request-rider" element={<RequestRiderPage />} />
         <Route path="/signup/rider" element={<RiderSignUpPage />} />
+        <Route path="/login" element={<LoginPage />} />
       </Routes>
     </Router>
   );
