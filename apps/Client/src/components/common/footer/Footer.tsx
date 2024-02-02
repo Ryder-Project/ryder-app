@@ -6,7 +6,7 @@ import {
   TwitterLogo,
   GoogleLogo,
   RyderWhiteLogo,
-} from "../../../../assets/svg";
+} from "../../../assets/svg";
 import MaxContainer from "../MaxContainer";
 
 const Footer: FC = () => {
