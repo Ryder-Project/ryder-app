@@ -1,11 +1,10 @@
-import { Response } from "express";
+import { Request, Response } from "express";
 import Ryder from "../../models/ryder";
 import { editRiderProfileSchema } from "../../utilities/validators";
 import { HTTP_STATUS_CODE } from "../../constants/httpStatusCode";
 import logger from "../../utilities/logger";
-import { JwtPayload } from "jsonwebtoken";
 
-export const editRiderProfile = async (req: JwtPayload, res: Response) => {
+export const editRiderProfile = async (req: Request, res: Response) => {
   const userId = req.params.userId;
 
   const userValidate = editRiderProfileSchema.strict().safeParse(req.body);
@@ -24,25 +23,31 @@ export const editRiderProfile = async (req: JwtPayload, res: Response) => {
   try {
     const user = await Ryder.findByPk(userId);
 
-    user!.firstName = firstName;
-    user!.lastName = lastName;
-    user!.phone = phone;
-    user!.email = email;
+    if (!user) {
+      return res
+        .status(HTTP_STATUS_CODE.NOT_FOUND)
+        .json({ message: "User not found" });
+    }
 
-    await user!.save();
+    user.firstName = firstName;
+    user.lastName = lastName;
+    user.phone = phone;
+    user.email = email;
+
+    await user.save();
 
     res.status(HTTP_STATUS_CODE.SUCCESS).json({
       message: "Profile updated successfully",
       user: {
-        firstName: user!.firstName,
-        lastName: user!.lastName,
-        email: user!.email,
-        phone: user!.phone,
-        userId: user!.id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        phone: user.phone,
+        userId: user.id,
       },
     });
   } catch (error) {
-    logger.error("Error updating user profile", error);
+    logger.error("Error updating user profile:", error);
     res
       .status(HTTP_STATUS_CODE.INTERNAL_SERVER)
       .json({ message: "Internal server error" });
