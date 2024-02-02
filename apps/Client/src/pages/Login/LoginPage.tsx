@@ -1,7 +1,8 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-// Import your logo and button here
 import riderPhoto from "../../pages/Auth/Images/image 4.png";
 import Button from '../../components/Button';
 import riderLogo from "../../pages/Auth/Images/Logo.png";
@@ -9,10 +10,35 @@ import riderLogo from "../../pages/Auth/Images/Logo.png";
 const LoginPage: React.FC = () => {
   const { register, handleSubmit } = useForm();
 
-  const onSubmit = (data: unknown) => {
-    // Handle the logic for requesting a rider using the form data
-    console.log('Requesting rider with data:', data);
-    // Add additional logic such as sending a request to your backend
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const onSubmit = async (data: any) => {
+    try {
+      const response = await fetch('http://localhost:5006/api/v1/riders/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        // Handle non-successful responses
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Login failed');
+      }
+
+      // Login successful, you can perform additional actions if needed
+      toast.success('Login successful');
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+    // Display frontend-specific error message
+    if (error.message === 'Rider not found') {
+      toast.error('You are not a registered rider. Please sign up.');
+    } else {
+      toast.error('An error occurred during login');
+    }
+    }
+    
   };
 
   return (
@@ -22,7 +48,7 @@ const LoginPage: React.FC = () => {
         <img src={riderPhoto} alt="bikeman" className="w-full h-full object-cover" />
         <div className="absolute inset-0 flex items-center justify-center text-white text-center bg-black bg-opacity-50">
           <div>
-          <p className="text-lg md:text-xl lg:text-4xl font-bold mt-[720px]">
+            <p className="text-lg md:text-xl lg:text-4xl font-bold mt-[720px]">
               Delivery service just got <br />
               easier, elegant & superb <br />
               <span style={{ marginLeft: '-15rem'}}>with</span> <span style={{ color: 'orange' }}>Ryder</span>
@@ -38,10 +64,9 @@ const LoginPage: React.FC = () => {
           <img src={riderLogo} alt="Logo" className="w-40 mx-auto mt-10 ml-10" />
         </div>
 
-
         {/* Form */}
         <form onSubmit={handleSubmit(onSubmit)} className="max-w-md mx-auto mb-60">
-        <div className="text-xl font-bold pb-10 mr-40">Login</div>
+          <div className="text-xl font-bold pb-10 mr-40">Login</div>
 
           <div className="mb-3 relative">
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
@@ -53,10 +78,8 @@ const LoginPage: React.FC = () => {
               id="email"
               type="text"
               placeholder="Enter your Email"
-              style={{ width: '110%' }} // Adjust the percentage as needed
-
+              style={{ width: '110%' }} 
             />
-            
           </div>
 
           <div className="mb-3 relative">
@@ -69,8 +92,7 @@ const LoginPage: React.FC = () => {
               id="password"
               type="password"
               placeholder="Enter your password"
-              style={{ width: '110%' }} // Adjust the percentage as needed
-
+              style={{ width: '110%' }} 
             />
           </div>
 
@@ -87,11 +109,23 @@ const LoginPage: React.FC = () => {
           </div>
           <div className="mt-7 text-center">
             <span>
-              Don’t have an account? <span style={{ color: 'orange' }}>Create account</span>
+              Don’t have an account?{' '}
+              <span
+                style={{ color: 'orange', cursor: 'pointer' }}
+                onClick={() => {
+                  // Redirect to the signup page
+                  window.location.href = '/signup/rider';
+                }}
+              >
+                Create account
+              </span>
             </span>
           </div>
         </form>
       </div>
+
+      {/* Toast Container */}
+      <ToastContainer />
     </div>
   );
 };
