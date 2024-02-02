@@ -5,6 +5,8 @@ import { useForm } from 'react-hook-form';
 import riderPhoto from "../Auth/Images/image 4.png";
 import Button from '../../components/Button';
 import riderLogo from "../Auth/Images/Logo.png";
+import Icon from "../Auth/Images/Icon (1).png";
+import Vector from "../Auth/Images/Vector (1).png"
 
 const LoginPage: React.FC = () => {
   const { register, handleSubmit } = useForm();
@@ -49,14 +51,15 @@ const LoginPage: React.FC = () => {
             </label>
             <input
               {...register('email')}
-              className="w-full px-3 py-2 text-gray-700 border rounded-md focus:outline-none focus:shadow-outline"
+              className="w-full px-10 py-2 text-gray-700 border rounded-md focus:outline-none focus:shadow-outline"
               id="email"
               type="text"
               placeholder="Enter your Email"
               style={{ width: '110%' }} // Adjust the percentage as needed
 
             />
-            
+                          <img src={Icon} alt="email icon" className="absolute left-2 top-10" />
+
           </div>
 
           <div className="mb-3 relative">
@@ -65,13 +68,15 @@ const LoginPage: React.FC = () => {
             </label>
             <input
               {...register('password')}
-              className="w-full px-3 py-2 text-gray-700 border rounded-md focus:outline-none focus:shadow-outline"
+              className="w-full px-10 py-2 text-gray-700 border rounded-md focus:outline-none focus:shadow-outline"
               id="password"
               type="password"
               placeholder="Enter your password"
               style={{ width: '110%' }} // Adjust the percentage as needed
 
             />
+             <img src={Vector} alt="password icon" className="absolute left-2 top-10" />
+
           </div>
 
           {/* Forgot Password */}
