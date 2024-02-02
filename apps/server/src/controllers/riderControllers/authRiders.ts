@@ -88,7 +88,10 @@ export const login = async (req: Request, res: Response) => {
         .json({ message: "Rider not found" });
     }
 
-    const isValidPassword = await PasswordHarsher.compare(password, rider.password);
+    const isValidPassword = await PasswordHarsher.compare(
+      password,
+      rider.password
+    );
 
     if (!isValidPassword) {
       return res
@@ -111,6 +114,7 @@ export const login = async (req: Request, res: Response) => {
       secure: true,
     });
     res.cookie("city", rider.city, { httpOnly: true, secure: true });
+    res.cookie("verified", rider.isVerified, { httpOnly: true, secure: true });
 
     res
       .status(HTTP_STATUS_CODE.SUCCESS)
