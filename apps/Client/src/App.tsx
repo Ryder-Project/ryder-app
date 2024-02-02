@@ -4,8 +4,6 @@ import HomePage from "./pages/HomePage";
 import RequestRiderPage from "./pages/RequestRiderPage";
 import RiderSignUpPage from "./pages/Auth/Rider/SignUp";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
-import LogInPage from "./pages/LogInPage";
-import SignUpPage from "./pages/SignUpPage";
 import CheckEmail from "./components/auth/resetPassword/CheckEmail";
 import ForgotPassword from "./components/auth/resetPassword/ForgotPassword";
 import VerifyMail from "./components/auth/resetPassword/VerifyMailModal";
@@ -22,8 +20,6 @@ function App() {
           <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route path="/request-rider" element={<RequestRiderPage />} />
           <Route path="/signup/rider" element={<RiderSignUpPage />} />
-          <Route path="/login" element={<LogInPage />} />
-          <Route path="/signup" element={<SignUpPage />} />
           <Route path="/verify-email" element={<VerifyMail />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/check-email" element={<CheckEmail />} />
