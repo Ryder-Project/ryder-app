@@ -102,6 +102,8 @@ export const login = async (req: Request, res: Response) => {
     res.cookie('lastName', rider.lastName, { httpOnly: true, secure:true});
     res.cookie('phone', rider.phone, { httpOnly: true, secure:true });
     res.cookie('email', rider.email, { httpOnly: true, secure:true });
+    res.cookie('passportPhoto', rider.passportPhoto, { httpOnly: true, secure:true });
+    res.cookie('city', rider.city, { httpOnly: true, secure:true });
     
 
     res.status(HTTP_STATUS_CODE.SUCCESS).json({ message: 'Login successful', userId: rider.id, token:token});
