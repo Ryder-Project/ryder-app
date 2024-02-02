@@ -6,6 +6,8 @@ import { passwordUtils, PasswordHarsher } from "../../utilities/helpers";
 import logger from "../../utilities/logger";
 import { registerSchema } from "../../utilities/validators";
 import Ryder from "../../models/ryder";
+import * as jwt from "jsonwebtoken";
+import { APP_SECRET } from "../../config/env";
 
 export const registerRyder = async (req: Request, res: Response) => {
   const passwordRegex = passwordUtils.regex;
@@ -65,5 +67,58 @@ export const registerRyder = async (req: Request, res: Response) => {
         { message: `This is our fault, our team are working to resolve this.` },
       ],
     });
+  }
+};
+
+export const login = async (req: Request, res: Response) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res
+      .status(HTTP_STATUS_CODE.BAD_REQUEST)
+      .json({ message: "Email and password are required" });
+  }
+
+  try {
+    const rider = await Ryder.findOne({ where: { email } });
+
+    if (!rider) {
+      return res
+        .status(HTTP_STATUS_CODE.NOT_FOUND)
+        .json({ message: "Rider not found" });
+    }
+
+    const isValidPassword = await PasswordHarsher.compare(password, rider.password);
+
+    if (!isValidPassword) {
+      return res
+        .status(HTTP_STATUS_CODE.CONFLICT)
+        .json({ message: "Wrong password" });
+    }
+
+    const token = jwt.sign({ userId: rider.id }, `${APP_SECRET}`, {
+      expiresIn: "1d",
+    });
+
+    res.cookie("userId", rider.id, { httpOnly: true, secure: true });
+    res.cookie("token", token, { httpOnly: true, secure: true });
+    res.cookie("firstName", rider.firstName, { httpOnly: true, secure: true });
+    res.cookie("lastName", rider.lastName, { httpOnly: true, secure: true });
+    res.cookie("phone", rider.phone, { httpOnly: true, secure: true });
+    res.cookie("email", rider.email, { httpOnly: true, secure: true });
+    res.cookie("passportPhoto", rider.passportPhoto, {
+      httpOnly: true,
+      secure: true,
+    });
+    res.cookie("city", rider.city, { httpOnly: true, secure: true });
+
+    res
+      .status(HTTP_STATUS_CODE.SUCCESS)
+      .json({ message: "Login successful", userId: rider.id, token: token });
+  } catch (error) {
+    logger.error("Error during login:", error);
+    res
+      .status(HTTP_STATUS_CODE.INTERNAL_SERVER)
+      .json({ message: "Internal Server Error" });
   }
 };
