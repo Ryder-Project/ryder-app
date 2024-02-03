@@ -1,7 +1,7 @@
-// Routes.tsx
+
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import RequestRiderPage from '../pages/RequestRiderPage';
+import RequestRiderPage from '../pages/riderForm/RequestRiderPage';
 
 
 
@@ -10,7 +10,7 @@ const AppRoutes: React.FC = () => {
     <Router>
       <Routes>
         <Route path="/request-rider" element={<RequestRiderPage />} />
-        
+
 
         {/* Add more routes as needed */}
       </Routes>

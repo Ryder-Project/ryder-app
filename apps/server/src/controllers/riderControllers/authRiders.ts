@@ -77,6 +77,7 @@ export const login = async (req: Request, res: Response) => {
 
   if (!email || !password) {
     return res.status(HTTP_STATUS_CODE.BAD_REQUEST).json({ message: 'Email and password are required' });
+    
   }
 
   try {
@@ -112,3 +113,5 @@ export const login = async (req: Request, res: Response) => {
     res.status(HTTP_STATUS_CODE.INTERNAL_SERVER).json({ message: 'Internal Server Error' });
   }
 };
+     
+  
