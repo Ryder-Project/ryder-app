@@ -7,7 +7,7 @@ import {
   TimelyDelivery,
   TrackShipment,
 } from "../../../assets/svg";
-import MaxContainer from "../common/MaxContainer";
+import MaxContainer from "../../common/MaxContainer";
 import ServiceCard from "./ServiceCard";
 
 const Services: FC = () => {

@@ -1,5 +1,5 @@
 import { FC } from "react";
-import MaxContainer from "./common/MaxContainer";
+import MaxContainer from "../common/MaxContainer";
 
 const DeliverySection: FC = () => {
   return (

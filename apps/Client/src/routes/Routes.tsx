@@ -3,8 +3,6 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import RequestRiderPage from '../pages/riderForm/RequestRiderPage';
 
-
-
 const AppRoutes: React.FC = () => {
   return (
     <Router>
@@ -19,3 +17,4 @@ const AppRoutes: React.FC = () => {
 };
 
 export default AppRoutes;
+

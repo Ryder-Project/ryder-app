@@ -3,8 +3,6 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 import { APP_SECRET } from "../config/env";
 import { HTTP_STATUS_CODE } from "../constants/httpStatusCode";
 
-
-
 export const auth = async (
   req: JwtPayload,
   res: Response,
@@ -42,6 +40,3 @@ export const auth = async (
     });
   }
 };
-
-
-

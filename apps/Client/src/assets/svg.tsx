@@ -157,3 +157,12 @@ export const Star: FC<StarProps> = ({ filled }) => {
     </svg>
   );
 };
+
+export const EmailCheckIcon: FC = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="91" height="72" fill="none">
+    <path
+      fill="#012A4A"
+      d="m90.5 52-20 20-14-14 6-6 8 8 14-14 6 6Zm-42 4h-40V16l32 20 32-20v20h8V8c0-4.4-3.6-8-8-8h-64c-4.4 0-8 3.6-8 8v48c0 4.4 3.6 8 8 8h40v-8Zm24-48-32 20-32-20h64Z"
+    />
+  </svg>
+);
