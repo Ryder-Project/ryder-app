@@ -1,19 +1,29 @@
 import React from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import riderPhoto from "../../pages/Auth/Images/image 4.png";
+import riderPhoto from '../../pages/Auth/Images/image 4.png';
 import Button from '../../components/Button';
-import riderLogo from "../../pages/Auth/Images/Logo.png";
+import riderLogo from '../../pages/Auth/Images/Logo.png';
+
+interface FormData {
+  email: string;
+  password: string;
+}
 
 const LoginPage: React.FC = () => {
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit } = useForm<FormData>();
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const onSubmit = async (data: any) => {
+  const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
-      const response = await fetch('http://localhost:5006/api/v1/riders/login', {
+      const VITE_LOGIN_URL = import.meta.env.VITE_LOGIN_URL;
+
+      if (!VITE_LOGIN_URL) {
+        throw new Error('VITE_LOGIN_URL is not defined');
+      }
+
+      const response = await fetch(VITE_LOGIN_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -29,16 +39,16 @@ const LoginPage: React.FC = () => {
 
       // Login successful, you can perform additional actions if needed
       toast.success('Login successful');
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-    // Display frontend-specific error message
-    if (error.message === 'Rider not found') {
-      toast.error('You are not a registered rider. Please sign up.');
-    } else {
-      toast.error('An error occurred during login');
+    } catch (error) {
+      // Display frontend-specific error message
+      if (error instanceof Error) {
+        if (error.message === 'Rider not found') {
+          toast.error('You are not a registered rider. Please sign up.');
+        } else {
+          toast.error('An error occurred during login');
+        }
+      }
     }
-    }
-    
   };
 
   return (
@@ -51,7 +61,7 @@ const LoginPage: React.FC = () => {
             <p className="text-lg md:text-xl lg:text-4xl font-bold mt-[720px]">
               Delivery service just got <br />
               easier, elegant & superb <br />
-              <span style={{ marginLeft: '-15rem'}}>with</span> <span style={{ color: 'orange' }}>Ryder</span>
+              <span style={{ marginLeft: '-15rem' }}>with</span> <span style={{ color: 'orange' }}>Ryder</span>
             </p>
           </div>
         </div>
@@ -78,7 +88,7 @@ const LoginPage: React.FC = () => {
               id="email"
               type="text"
               placeholder="Enter your Email"
-              style={{ width: '110%' }} 
+              style={{ width: '110%' }}
             />
           </div>
 
@@ -92,7 +102,7 @@ const LoginPage: React.FC = () => {
               id="password"
               type="password"
               placeholder="Enter your password"
-              style={{ width: '110%' }} 
+              style={{ width: '110%' }}
             />
           </div>
 
