@@ -2,16 +2,16 @@ import "./index.css"
 
 interface ButtonProps {
     label: string;
-    onClick: () => void;
+    // onClick: () => void;
   }
 
 
     
     
 
-export const Button:React.FC<ButtonProps> = ({ onClick, label }) => {
+export const Button:React.FC<ButtonProps> = ({  label }) => {
   return (
-    <button className="button" onClick={onClick} >
+    <button className="button"  >
       {label}
     </button>
   );

@@ -1,7 +1,8 @@
 import riderLogo from "../../Auth/Images/Logo.png"
 import riderPhoto from "../../Auth/Images/image 4.png"
-import { Button,InputField } from "../../../routes/Auth";
+import { InputField } from "../../../routes/Auth";
 import { useState } from "react";
+import {Button} from "../../../routes/Auth";
 import { registerUser } from "../../../utils/api";
 import "./index.css";
 
@@ -12,10 +13,12 @@ const SignUpPage = () => {
   
 
   const [userData, setUserData] = useState({
-    name: '',
-    phone: '',
+
+    firstName: '',
+    lastName: '',
     email: '',
-    password: '',
+    phone: '',
+    password:''
   });
 
  
@@ -24,64 +27,57 @@ const SignUpPage = () => {
   };
   
 
-  // ... rest of the component
-
-  
-
-
-
-
-
-
 const inputFieldsData = [
     { label: "Name", placeholder: "Enter your name", icon: "icon1.png" },
     {
       label: "Phonenumber",
       placeholder: "Enter your phone number",
     },
-    { label: "City", placeholder: "Enter your email", icon: "icon2.png" },
+    { label: "City", placeholder: "Enter your city", icon: "icon2.png" },
     {
       label: "Bike Documents",
-      placeholder: "Enter your email",
+      placeholder: "Enter your bike id",
       icon: "icon3.png",
     },
     {
       label: "Valid ID Card",
-      placeholder: "Enter your email",
+      placeholder: "Enter your id card no",
       icon: "icon4.png",
     },
     {
       label: "Passport Photo",
-      placeholder: "Enter your email",
+      placeholder: "Enter your photo",
       icon: "icon5.png",
     },
-    { label: "Password", placeholder: "Enter your email" },
+    { label: "Password", placeholder: "Enter your password" },
     {
       label: "Confirm Password",
-      placeholder: "Enter your email",
+      placeholder: "Confirm your password",
     },
   ];
   
 
 
+
 const mapInput = inputFieldsData.map((field, index) => (
-    <InputField
-      key={index}
-      label={field.label}
-      placeholder={field.placeholder}
-      // icon={field.icon} // Pass the icon prop here
-      onChange={handleChange}
-    />
-  ));
+  <InputField
+    key={index}
+    label={field.label}
+    placeholder={field.placeholder}
+    onChange={handleChange}
+    name={field.label.toLowerCase().replace(/ /g, '')} 
+  />
+));
   
 
-  const handleButtonClick = () => {
-    registerUser(userData);
-  };
+  // const handleButtonClick = () => {
+  //   registerUser(userData);
+  // };
 
   const handleFormSubmit = (event: { preventDefault: () => void; }) => {
     event.preventDefault();
-    registerUser(userData);
+    (registerUser(userData))
+    ;
   };
 
   
@@ -99,7 +95,7 @@ const mapInput = inputFieldsData.map((field, index) => (
         <h2>Sign Up as a Rider</h2>
         <form onSubmit={handleFormSubmit}>
         {mapInput}
-        <Button onClick={handleButtonClick} label="Signup" />
+        <Button  label="Signup" />
         </form>
       </div>
     </div>
