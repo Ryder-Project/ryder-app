@@ -10,6 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 import RiderProfileSettings from "./pages/RiderProfileSettings";
 
 import LoginPage from "./pages/Auth/Login/LoginPage";
+import CustomerSignupPage from "./pages/Auth/Customer/SignupPage";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
             element={<RiderProfileSettings />}
           />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup/customer" element={<CustomerSignupPage />} />
         </Routes>
       </Router>
     </>
