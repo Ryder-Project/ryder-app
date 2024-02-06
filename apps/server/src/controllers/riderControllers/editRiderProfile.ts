@@ -1,4 +1,4 @@
-import {Request, Response } from "express";
+import { Request, Response } from "express";
 import Ryder from "../../models/ryder";
 import { editRiderProfileSchema } from "../../utilities/validators";
 import { HTTP_STATUS_CODE } from "../../constants/httpStatusCode";
@@ -10,12 +10,10 @@ export const editRiderProfile = async (req: Request, res: Response) => {
   const userValidate = editRiderProfileSchema.strict().safeParse(req.body);
 
   if (!userValidate.success) {
-    return res
-      .status(HTTP_STATUS_CODE.BAD_REQUEST)
-      .json({
-        message: "Invalid user data",
-        details: userValidate.error.issues,
-      });
+    return res.status(HTTP_STATUS_CODE.BAD_REQUEST).json({
+      message: "Invalid user data",
+      details: userValidate.error.issues,
+    });
   }
 
   const { firstName, lastName, phone, email } = userValidate.data;

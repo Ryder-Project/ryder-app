@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Button from "../../components/Button";
+import Button from "../../../components/Button";
 import riderLogo from "../../pages/Auth/Images/Logo.png";
 import riderPhoto from "../../pages/Auth/Images/image 4.png";
 import { useNavigate } from "react-router-dom";
@@ -19,9 +19,14 @@ const LoginPage: React.FC = () => {
 
   const onSubmit: SubmitHandler<LoginFormValues> = async (data) => {
     try {
+      const VITE_BE_BASE_URL = import.meta.env.VITE_BE_BASE_URL;
+
+      if (!VITE_BE_BASE_URL) {
+        throw new Error('VITE_LOGIN_URL is not defined');
+      }
       setIsLoading(true);
       const response = await fetch(
-        "http://localhost:3333/api/v1/riders/login",
+        `${VITE_BE_BASE_URL}/api/v1/riders/login`,
         {
           method: "POST",
           headers: {

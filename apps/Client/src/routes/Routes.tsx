@@ -1,14 +1,12 @@
-
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import RequestRiderPage from '../pages/riderForm/RequestRiderPage';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import RequestRiderPage from "../pages/riderForm/RequestRiderPage";
 
 const AppRoutes: React.FC = () => {
   return (
     <Router>
       <Routes>
         <Route path="/request-rider" element={<RequestRiderPage />} />
-
 
         {/* Add more routes as needed */}
       </Routes>
@@ -17,4 +15,3 @@ const AppRoutes: React.FC = () => {
 };
 
 export default AppRoutes;
-

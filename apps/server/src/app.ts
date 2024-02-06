@@ -18,6 +18,7 @@ const port = ENV.PORT || 5500;
 
 const allowedOrigins: Array<string> = [
   ENV.FE_BASE_URL as string,
+  // CORS allow use of swagger on local environment
   ENV.IS_PROD ? "" : `http://localhost:${port}`,
 ].filter(Boolean);
 
@@ -33,6 +34,7 @@ app.use((_req: Request, res: Response, next: NextFunction) => {
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept"
   );
+  // this header is needed when using http and not https
   res.header("Referrer-Policy", "no-referrer-when-downgrade"); 
   next();
 });
@@ -60,8 +62,10 @@ app.use(function (_req: Request, _res: Response, next: NextFunction) {
 });
 
 app.use(function (err: HttpError, req: Request, res: Response) {
+  // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};
+  // render the error page
   res.status(err.status || 500);
   res.render("error");
 });
