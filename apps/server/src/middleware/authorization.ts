@@ -9,6 +9,7 @@ export const auth = async (
   next: NextFunction
 ) => {
   try {
+    
     const token = req.headers.authorization;
     if (token === undefined || token === null) {
       return res.status(HTTP_STATUS_CODE.UNAUTHORIZED).send({
@@ -18,6 +19,7 @@ export const auth = async (
     }
 
     const pin = token.split(" ")[1];
+  
 
     if (!pin || pin === "") {
       return res.status(HTTP_STATUS_CODE.FORBIDDEN).send({
@@ -27,6 +29,7 @@ export const auth = async (
     }
     const decoded = jwt.verify(pin, `${APP_SECRET}`);
     req.user = decoded;
+    
 
     return next();
   } catch (err) {

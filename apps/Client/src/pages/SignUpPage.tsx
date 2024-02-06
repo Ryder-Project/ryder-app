@@ -1,4 +1,5 @@
-import SignUp from "../components/auth/SignUp";
+import SignUp from "../pages/Auth/Rider/SignUp";
+
 const SignUpPage = () => {
   return <SignUp />;
 };

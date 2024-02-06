@@ -10,7 +10,8 @@ import VerifyMail from "./components/auth/resetPassword/VerifyMailModal";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import RiderProfileSettings from "./pages/RiderProfileSettings";
-import LoginPage from "./pages/Login/LoginPage";
+
+import LoginPage from "./pages/Auth/Login/LoginPage";
 
 function App() {
   return (
@@ -25,9 +26,12 @@ function App() {
           <Route path="/verify-email" element={<VerifyMail />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/check-email" element={<CheckEmail />} />
-          <Route path="/riderprofilesettings" element={<RiderProfileSettings />} />
-        <Route path="/login" element={<LoginPage />} />
-      </Routes>
+          <Route
+            path="/riderprofilesettings"
+            element={<RiderProfileSettings />}
+          />
+          <Route path="/login" element={<LoginPage />} />
+        </Routes>
       </Router>
     </>
   );
