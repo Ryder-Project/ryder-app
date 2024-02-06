@@ -4,4 +4,5 @@ export interface TextFieldProps {
   name: string;
   placeholder?: string;
   className?: string;
+  iconSrc?: React.ReactNode;
 }

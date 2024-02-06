@@ -5,7 +5,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useFormContext } from "react-hook-form";
 
 export default function TextField(props: TextFieldProps) {
-  const { label, name, type = "text", placeholder, className } = props;
+  const { label, name, type = "text", placeholder, className, iconSrc } = props;
   const [activeType, setActiveType] = useState<"text" | "password">("password");
   const {
     register,
@@ -22,12 +22,15 @@ export default function TextField(props: TextFieldProps) {
   return (
     <div className={clsx(className)}>
       {label ? (
-        <label htmlFor={name} className="block mb-1 text-sky-950">
+        <label htmlFor={name} className="block mb-1 text-sky-950 text-sm">
           {label}
         </label>
       ) : null}
 
-      <div className="password-input-container relative">
+      <div className=" relative">
+        {iconSrc ? 
+          <span className="absolute pointer-events-none top-1/2 transform -translate-y-1/2 left-4">{iconSrc}</span>
+         : null}
         <input
           {...register(name, {
             valueAsNumber: type === "number",
@@ -37,7 +40,7 @@ export default function TextField(props: TextFieldProps) {
           placeholder={placeholder}
           aria-describedby={name}
           className={clsx(
-            "pl-10 border text-sm rounded block w-full px-4 py-2",
+            "pl-12 border text-sm rounded block w-full px-4 py-2",
             {
               "border-sky-950":
                 !errors[name]?.message || !errors[name]?.root?.message,
@@ -46,7 +49,6 @@ export default function TextField(props: TextFieldProps) {
             }
           )}
         />
-
         {type === "password" ? (
           <button
             type="button"

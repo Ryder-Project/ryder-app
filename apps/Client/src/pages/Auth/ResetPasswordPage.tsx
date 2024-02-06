@@ -1,5 +1,5 @@
-import { TextField } from "../components/FormFields/TextField";
-import { RyderLogo } from "../assets/svg";
+import { TextField } from "../../components/FormFields/TextField";
+import { RyderLogo, PasswordFieldIcon } from "../../assets/svg";
 import { useForm, FormProvider } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,8 +9,8 @@ const resetPasswordSchema = z
   .object({
     password: z
       .string()
-      .refine((value: string) => value.length >= 12, {
-        message: "Password must be at least 12 characters long",
+      .refine((value: string) => value.length >= 8, {
+        message: "Password must be at least 8 characters long",
       })
       .refine((value: string) => /[a-z]/.test(value), {
         message: "Password must contain at least one lowercase letter",
@@ -61,6 +61,7 @@ export default function ResetPasswordPage() {
         "/api/user/reset-password",
         {
           password: data.password,
+          confirm_password: data.confirm_password,
         },
         { withCredentials: true }
       );
@@ -107,12 +108,14 @@ export default function ResetPasswordPage() {
                 name="password"
                 label="New Password"
                 placeholder="Enter new password"
+                iconSrc={<PasswordFieldIcon />}
               />
               <TextField
                 type="password"
                 name="confirm_password"
                 label="Confirm Password"
                 placeholder="Re-enter your password"
+                iconSrc={<PasswordFieldIcon />}
               />
               <button
                 type="submit"

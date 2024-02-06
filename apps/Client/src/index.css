@@ -38,22 +38,3 @@ html, body{
   align-items: flex-end;
   padding-bottom: 121px;
 }
-
-.email-input-container, .password-input-container{
-  position: relative;
-}
-.email-input-container:before{
-  position: absolute;
-  content: url('data:image/svg+xml, <svg xmlns="http://www.w3.org/2000/svg" width="16" height="13" fill="none"><g fill="%23C4C4C4"><path d="M.003 2.384 8 6.382l7.997-3.998A2 2 0 0 0 14 .5H2A2 2 0 0 0 .003 2.384Z" /><path d="m16 4.618-8 4-8-4V10.5a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4.618Z" /></g></svg>');
-  top: 50%;
-  transform: translateY(-50%);
-  left: 16px;
-}
-.password-input-container:before{
-  position: absolute;
-  content: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" fill="none"><path fill="%23C4C4C4" d="M8 5.3a1.6 1.6 0 0 0-1.6 1.6 1.6 1.6 0 0 0 .8 1.376V10.9a.8.8 0 1 0 1.6 0V8.276A1.6 1.6 0 0 0 9.6 6.9 1.6 1.6 0 0 0 8 5.3ZM8 .5a8 8 0 1 0 0 16 8 8 0 0 0 0-16Zm0 14.4A6.4 6.4 0 1 1 8 2.1a6.4 6.4 0 0 1 0 12.8Z"/></svg>');
-  top: 50%;
-  transform: translateY(-40%);
-  left: 16px;
-}
-
