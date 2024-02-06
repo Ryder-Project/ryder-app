@@ -47,6 +47,27 @@ const Settings: React.FC = () => {
  };
  }, []);
 
+  // useEffect(() => {
+  //   const token = localStorage.getItem("token");
+  //   if (token) {
+  //     const decodedToken = jwtDecode(token) as JwtPayload;
+  //     const storedFormData = localStorage.getItem("formData");
+  //     if (storedFormData) {
+  //       setFormData(JSON.parse(storedFormData));
+  //     } else {
+  //       setFormData({
+  //         firstName: decodedToken.firstName,
+  //         lastName: decodedToken.lastName,
+  //         phone: decodedToken.phone,
+  //         email: decodedToken.email,
+  //       });
+  //     }
+  //   }
+  //   return () => {
+  //     if (formDataTimeoutRef.current) clearTimeout(formDataTimeoutRef.current);
+  //     if (tokenTimeoutRef.current) clearTimeout(tokenTimeoutRef.current);
+  //   };
+  // }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
@@ -121,6 +142,70 @@ const Settings: React.FC = () => {
      setIsSaving(false);
    }
  };
+
+  // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   setIsSaving(true);
+
+  //   const token = localStorage.getItem("token");
+
+  //   if (token) {
+  //     const decodedToken = jwtDecode(token) as JwtPayload;
+  //     const userId = decodedToken.userId;
+
+  //     try {
+  //       const response = await fetch(
+  //         `http://localhost:3333/api/v1/riders/editriderprofile/${userId}`,
+  //         {
+  //           method: "PUT",
+  //           headers: {
+  //             "Content-Type": "application/json",
+  //             Authorization: `Bearer ${token}`,
+  //           },
+  //           body: JSON.stringify(formData),
+  //           credentials: "include",
+  //         }
+  //       );
+
+  //       if (response.ok) {
+  //         const updatedFormData = { ...formData };
+  //         for (const key in formData) {
+  //           updatedFormData[key as keyof typeof formData] =
+  //             formData[key as keyof typeof formData] ||
+  //             updatedFormData[key as keyof typeof formData];
+  //         }
+  //         setFormData(updatedFormData);
+  //         localStorage.setItem("formData", JSON.stringify(updatedFormData));
+
+  //         setTimeout(() => {
+  //           toast.success("Profile updated successfully");
+  //           setIsSaving(false);
+  //         }, 1000);
+
+  //         if (formDataTimeoutRef.current)
+  //           clearTimeout(formDataTimeoutRef.current);
+  //         if (tokenTimeoutRef.current) clearTimeout(tokenTimeoutRef.current);
+
+  //         formDataTimeoutRef.current = setTimeout(() => {
+  //           localStorage.removeItem("formData");
+  //         }, 10 * 60 * 60 * 1000);
+
+  //         tokenTimeoutRef.current = setTimeout(() => {
+  //           localStorage.removeItem("token");
+  //         }, 10 * 60 * 60 * 1000);
+  //       } else {
+  //         setIsSaving(false);
+  //         toast.error("Failed to update profile");
+  //       }
+  //     } catch (error) {
+  //       setIsSaving(false);
+  //       console.error("Error:", error);
+  //       toast.error("An error occurred while updating your profile");
+  //     }
+  //   } else {
+  //     setIsSaving(false);
+  //   }
+  // };
 
   return (
     <>

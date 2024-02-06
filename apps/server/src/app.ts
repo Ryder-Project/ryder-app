@@ -33,6 +33,7 @@ app.use((_req: Request, res: Response, next: NextFunction) => {
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept"
   );
+  // this header is needed when using http and not https
   res.header("Referrer-Policy", "no-referrer-when-downgrade"); 
   next();
 });
@@ -62,6 +63,7 @@ app.use(function (_req: Request, _res: Response, next: NextFunction) {
 app.use(function (err: HttpError, req: Request, res: Response) {
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};
+  // render the error page
   res.status(err.status || 500);
   res.render("error");
 });

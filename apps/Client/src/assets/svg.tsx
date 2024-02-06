@@ -166,3 +166,60 @@ export const EmailCheckIcon: FC = () => (
     />
   </svg>
 );
+
+export const EmailFieldIcon: FC = () => {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width="17" height="13" fill="none">
+      <path
+        fill="#C4C4C4"
+        d="M.503 2.384 8.5 6.382l7.997-3.998A2 2 0 0 0 14.5.5h-12A2 2 0 0 0 .503 2.384Z"
+      />
+      <path
+        fill="#C4C4C4"
+        d="m16.5 4.618-8 4-8-4V10.5a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4.618Z"
+      />
+    </svg>
+  );
+};
+export const PasswordFieldIcon: FC = () => {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" fill="none">
+      <path
+        fill="#C4C4C4"
+        d="M8 5.3a1.6 1.6 0 0 0-1.6 1.6 1.6 1.6 0 0 0 .8 1.376V10.9a.8.8 0 1 0 1.6 0V8.276A1.6 1.6 0 0 0 9.6 6.9 1.6 1.6 0 0 0 8 5.3ZM8 .5a8 8 0 1 0 0 16 8 8 0 0 0 0-16Zm0 14.4A6.4 6.4 0 1 1 8 2.1a6.4 6.4 0 0 1 0 12.8Z"
+      />
+    </svg>
+  );
+};
+
+export const NameFieldIcon: FC = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="18"
+      height="18"
+      fill="none"
+      viewBox="-2.4 -2.4 28.8 28.8"
+    >
+      <g fill="#C4C4C4">
+        <path d="M12 1a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11ZM7 14a5 5 0 0 0-5 5v3a1 1 0 0 0 1 1h18a1 1 0 0 0 1-1v-3a5 5 0 0 0-5-5H7Z" />
+      </g>
+    </svg>
+  );
+};
+export const PhoneFieldIcon: FC = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="18"
+      height="19"
+      fill="none"
+      viewBox="0 0 24 24"
+    >
+      <path
+        fill="#C4C4C4"
+        d="m10.038 5.316.649 1.163c.585 1.05.35 2.426-.572 3.349 0 0-1.12 1.119.91 3.148 2.027 2.027 3.146.91 3.147.91.923-.923 2.3-1.158 3.349-.573l1.163.65c1.585.884 1.772 3.106.379 4.5-.837.836-1.863 1.488-2.996 1.53-1.908.073-5.149-.41-8.4-3.66-3.25-3.251-3.733-6.492-3.66-8.4.043-1.133.694-2.159 1.53-2.996 1.394-1.393 3.616-1.206 4.5.38Z"
+      />
+    </svg>
+  );
+};

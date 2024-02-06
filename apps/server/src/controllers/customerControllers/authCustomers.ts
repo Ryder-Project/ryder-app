@@ -4,7 +4,7 @@ import { v4 as uuidV4 } from "uuid";
 import { HTTP_STATUS_CODE } from "../../constants/httpStatusCode";
 import { passwordUtils, PasswordHarsher } from "../../utilities/helpers";
 import logger from "../../utilities/logger";
-import { registerSchema } from "../../utilities/validators";
+import { customerRegisterSchema } from "../../utilities/validators";
 import Customers from "../../models/customers";
 import { APP_SECRET } from "../../config/env";
 import * as jwt from "jsonwebtoken";
@@ -12,7 +12,7 @@ import * as jwt from "jsonwebtoken";
 export const registerCustomer = async (req: Request, res: Response) => {
   const passwordRegex = passwordUtils.regex;
   try {
-    const userValidate = registerSchema.strict().safeParse(req.body);
+    const userValidate = customerRegisterSchema.strict().safeParse(req.body);
 
     if (userValidate.success) {
       const { firstName, lastName, email, phone, password } = userValidate.data;
