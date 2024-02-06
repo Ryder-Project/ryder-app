@@ -8,6 +8,7 @@ import { registerSchema } from "../../utilities/validators";
 import Ryder from "../../models/ryder";
 import * as jwt from "jsonwebtoken";
 import { APP_SECRET } from "../../config/env";
+import { v2 as cloudinary } from "cloudinary";
 
 export const registerRyder = async (req: Request, res: Response) => {
   const passwordRegex = passwordUtils.regex;
@@ -31,6 +32,29 @@ export const registerRyder = async (req: Request, res: Response) => {
       if (!userExist) {
         const hashedPassword = await PasswordHarsher.hash(password);
         const id = uuidV4();
+        const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+
+        let bikeDoc = ''
+        let validIdCard = ''
+        let passportPhoto = ''
+
+        if (req.files) {
+          // Upload image to Cloudinary
+          const bikeDocResult = await cloudinary.uploader.upload(
+            files['bikeDoc'][0].buffer.toString('base64')
+          )
+          bikeDoc = bikeDocResult.secure_url
+
+          const validIdCardResult = await cloudinary.uploader.upload(
+            files['bikeDoc'][0].buffer.toString('base64')
+          )
+          validIdCard = validIdCardResult.secure_url
+
+          const passportPhotoResult = await cloudinary.uploader.upload(
+            files['bikeDoc'][0].buffer.toString('base64')
+          )
+          passportPhoto = passportPhotoResult.secure_url
+        }
 
         const user = await Ryder.create({
           id,
@@ -40,9 +64,9 @@ export const registerRyder = async (req: Request, res: Response) => {
           city: "",
           phone,
           password: hashedPassword,
-          bikeDoc: "",
-          validIdCard: "",
-          passportPhoto: "",
+          bikeDoc: bikeDoc,
+          validIdCard: validIdCard,
+          passportPhoto: passportPhoto,
           isVerified: false,
         });
 
@@ -88,7 +112,10 @@ export const login = async (req: Request, res: Response) => {
         .json({ message: "Rider not found" });
     }
 
-    const isValidPassword = await PasswordHarsher.compare(password, rider.password);
+    const isValidPassword = await PasswordHarsher.compare(
+      password,
+      rider.password
+    );
 
     if (!isValidPassword) {
       return res
@@ -111,6 +138,7 @@ export const login = async (req: Request, res: Response) => {
       secure: true,
     });
     res.cookie("city", rider.city, { httpOnly: true, secure: true });
+    res.cookie("verified", rider.isVerified, { httpOnly: true, secure: true });
 
     res
       .status(HTTP_STATUS_CODE.SUCCESS)
