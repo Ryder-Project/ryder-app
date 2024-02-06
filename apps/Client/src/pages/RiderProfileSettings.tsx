@@ -1,11 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { TiPencil } from "react-icons/ti";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { jwtDecode } from "jwt-decode";
 
-const getCookie = (name: string)=> {
-  const match = document.cookie.match(new RegExp("(^| )" + name + "=([^;]+)"));
-  return match ? match[2] : "";
+interface JwtPayload {
+  userId: string;
+  firstName: string;
+  lastName: string;
+  phone: string;
+  email: string;
 }
 
 const Settings: React.FC = () => {
@@ -18,6 +22,25 @@ const Settings: React.FC = () => {
 
   const [isSaving, setIsSaving] = useState(false);
 
+ useEffect(() => {
+   const token = localStorage.getItem("token");
+   if (token) {
+     const decodedToken = jwtDecode(token) as JwtPayload;
+     const storedFormData = localStorage.getItem("formData");
+     if (storedFormData) {
+       setFormData(JSON.parse(storedFormData));
+     } else {
+       setFormData({
+         firstName: decodedToken.firstName,
+         lastName: decodedToken.lastName,
+         phone: decodedToken.phone,
+         email: decodedToken.email,
+       });
+     }
+   }
+ }, []);
+
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
     setFormData((prevData) => ({
@@ -26,61 +49,57 @@ const Settings: React.FC = () => {
     }));
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+   e.preventDefault();
+   setIsSaving(true);
 
-    const userId = document.cookie.replace(
-      /(?:(?:^|.*;\s*)userId\s*=\s*([^;]*).*$)|^.*$/,
-      "$1"
-    );
-    const token = getCookie("token");
+   const token = localStorage.getItem("token");
 
-    if (userId) {
-      try {
-        setIsSaving(true);
-        const response = await fetch(
-          `http://localhost:3333/api/v1/riders/editriderprofile/${userId}`,
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify(formData),
-          }
-        );
+   if (token) {
+     const decodedToken = jwtDecode(token) as JwtPayload;
+     const userId = decodedToken.userId;
 
-        if (response.ok) {
-          setTimeout(() => {
-            setIsSaving(false);
-          }, 1000);
-          toast.success("Profile updated successfully");
-        } else {
-          setIsSaving(false);
-          toast.error("Failed to update profile");
-        }
-      } catch (error) {
-        setIsSaving(false);
-        console.error("Error:", error);
-        toast.error("An error occurred while updating your profile");
-      }
-    }
-  };
+     try {
+       const response = await fetch(
+         `http://localhost:3333/api/v1/riders/editriderprofile/${userId}`,
+         {
+           method: "PUT",
+           headers: {
+             "Content-Type": "application/json",
+             Authorization: `Bearer ${token}`,
+           },
+           body: JSON.stringify(formData),
+           credentials: "include",
+         }
+       );
 
-  useEffect(() => {
-    const firstNameCookie = getCookie("firstName");
-    const lastNameCookie = getCookie("lastName");
-    const phoneCookie = getCookie("phone");
-    const emailCookie = getCookie("email");
+       if (response.ok) {
+         const updatedFormData = { ...formData }; 
+         for (const key in formData) {
+           updatedFormData[key as keyof typeof formData] =
+             formData[key as keyof typeof formData] ||
+             updatedFormData[key as keyof typeof formData];
+         }
+         setFormData(updatedFormData); 
+         localStorage.setItem("formData", JSON.stringify(updatedFormData));
 
-    setFormData((prevData) => ({
-      ...prevData,
-      firstName: firstNameCookie || "",
-      lastName: lastNameCookie || "",
-      phone: phoneCookie || "",
-      email: emailCookie || "",
-    }));
-  }, []); 
+         setTimeout(() => {
+           toast.success("Profile updated successfully");
+           setIsSaving(false);
+         }, 1000);
+       } else {
+         setIsSaving(false);
+         toast.error("Failed to update profile");
+       }
+     } catch (error) {
+       setIsSaving(false);
+       console.error("Error:", error);
+       toast.error("An error occurred while updating your profile");
+     }
+   } else {
+     setIsSaving(false);
+   }
+ };
 
   return (
     <>
@@ -112,11 +131,7 @@ const Settings: React.FC = () => {
                   <input
                     type="text"
                     id="firstName"
-                    placeholder={
-                      formData.firstName === ""
-                        ? "First Name"
-                        : formData.firstName
-                    }
+                    placeholder={formData.firstName}
                     className="bg-gray-100 mt-1 pl-4 pt-2 pr-2 pb-2 w-full border rounded-none focus:outline-none focus:border-orange-500"
                     onChange={handleChange}
                     value={formData.firstName}
@@ -138,9 +153,7 @@ const Settings: React.FC = () => {
                   <input
                     type="text"
                     id="lastName"
-                    placeholder={
-                      formData.lastName === "" ? "Last Name" : formData.lastName
-                    }
+                    placeholder={formData.lastName}
                     className="bg-gray-100 mt-1 pl-4 pt-2 pr-2 pb-2 w-full border rounded-none focus:outline-none focus:border-orange-500"
                     onChange={handleChange}
                     value={formData.lastName}
@@ -162,9 +175,7 @@ const Settings: React.FC = () => {
                   <input
                     type="tel"
                     id="phone"
-                    placeholder={
-                      formData.phone === "" ? "Phone Number" : formData.phone
-                    }
+                    placeholder={formData.phone}
                     className="bg-gray-100 mt-1 pl-4 pt-2 pr-2 pb-2 w-full border rounded-none focus:outline-none focus:border-orange-500"
                     onChange={handleChange}
                     value={formData.phone}
@@ -186,9 +197,7 @@ const Settings: React.FC = () => {
                   <input
                     type="email"
                     id="email"
-                    placeholder={
-                      formData.email === "" ? "Your Email" : formData.email
-                    }
+                    placeholder={formData.email}
                     className="mt-1 pl-4 pt-2 pr-2 pb-2 w-full border rounded-none focus:outline-none focus:border-orange-500 bg-gray-100"
                     onChange={handleChange}
                     value={formData.email}
@@ -217,3 +226,7 @@ const Settings: React.FC = () => {
 };
 
 export default Settings;
+
+
+
+

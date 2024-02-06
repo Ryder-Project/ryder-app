@@ -9,6 +9,7 @@ import Ryder from "../../models/ryder";
 import * as jwt from 'jsonwebtoken';
 import * as bcrypt from 'bcrypt';
 import { APP_SECRET } from "../../config/env";
+import { v2 as cloudinary } from "cloudinary";
 
 export const registerRyder = async (req: Request, res: Response) => {
   const passwordRegex = passwordUtils.regex;
@@ -16,7 +17,7 @@ export const registerRyder = async (req: Request, res: Response) => {
     const userValidate = registerSchema.strict().safeParse(req.body);
 
     if (userValidate.success) {
-      const { firstName, lastName, email, phone, password } = userValidate.data;
+      const { firstName, lastName, email, phone, city, password } = userValidate.data;
       const newEmail = email.trim().toLowerCase();
 
       if (!passwordRegex.test(password)) {
@@ -32,18 +33,41 @@ export const registerRyder = async (req: Request, res: Response) => {
       if (!userExist) {
         const hashedPassword = await PasswordHarsher.hash(password);
         const id = uuidV4();
+        const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+
+        let bikeDoc = ''
+        let validIdCard = ''
+        let passportPhoto = ''
+
+        if (req.files) {
+          // Upload image to Cloudinary
+          const bikeDocResult = await cloudinary.uploader.upload(
+            files['bikeDoc'][0].buffer.toString('base64')
+          )
+          bikeDoc = bikeDocResult.secure_url
+
+          const validIdCardResult = await cloudinary.uploader.upload(
+            files['bikeDoc'][0].buffer.toString('base64')
+          )
+          validIdCard = validIdCardResult.secure_url
+
+          const passportPhotoResult = await cloudinary.uploader.upload(
+            files['bikeDoc'][0].buffer.toString('base64')
+          )
+          passportPhoto = passportPhotoResult.secure_url
+        }
 
         const user = await Ryder.create({
           id,
           firstName,
           lastName,
           email: newEmail,
-          city: "",
+          city,
           phone,
           password: hashedPassword,
-          bikeDoc: "",
-          validIdCard: "",
-          passportPhoto: "",
+          bikeDoc: bikeDoc,
+          validIdCard: validIdCard,
+          passportPhoto: passportPhoto,
           isVerified: false,
         });
 
@@ -92,21 +116,17 @@ export const login = async (req: Request, res: Response) => {
       return res.status(HTTP_STATUS_CODE.CONFLICT).json({ message: 'Wrong password' });
     }
 
-    const token = jwt.sign({ userId: rider.id }, `${APP_SECRET}`, {
+    const token = jwt.sign({ userId: rider.id, firstName: rider.firstName, 
+      lastName: rider.lastName, email: rider.email, phone: rider.phone }, `${APP_SECRET}`, {
       expiresIn: '1d', 
     });
 
-    res.cookie('userId', rider.id, { httpOnly: true, secure:true });
-    res.cookie('token', token, { httpOnly: true, secure:true });
-    res.cookie('firstName', rider.firstName, { httpOnly: true, secure:true });
-    res.cookie('lastName', rider.lastName, { httpOnly: true, secure:true});
-    res.cookie('phone', rider.phone, { httpOnly: true, secure:true });
-    res.cookie('email', rider.email, { httpOnly: true, secure:true });
-    res.cookie('passportPhoto', rider.passportPhoto, { httpOnly: true, secure:true });
-    res.cookie('city', rider.city, { httpOnly: true, secure:true });
+    res.cookie('token', token, { httpOnly: true, secure: true, sameSite: false });
     
-
-    res.status(HTTP_STATUS_CODE.SUCCESS).json({ message: 'Login successful', userId: rider.id, token:token});
+    res.status(HTTP_STATUS_CODE.SUCCESS).json({
+       message: 'You have successfully logged in',
+       token: token
+      });
   } catch (error) {
     console.error('Error during login:', error);
     res.status(HTTP_STATUS_CODE.INTERNAL_SERVER).json({ message: 'Internal Server Error' });
