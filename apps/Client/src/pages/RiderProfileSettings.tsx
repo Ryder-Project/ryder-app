@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { TiPencil } from "react-icons/ti";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -22,6 +22,9 @@ const Settings: React.FC = () => {
 
   const [isSaving, setIsSaving] = useState(false);
 
+  const formDataTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const tokenTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
  useEffect(() => {
    const token = localStorage.getItem("token");
    if (token) {
@@ -38,6 +41,10 @@ const Settings: React.FC = () => {
        });
      }
    }
+ return () => {
+   if (formDataTimeoutRef.current) clearTimeout(formDataTimeoutRef.current);
+   if (tokenTimeoutRef.current) clearTimeout(tokenTimeoutRef.current);
+ };
  }, []);
 
 
@@ -87,6 +94,20 @@ const Settings: React.FC = () => {
            toast.success("Profile updated successfully");
            setIsSaving(false);
          }, 1000);
+
+         if (formDataTimeoutRef.current)
+           clearTimeout(formDataTimeoutRef.current);
+         if (tokenTimeoutRef.current) clearTimeout(tokenTimeoutRef.current);
+
+         formDataTimeoutRef.current = setTimeout(() => {
+           localStorage.removeItem("formData");
+         }, 10 * 60 * 60 * 1000);
+
+         
+         tokenTimeoutRef.current = setTimeout(() => {
+           localStorage.removeItem("token");
+         }, 10 * 60 * 60 * 1000);
+
        } else {
          setIsSaving(false);
          toast.error("Failed to update profile");
