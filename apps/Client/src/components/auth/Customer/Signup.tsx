@@ -6,7 +6,7 @@ import {
   PhoneFieldIcon,
   RyderLogo,
 } from "../../../assets/svg";
-import VerifyMail from "../ResetPassword/VerifyMailModal";
+import VerifyMailModal from "../ResetPassword/VerifyMailModal";
 import TextField from "../../FormFields/TextField/TextField";
 import { useForm, FormProvider } from "react-hook-form";
 import { z } from "zod";
@@ -24,9 +24,13 @@ const signupSchema = z
 
     phone_number: z
       .string()
-      .refine((value: string) => /^\d{10}$/.test(value), {
-        message: "Invalid phone number format. It should be 10 digits.",
-      })
+      .refine(
+        (value: string) =>
+          /^(?:\+?\d{1,3}[\s-]?)?(?:\(\d{1,4}\)[\s-]?)?\d{6,14}$/.test(value),
+        {
+          message: "Invalid phone number format. It should be 10 digits.",
+        }
+      )
       .refine((value: string) => value.trim() !== "", {
         message: "Phone number cannot be made up of only spaces",
       }),
@@ -100,6 +104,7 @@ const SignUp: FC = () => {
 
   const onSubmit = (data: TSignupSchema) => {
     setShowModal(true);
+    console.log("hitting signup button")
     console.log(data);
   };
 
@@ -120,20 +125,17 @@ const SignUp: FC = () => {
           Sign Up as a Customer
         </h1>
         <FormProvider {...methods}>
-          <form
-            className="space-y-3 "
-            onSubmit={methods.handleSubmit(onSubmit)}
-          >
+          <form className="space-y-3" onSubmit={methods.handleSubmit(onSubmit)}>
             <TextField
               type="text"
               name="name"
               label="Name"
-              placeholder="Enter your email"
+              placeholder="Enter your name"
               iconSrc={<NameFieldIcon />}
             />
             <TextField
               type="text"
-              name="phone"
+              name="phone_number"
               label="Phone Number"
               placeholder="Enter your phone number"
               iconSrc={<PhoneFieldIcon />}
@@ -165,15 +167,15 @@ const SignUp: FC = () => {
             >
               Sign Up
             </button>
-            <p className="text-sm text-sky-950">
-              Already have an account?{" "}
-              <a href="/login" className="text-orange-500 hover:cursor">
-                Sign In
-              </a>
-            </p>
           </form>
-          {showModal && <VerifyMail />}
+          {showModal && <VerifyMailModal />}
         </FormProvider>
+        <p className="text-sm text-sky-950 mt-4">
+          Already have an account?{" "}
+          <a href="/login" className="text-orange-500 hover:cursor">
+            Sign In
+          </a>
+        </p>
       </div>
     </div>
   );
