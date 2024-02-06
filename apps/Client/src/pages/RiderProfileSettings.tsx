@@ -3,10 +3,10 @@ import { TiPencil } from "react-icons/ti";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const getCookie = (name: string)=> {
+const getCookie = (name: string) => {
   const match = document.cookie.match(new RegExp("(^| )" + name + "=([^;]+)"));
   return match ? match[2] : "";
-}
+};
 
 const Settings: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -39,7 +39,7 @@ const Settings: React.FC = () => {
       try {
         setIsSaving(true);
         const response = await fetch(
-          `http://localhost:3333/api/v1/riders/editriderprofile/${userId}`,
+          `http://localhost:3500/api/v1/riders/editriderprofile/${userId}`,
           {
             method: "PUT",
             headers: {
@@ -80,7 +80,7 @@ const Settings: React.FC = () => {
       phone: phoneCookie || "",
       email: emailCookie || "",
     }));
-  }, []); 
+  }, []);
 
   return (
     <>
