@@ -39,7 +39,7 @@ html, body{
   padding-bottom: 121px;
 }
 
-.email-input-container, .password-input-container{
+/* .email-input-container, .password-input-container{
   position: relative;
 }
 .email-input-container:before{
@@ -55,5 +55,5 @@ html, body{
   top: 50%;
   transform: translateY(-40%);
   left: 16px;
-}
+} */
 

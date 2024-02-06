@@ -1,11 +1,10 @@
 import { FC } from "react";
-// import DeliverySection from "../components/homePage/DeliverySection";
-import HeroSection from "../components/homePage/HeroSection";
-import Footer from "../components/homePage/common/footer/Footer";
-import NavBar from "../components/homePage/common/navBar/NavBar";
-import Services from "../components/homePage/services/Services";
-import Testimonial from "../components/homePage/testimonial/Testimonial";
-import DeliverySection from "../components/homePage/DeliverySection";
+import HeroSection from "../components/HomePage/HeroSection";
+import Footer from "../components/Common/Footer/Footer";
+import NavBar from "../components/Common/NavBar/NavBar";
+import Services from "../components/HomePage/Services/Services";
+import Testimonial from "../components/HomePage/Testimonial/Testimonial";
+import DeliverySection from "../components/HomePage/DeliverySection";
 
 const HomePage: FC = () => {
   return (
@@ -13,8 +12,8 @@ const HomePage: FC = () => {
       <NavBar />
       <HeroSection />
       <Services />
-      <DeliverySection/>
-      <Testimonial/>
+      <DeliverySection />
+      <Testimonial />
       <Footer />
     </div>
   );
