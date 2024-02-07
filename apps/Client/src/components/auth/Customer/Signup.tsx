@@ -14,21 +14,28 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 const signupSchema = z
   .object({
-    name: z
+    first_name: z
       .string()
-      .min(2, { message: "Name must be at least 2 characters long" })
-      .max(50, { message: "Name cannot exceed 50 characters" })
+      .min(2, { message: "Name must be at least 2 character long" })
+      .max(25, { message: "Name cannot exceed 25 characters" })
       .refine((value: string) => value.trim() !== "", {
         message: "Name cannot be made up of only spaces",
       }),
-
+    last_name: z
+      .string()
+      .min(2, { message: "Name must be at least 2 character long" })
+      .max(25, { message: "Name cannot exceed 25 characters" })
+      .refine((value: string) => value.trim() !== "", {
+        message: "Name cannot be made up of only spaces",
+      }),
     phone_number: z
       .string()
       .refine(
         (value: string) =>
           /^(?:\+?\d{1,3}[\s-]?)?(?:\(\d{1,4}\)[\s-]?)?\d{6,14}$/.test(value),
         {
-          message: "Invalid phone number format. It should be 10 digits.",
+          message:
+            "Invalid phone number format. It should contain between 6 to 14 digits.",
         }
       )
       .refine((value: string) => value.trim() !== "", {
@@ -94,7 +101,8 @@ const SignUp: FC = () => {
   const methods = useForm<TSignupSchema>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
-      name: "",
+      first_name: "",
+      last_name: "",
       phone_number: "",
       email: "",
       password: "",
@@ -126,13 +134,22 @@ const SignUp: FC = () => {
         </h1>
         <FormProvider {...methods}>
           <form className="space-y-3" onSubmit={methods.handleSubmit(onSubmit)}>
-            <TextField
-              type="text"
-              name="name"
-              label="Name"
-              placeholder="Enter your name"
-              iconSrc={<NameFieldIcon />}
-            />
+            <div className="grid grid-cols-2 space-x-2">
+                <TextField
+                  type="text"
+                  name="first_name"
+                  label="First Name"
+                  placeholder="First Name"
+                  iconSrc={<NameFieldIcon />}
+                />
+                <TextField
+                  type="text"
+                  name="last_name"
+                  label="Last Name"
+                  placeholder="Last Name"
+                  iconSrc={<NameFieldIcon />}
+                />
+            </div>
             <TextField
               type="text"
               name="phone_number"
