@@ -68,8 +68,13 @@ const Settings: React.FC = () => {
       const userId = decodedToken.userId;
 
       try {
+        const VITE_BE_BASE_URL = import.meta.env.VITE_BE_BASE_URL;
+
+        if (!VITE_BE_BASE_URL) {
+          throw new Error('VITE_LOGIN_URL is not defined');
+        }
         const response = await fetch(
-          `http://localhost:3333/api/v1/riders/editriderprofile/${userId}`,
+          `${VITE_BE_BASE_URL}/api/v1/riders/editriderprofile/${userId}`,
           {
             method: "PUT",
             headers: {

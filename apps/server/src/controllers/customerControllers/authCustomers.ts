@@ -96,22 +96,24 @@ export const login = async (req: Request, res: Response) => {
         .json({ message: "Wrong password" });
     }
 
-    const token = jwt.sign({ userId: customer.id }, `${APP_SECRET}`, {
-      expiresIn: "1d",
-    });
+    const token = jwt.sign(
+      {
+        userId: customer.id,
+        firstName: customer.firstName,
+        lastName: customer.lastName,
+        email: customer.email,
+        phone: customer.phone,
+      },
+      `${APP_SECRET}`,
+      {
+        expiresIn: "1d",
+      }
+    );
 
-    res.cookie("userId", customer.id, { httpOnly: true, secure: true });
-    res.cookie("token", token, { httpOnly: true, secure: true });
-    res.cookie("firstName", customer.firstName, {
+    res.cookie("token", token, {
       httpOnly: true,
       secure: true,
-    });
-    res.cookie("lastName", customer.lastName, { httpOnly: true, secure: true });
-    res.cookie("phone", customer.phone, { httpOnly: true, secure: true });
-    res.cookie("email", customer.email, { httpOnly: true, secure: true });
-    res.cookie("verified", customer.isVerified, {
-      httpOnly: true,
-      secure: true,
+      sameSite: "strict",
     });
 
     res
