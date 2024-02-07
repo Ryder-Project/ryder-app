@@ -9,7 +9,8 @@ const options = {
       description: "Describes all the available  APIs on the Ryder App",
     },
   },
-  apis: ["src/routes/v1/*.ts"], // Path to your route files
+  // Path to your route files
+  apis: ["src/routes/v1/*.ts"],
 };
 
 const specs = swaggerJsdoc(options);
