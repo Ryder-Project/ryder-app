@@ -8,7 +8,7 @@ import ForgotPasswordPage from "./pages/Auth/ForgotPasswordPage";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import RiderProfileSettings from "./pages/RiderProfileSettings";
-import LoginPage from "./pages/Auth/Login/LoginPage";
+import LoginPage from "./pages/Login/LoginPage";
 import CustomerSignupPage from "./pages/Auth/Customer/SignupPage";
 
 function App() {

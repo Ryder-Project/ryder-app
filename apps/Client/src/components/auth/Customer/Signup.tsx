@@ -6,7 +6,7 @@ import {
   PhoneFieldIcon,
   RyderLogo,
 } from "../../../assets/svg";
-import VerifyMailModal from "../ResetPassword/VerifyMailModal";
+import VerifyMailModal from "../resetPassword/VerifyMailModal";
 import TextField from "../../FormFields/TextField/TextField";
 import { useForm, FormProvider } from "react-hook-form";
 import { z } from "zod";
@@ -59,7 +59,7 @@ const signupSchema = z
         message: "Password must contain at least one digit",
       })
       .refine(
-        (value: string) => /[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]/.test(value),
+        (value: string) => /[!@#$%^&*()_+{}[\]:;<>,.?~\\/-]/.test(value),
         {
           message: "Password must contain at least one special character",
         }
