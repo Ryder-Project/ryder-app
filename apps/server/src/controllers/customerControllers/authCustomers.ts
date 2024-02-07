@@ -55,6 +55,10 @@ export const registerCustomer = async (req: Request, res: Response) => {
           message: "This account already exist",
         });
       }
+    } else {
+      return res.status(HTTP_STATUS_CODE.BAD_REQUEST).json({
+        message: userValidate.error.issues,
+      });
     }
   } catch (error) {
     logger.error(error);
