@@ -28,7 +28,7 @@ export const registerRyder = async (req: Request, res: Response) => {
         password,
       } = userValidate.data;
       const newEmail = email.trim().toLowerCase();
-
+      console.log("one");
       if (!passwordRegex.test(password)) {
         return res.status(HTTP_STATUS_CODE.BAD_REQUEST).json({
           message: passwordUtils.error,
@@ -95,6 +95,10 @@ export const registerRyder = async (req: Request, res: Response) => {
           message: "This account already exist",
         });
       }
+    } else {
+      return res.status(HTTP_STATUS_CODE.BAD_REQUEST).json({
+        message: userValidate.error.issues,
+      });
     }
   } catch (error) {
     logger.error(error);
