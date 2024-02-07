@@ -17,10 +17,19 @@ export const registerRyder = async (req: Request, res: Response) => {
     const userValidate = riderRegisterSchema.strict().safeParse(req.body);
 
     if (userValidate.success) {
-      const { firstName, lastName, email, phone, city, password } = userValidate.data;
-      
+      const {
+        firstName,
+        lastName,
+        email,
+        phone,
+        city,
+        bikeDoc,
+        validIdCard,
+        passportPhoto,
+        password,
+      } = userValidate.data;
       const newEmail = email.trim().toLowerCase();
-
+      console.log("one");
       if (!passwordRegex.test(password)) {
         return res.status(HTTP_STATUS_CODE.BAD_REQUEST).json({
           message: passwordUtils.error,
@@ -38,26 +47,26 @@ export const registerRyder = async (req: Request, res: Response) => {
           [fieldname: string]: Express.Multer.File[];
         };
 
-        let bikeDoc = "";
-        let validIdCard = "";
-        let passportPhoto = "";
+        let bikeDocUrl = bikeDoc;
+        let validIdCardUrl = validIdCard;
+        let passportPhotoUrl = passportPhoto;
 
         if (req.files) {
           // Upload image to Cloudinary
           const bikeDocResult = await cloudinary.uploader.upload(
             files["bikeDoc"][0].buffer.toString("base64")
           );
-          bikeDoc = bikeDocResult.secure_url;
+          bikeDocUrl = bikeDocResult.secure_url;
 
           const validIdCardResult = await cloudinary.uploader.upload(
-            files["bikeDoc"][0].buffer.toString("base64")
+            files["validIdCard"][0].buffer.toString("base64")
           );
-          validIdCard = validIdCardResult.secure_url;
+          validIdCardUrl = validIdCardResult.secure_url;
 
           const passportPhotoResult = await cloudinary.uploader.upload(
-            files["bikeDoc"][0].buffer.toString("base64")
+            files["passportPhoto"][0].buffer.toString("base64")
           );
-          passportPhoto = passportPhotoResult.secure_url;
+          passportPhotoUrl = passportPhotoResult.secure_url;
         }
 
         const user = await Ryder.create({
@@ -68,9 +77,9 @@ export const registerRyder = async (req: Request, res: Response) => {
           city,
           phone,
           password: hashedPassword,
-          bikeDoc: bikeDoc,
-          validIdCard: validIdCard,
-          passportPhoto: passportPhoto,
+          bikeDoc: bikeDocUrl,
+          validIdCard: validIdCardUrl,
+          passportPhoto: passportPhotoUrl,
           isVerified: false,
         });
 
@@ -87,6 +96,10 @@ export const registerRyder = async (req: Request, res: Response) => {
           message: "This account already exist",
         });
       }
+    } else {
+      return res.status(HTTP_STATUS_CODE.BAD_REQUEST).json({
+        message: userValidate.error.issues,
+      });
     }
   } catch (error) {
     logger.error(error);

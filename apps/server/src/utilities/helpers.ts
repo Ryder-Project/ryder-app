@@ -5,14 +5,21 @@ import dotenv from "dotenv";
 dotenv.config();
 
 export const passwordUtils = {
-  length: 5,
+  len: 8,
   regex: ENV.IS_PROD
-    ? /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?.&])[A-Za-z\d@$!%*?.&]{5,}$/
-    : /^[A-Za-z0-9]{5,}$/,
+    ? /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?.&])[A-Za-z\d@$!%*?.&]{8,}$/
+    : /^[A-Za-z0-9]{8,}$/,
   error: ENV.IS_PROD
-    ? `Password: Min 5 characters, with an uppercase, a lowercase, a number, and a special character.`
-    : "Password: Min 5 characters, uppercase or lowercase.",
+    ? `Pw: Min 8 chars, 1 uppercase, 1 lowercase, 1 number, and 1 special char.`
+    : "Pw: Min 8 chars, uppercase or lowercase.",
 };
+
+export const passwordUtilsDev = {
+  len: 8,
+  regex: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?.&])[A-Za-z\d@$!%*?.&]{8,}$/,
+  error: `Pw: Min 8 chars, 1 uppercase, 1 lowercase, 1 number, and 1 special char.`,
+};
+
 
 export class PasswordHarsher {
   static async compare(password: string, hash: string) {

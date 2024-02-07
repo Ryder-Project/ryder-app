@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { Op } from "sequelize";
 import { v4 as uuidV4 } from "uuid";
 import { HTTP_STATUS_CODE } from "../../constants/httpStatusCode";
-import { passwordUtils, PasswordHarsher } from "../../utilities/helpers";
+import {  PasswordHarsher, passwordUtilsDev } from "../../utilities/helpers";
 import logger from "../../utilities/logger";
 import { customerRegisterSchema } from "../../utilities/validators";
 import Customers from "../../models/customers";
@@ -10,7 +10,7 @@ import { APP_SECRET } from "../../config/env";
 import * as jwt from "jsonwebtoken";
 
 export const registerCustomer = async (req: Request, res: Response) => {
-  const passwordRegex = passwordUtils.regex;
+  const passwordRegex = passwordUtilsDev.regex;
   try {
     const userValidate = customerRegisterSchema.strict().safeParse(req.body);
 
@@ -20,7 +20,7 @@ export const registerCustomer = async (req: Request, res: Response) => {
 
       if (!passwordRegex.test(password)) {
         return res.status(HTTP_STATUS_CODE.BAD_REQUEST).json({
-          message: passwordUtils.error,
+          message: passwordUtilsDev.error,
         });
       }
       const userExist = await Customers.findOne({
@@ -55,6 +55,10 @@ export const registerCustomer = async (req: Request, res: Response) => {
           message: "This account already exist",
         });
       }
+    } else {
+      return res.status(HTTP_STATUS_CODE.BAD_REQUEST).json({
+        message: userValidate.error.issues,
+      });
     }
   } catch (error) {
     logger.error(error);
