@@ -18,6 +18,7 @@ const port = ENV.PORT || 5500;
 
 const allowedOrigins: Array<string> = [
   ENV.FE_BASE_URL as string,
+  // CORS allow use of swagger on local environment
   ENV.IS_PROD ? "" : `http://localhost:${port}`,
 ].filter(Boolean);
 
@@ -61,6 +62,7 @@ app.use(function (_req: Request, _res: Response, next: NextFunction) {
 });
 
 app.use(function (err: HttpError, req: Request, res: Response) {
+  // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};
   // render the error page

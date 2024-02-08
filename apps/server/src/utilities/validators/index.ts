@@ -6,8 +6,9 @@ export const customerRegisterSchema = z.object({
   lastName: z.string().min(2, "lastname is required"),
   email: z.string().email({ message: "email is invalid" }),
   phone: z.string().min(11, "phone number is required"),
-    password: z.string().min(8, passwordUtilsDev.error)
+  password: z.string().min(5, passwordUtilsDev.error),
 });
+
 export const riderRegisterSchema = z.object({
   firstName: z.string().min(2, "firstname is required"),
   lastName: z.string().min(2, "lastname is required"),

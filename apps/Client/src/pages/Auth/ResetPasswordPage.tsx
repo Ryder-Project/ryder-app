@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { TextField } from "../../components/FormFields/TextField";
 import { RyderLogo, PasswordFieldIcon } from "../../assets/svg";
 import { useForm, FormProvider } from "react-hook-form";
@@ -22,7 +23,7 @@ const resetPasswordSchema = z
         message: "Password must contain at least one digit",
       })
       .refine(
-        (value: string) => /[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]/.test(value),
+        (value: string) => /[!@#$%^&*()_+{}[\]:;<>,.?~\\/-]/.test(value),
         {
           message: "Password must contain at least one special character",
         }
@@ -55,32 +56,33 @@ export default function ResetPasswordPage() {
     },
   });
 
-  const onSubmit = async (data: TResetPasswordSchema) => {
-    try {
-      const response = await axios.post(
-        "/api/user/reset-password",
-        {
-          password: data.password,
-          confirm_password: data.confirm_password,
-        },
-        { withCredentials: true }
-      );
-      if (response.status === 200) {
-        toast.success(response.data.message, { toastId: "reset-password" });
-      }
-    } catch (err: any) {
-      //  console.log(err);
-      const message = "An error occurred";
-      if (err.code === "ERR_NETWORK") {
-        toast.error(message, { toastId: "errorResettingPassword" });
-        return;
-      }
-      toast(err.response.data?.message || message, {
-        toastId: "errorResetting",
-      });
-    }
-    console.log(data);
-  };
+ const onSubmit = async (data: TResetPasswordSchema) => {
+   try {
+     const response = await axios.post(
+       "/api/user/reset-password",
+       {
+         password: data.password,
+         confirm_password: data.confirm_password,
+       },
+       { withCredentials: true }
+     );
+     if (response.status === 200) {
+       toast.success(response.data.message, { toastId: "reset-password" });
+     }
+   } catch (err:any) {
+     // Handle the error
+     const message = "An error occurred";
+     if (err.code === "ERR_NETWORK") {
+       toast.error(message, { toastId: "errorResettingPassword" });
+       return;
+     }
+     toast(err.response?.data?.message || message, {
+       toastId: "errorResetting",
+     });
+   }
+ };
+
+
   return (
     <>
       <div className="grid grid-cols-5">

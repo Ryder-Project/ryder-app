@@ -1,4 +1,4 @@
-import {Request, Response } from "express";
+import { Request, Response } from "express";
 import Ryder from "../../models/ryder";
 import { editRiderProfileSchema } from "../../utilities/validators";
 import { HTTP_STATUS_CODE } from "../../constants/httpStatusCode";

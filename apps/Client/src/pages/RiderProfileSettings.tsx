@@ -63,18 +63,13 @@ const Settings: React.FC = () => {
 
     const token = localStorage.getItem("token");
 
-    if (token && isEdited) {
+    if (token) {
       const decodedToken = jwtDecode(token) as JwtPayload;
       const userId = decodedToken.userId;
 
       try {
-        const VITE_BE_BASE_URL = import.meta.env.VITE_BE_BASE_URL;
-
-        if (!VITE_BE_BASE_URL) {
-          throw new Error('VITE_LOGIN_URL is not defined');
-        }
         const response = await fetch(
-          `${VITE_BE_BASE_URL}/api/v1/riders/editriderprofile/${userId}`,
+          `http://localhost:3333/api/v1/riders/editriderprofile/${userId}`,
           {
             method: "PUT",
             headers: {
@@ -112,8 +107,6 @@ const Settings: React.FC = () => {
           tokenTimeoutRef.current = setTimeout(() => {
             localStorage.removeItem("token");
           }, 10 * 60 * 60 * 1000);
-
-          setIsEdited(false); 
         } else {
           setIsSaving(false);
           toast.error("Failed to update profile");
@@ -125,7 +118,6 @@ const Settings: React.FC = () => {
       }
     } else {
       setIsSaving(false);
-      toast.warning("No changes made to save");
     }
   };
 
@@ -255,5 +247,3 @@ const Settings: React.FC = () => {
 };
 
 export default Settings;
-
-
