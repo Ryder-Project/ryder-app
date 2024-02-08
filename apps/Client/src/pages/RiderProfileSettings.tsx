@@ -95,7 +95,7 @@ const Settings: React.FC = () => {
             toast.success("Profile updated successfully");
             setIsSaving(false);
           }, 1000);
-
+              setIsEdited(false);
           if (formDataTimeoutRef.current)
             clearTimeout(formDataTimeoutRef.current);
           if (tokenTimeoutRef.current) clearTimeout(tokenTimeoutRef.current);

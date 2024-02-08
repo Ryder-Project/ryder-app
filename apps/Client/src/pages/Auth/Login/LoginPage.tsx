@@ -3,8 +3,8 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Button from "../../../components/Button";
-import riderLogo from "../../pages/Auth/Images/Logo.png";
-import riderPhoto from "../../pages/Auth/Images/image 4.png";
+import riderLogo from "../Images/Logo.png";
+import riderPhoto from "../Images/image 4.png";
 import { useNavigate } from "react-router-dom";
 
 type LoginFormValues = {
@@ -25,17 +25,14 @@ const LoginPage: React.FC = () => {
         throw new Error('VITE_LOGIN_URL is not defined');
       }
       setIsLoading(true);
-      const response = await fetch(
-        `${VITE_BE_BASE_URL}/api/v1/riders/login`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-          credentials: "include",
-        }
-      );
+      const response = await fetch(`${VITE_BE_BASE_URL}/api/v1/riders/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+        credentials: "include",
+      });
 
       if (response.ok) {
         const responseData = await response.json();
