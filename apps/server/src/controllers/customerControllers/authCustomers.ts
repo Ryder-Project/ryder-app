@@ -188,7 +188,7 @@ export const customerForgotPassword = async (req: Request, res: Response) => {
 
 export const customerResetPassword = async (req: Request, res: Response) => {
   try {
-    const { newPassword, confirmPassword } = req.body;
+    const { newPassword } = req.body;
     const token = req.query.token as string;
 
     const user = await Customers.findOne({
@@ -206,12 +206,6 @@ export const customerResetPassword = async (req: Request, res: Response) => {
     if (new Date() > user.resetTokenExpiry) {
       return res.status(HTTP_STATUS_CODE.BAD_REQUEST).json({
         message: `Password reset token has expired.`,
-      });
-    }
-
-    if (newPassword !== confirmPassword) {
-      return res.status(HTTP_STATUS_CODE.BAD_REQUEST).json({
-        message: `Passwords do not match`,
       });
     }
 
