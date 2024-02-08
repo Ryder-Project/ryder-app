@@ -59,7 +59,7 @@ const LoginPage: React.FC = () => {
 
   return (
     <div className="flex flex-col md:flex-row h-screen bg-white">
-      <div className="w-full hidden md:flex md:w-4/6 relative bg-cover bg-center h-80 md:h-screen overflow-hidden">
+      <div className="w-full hidden md:flex md:w-4/6 relative h-80 md:h-screen overflow-hidden">
         <img
           src={riderPhoto}
           alt="bikeman"
@@ -88,7 +88,7 @@ const LoginPage: React.FC = () => {
 
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="max-w-md mx-auto mb-60"
+          className="max-w-md mx-auto mb-60 mr-60"
         >
           <div className="text-xl font-bold pb-10 mr-40">Login</div>
 
