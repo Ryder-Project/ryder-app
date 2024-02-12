@@ -1,18 +1,17 @@
 import { ENV } from "../config";
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
-import jwt, { JwtPayload } from "jsonwebtoken";
 
 dotenv.config();
 
 export const passwordUtils = {
   length: 5,
   regex: ENV.IS_PROD
-    ? /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?.&])[A-Za-z\d@$!%*?.&]{5,}$/
-    : /^[A-Za-z0-9]{5,}$/,
+    ? /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?.&])[A-Za-z\d@$!%*?.&]{8,}$/
+    : /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?.&])[A-Za-z\d@$!%*?.&]{8,}$/,
   error: ENV.IS_PROD
-    ? `Password: Min 5 characters, with an uppercase, a lowercase, a number, and a special character.`
-    : "Password: Min 5 characters, uppercase or lowercase.",
+    ? `Password: Min 8 characters, with an uppercase, a lowercase, a number, and a special character.`
+    : "Password: Min 8 characters, with an uppercase, a lowercase, a number, and a special character.",
 };
 
 export class PasswordHarsher {
