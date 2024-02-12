@@ -1,12 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { TiPencil } from "react-icons/ti";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { jwtDecode } from "jwt-decode";
 
-const getCookie = (name: string) => {
-  const match = document.cookie.match(new RegExp("(^| )" + name + "=([^;]+)"));
-  return match ? match[2] : "";
-};
+interface JwtPayload {
+  userId: string;
+  firstName: string;
+  lastName: string;
+  phone: string;
+  email: string;
+}
 
 const Settings: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -18,6 +22,31 @@ const Settings: React.FC = () => {
 
   const [isSaving, setIsSaving] = useState(false);
 
+  const formDataTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const tokenTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      const decodedToken = jwtDecode(token) as JwtPayload;
+      const storedFormData = localStorage.getItem("formData");
+      if (storedFormData) {
+        setFormData(JSON.parse(storedFormData));
+      } else {
+        setFormData({
+          firstName: decodedToken.firstName,
+          lastName: decodedToken.lastName,
+          phone: decodedToken.phone,
+          email: decodedToken.email,
+        });
+      }
+    }
+    return () => {
+      if (formDataTimeoutRef.current) clearTimeout(formDataTimeoutRef.current);
+      if (tokenTimeoutRef.current) clearTimeout(tokenTimeoutRef.current);
+    };
+  }, []);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
     setFormData((prevData) => ({
@@ -28,18 +57,22 @@ const Settings: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsSaving(true);
 
-    const userId = document.cookie.replace(
-      /(?:(?:^|.*;\s*)userId\s*=\s*([^;]*).*$)|^.*$/,
-      "$1"
-    );
-    const token = getCookie("token");
+    const token = localStorage.getItem("token");
 
-    if (userId) {
+    if (token) {
+      const decodedToken = jwtDecode(token) as JwtPayload;
+      const userId = decodedToken.userId;
+
       try {
-        setIsSaving(true);
+        const VITE_BE_BASE_URL = import.meta.env.VITE_BE_BASE_URL;
+
+        if (!VITE_BE_BASE_URL) {
+          throw new Error('VITE_LOGIN_URL is not defined');
+        }
         const response = await fetch(
-          `http://localhost:3500/api/v1/riders/editriderprofile/${userId}`,
+          `${VITE_BE_BASE_URL}/api/v1/riders/editriderprofile/${userId}`,
           {
             method: "PUT",
             headers: {
@@ -47,14 +80,36 @@ const Settings: React.FC = () => {
               Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify(formData),
+            credentials: "include",
           }
         );
 
         if (response.ok) {
+          const updatedFormData = { ...formData };
+          for (const key in formData) {
+            updatedFormData[key as keyof typeof formData] =
+              formData[key as keyof typeof formData] ||
+              updatedFormData[key as keyof typeof formData];
+          }
+          setFormData(updatedFormData);
+          localStorage.setItem("formData", JSON.stringify(updatedFormData));
+
           setTimeout(() => {
+            toast.success("Profile updated successfully");
             setIsSaving(false);
           }, 1000);
-          toast.success("Profile updated successfully");
+
+          if (formDataTimeoutRef.current)
+            clearTimeout(formDataTimeoutRef.current);
+          if (tokenTimeoutRef.current) clearTimeout(tokenTimeoutRef.current);
+
+          formDataTimeoutRef.current = setTimeout(() => {
+            localStorage.removeItem("formData");
+          }, 10 * 60 * 60 * 1000);
+
+          tokenTimeoutRef.current = setTimeout(() => {
+            localStorage.removeItem("token");
+          }, 10 * 60 * 60 * 1000);
         } else {
           setIsSaving(false);
           toast.error("Failed to update profile");
@@ -64,23 +119,10 @@ const Settings: React.FC = () => {
         console.error("Error:", error);
         toast.error("An error occurred while updating your profile");
       }
+    } else {
+      setIsSaving(false);
     }
   };
-
-  useEffect(() => {
-    const firstNameCookie = getCookie("firstName");
-    const lastNameCookie = getCookie("lastName");
-    const phoneCookie = getCookie("phone");
-    const emailCookie = getCookie("email");
-
-    setFormData((prevData) => ({
-      ...prevData,
-      firstName: firstNameCookie || "",
-      lastName: lastNameCookie || "",
-      phone: phoneCookie || "",
-      email: emailCookie || "",
-    }));
-  }, []);
 
   return (
     <>
@@ -112,11 +154,7 @@ const Settings: React.FC = () => {
                   <input
                     type="text"
                     id="firstName"
-                    placeholder={
-                      formData.firstName === ""
-                        ? "First Name"
-                        : formData.firstName
-                    }
+                    placeholder={formData.firstName}
                     className="bg-gray-100 mt-1 pl-4 pt-2 pr-2 pb-2 w-full border rounded-none focus:outline-none focus:border-orange-500"
                     onChange={handleChange}
                     value={formData.firstName}
@@ -138,9 +176,7 @@ const Settings: React.FC = () => {
                   <input
                     type="text"
                     id="lastName"
-                    placeholder={
-                      formData.lastName === "" ? "Last Name" : formData.lastName
-                    }
+                    placeholder={formData.lastName}
                     className="bg-gray-100 mt-1 pl-4 pt-2 pr-2 pb-2 w-full border rounded-none focus:outline-none focus:border-orange-500"
                     onChange={handleChange}
                     value={formData.lastName}
@@ -162,9 +198,7 @@ const Settings: React.FC = () => {
                   <input
                     type="tel"
                     id="phone"
-                    placeholder={
-                      formData.phone === "" ? "Phone Number" : formData.phone
-                    }
+                    placeholder={formData.phone}
                     className="bg-gray-100 mt-1 pl-4 pt-2 pr-2 pb-2 w-full border rounded-none focus:outline-none focus:border-orange-500"
                     onChange={handleChange}
                     value={formData.phone}
@@ -186,9 +220,7 @@ const Settings: React.FC = () => {
                   <input
                     type="email"
                     id="email"
-                    placeholder={
-                      formData.email === "" ? "Your Email" : formData.email
-                    }
+                    placeholder={formData.email}
                     className="mt-1 pl-4 pt-2 pr-2 pb-2 w-full border rounded-none focus:outline-none focus:border-orange-500 bg-gray-100"
                     onChange={handleChange}
                     value={formData.email}
