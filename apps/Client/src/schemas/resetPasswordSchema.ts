@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const resetPasswordSchema = z
   .object({
-    password: z
+    newPassword: z
       .string()
       .refine((value: string) => value.length >= 8, {
         message: "Password must be at least 8 characters long",
@@ -31,8 +31,8 @@ export const resetPasswordSchema = z
     confirm_password: z.string(),
   })
   .refine(
-    (data: { password: string; confirm_password: string }) =>
-      data.password === data.confirm_password,
+    (data: { newPassword: string; confirm_password: string }) =>
+      data.newPassword === data.confirm_password,
     {
       message: "Passwords must match",
       path: ["confirm_password"],

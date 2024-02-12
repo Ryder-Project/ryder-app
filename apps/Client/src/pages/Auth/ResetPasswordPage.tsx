@@ -5,34 +5,40 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "react-toastify";
 import axios from "axios";
 import {resetPasswordSchema, TResetPasswordSchema} from '../../schemas/resetPasswordSchema'
+import { useParams } from "react-router-dom";
 
 export default function ResetPasswordPage() {
   const methods = useForm<TResetPasswordSchema>({
     resolver: zodResolver(resetPasswordSchema),
     defaultValues: {
-      password: "",
+      newPassword: "",
       confirm_password: "",
     },
   });
-
+  const { token } = useParams();
   const onSubmit = async (data: TResetPasswordSchema) => {
     try {
       const response = await axios.post(
-        "/api/user/reset-password",
+        `http://localhost:5500/api/v1/customers/resetPassword`,
         {
-          password: data.password,
-          confirm_password: data.confirm_password,
-        },
-        { withCredentials: true }
+          newPassword: data.newPassword,
+          token: token,
+        }
       );
       if (response.status === 200) {
-        toast.success(response.data.message, { toastId: "reset-password" });
+        toast.success(
+          "Password reset successfully. You can now log in with your new password.",
+          { toastId: "reset-password" }
+        );
       }
     } catch (err: any) {
-      //  console.log(err);
-      const message = "An error occurred";
+      const message =
+        "An error occurred while resetting your password. Please try again later.";
       if (err.code === "ERR_NETWORK") {
-        toast.error(message, { toastId: "errorResettingPassword" });
+        toast.error(
+          "Network error. Please check your internet connection and try again.",
+          { toastId: "errorResettingPassword" }
+        );
         return;
       }
       toast(err.response.data?.message || message, {
@@ -65,7 +71,7 @@ export default function ResetPasswordPage() {
             >
               <TextField
                 type="password"
-                name="password"
+                name="newPassword"
                 label="New Password"
                 placeholder="Enter new password"
                 iconSrc={<PasswordFieldIcon />}

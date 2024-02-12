@@ -19,7 +19,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/reset-password" element={<ResetPasswordPage />} />
+          <Route path="/auth/resetPassword" element={<ResetPasswordPage />} />
           <Route path="/request-rider" element={<RequestRiderPage />} />
           <Route path="/signup/rider" element={<RiderSignUpPage />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />

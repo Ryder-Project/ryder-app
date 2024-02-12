@@ -6,6 +6,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import TextField from "../../components/FormFields/TextField/TextField";
 import { EmailFieldIcon } from "../../assets/svg";
 import {forgotPasswordSchema, TForgotPasswordSchema} from '../../schemas/forgotPasswordSchema'
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const ForgotPasswordPage: FC = () => {
   const [showModal, setShowModal] = useState(false);
@@ -17,9 +19,25 @@ const ForgotPasswordPage: FC = () => {
     },
   });
 
-  const onSubmit = (data: TForgotPasswordSchema) => {
-    setShowModal(true);
-    console.log(data);
+  const onSubmit = async(data: TForgotPasswordSchema) => {
+    try{
+      const response = await axios.post(
+        `http://localhost:5500/api/v1/customers/forgotPassword`,
+        { email: data.email }
+      );
+      if(response.status === 200) {
+        setShowModal(true);
+      }
+    }catch(error:any){
+      const message = "An error occurred";
+      if (error.code === "ERR_NETWORK") {
+        toast.error(message, { toastId: "errorSendingEmail" });
+        return;
+      }
+      toast(error.response.data?.message || message, {
+        toastId: "errorSendingEmail",
+      });
+    }
   };
 
   return (

@@ -13,7 +13,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from 'react-toastify';
 import axios, { AxiosError } from 'axios';
 import {signupSchema, TSignupSchema } from '../../../schemas/signupSchema'
-import {API_URL} from '../../../../constants'
 
 const SignUp: FC = () => {
   const [showModal, setShowModal] = useState(false);
@@ -34,7 +33,7 @@ const SignUp: FC = () => {
     try {
      const { confirm_password, ...requestData } = data;
      const response = await axios.post(
-       `${API_URL}/customers/registerCustomer`,
+       `http://localhost:5500/api/v1/customers/registerCustomer`,
        requestData,
        { withCredentials: true }
      );
