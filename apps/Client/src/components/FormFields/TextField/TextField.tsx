@@ -29,7 +29,7 @@ export default function TextField(props: TextFieldProps) {
 
       <div className=" relative">
         {iconSrc ? 
-          <span className="absolute pointer-events-none top-1/2 transform -translate-y-1/2 left-4">{iconSrc}</span>
+          <span className="absolute pointer-events-none top-1/2 transform -translate-y-1/2 left-3">{iconSrc}</span>
          : null}
         <input
           {...register(name, {
@@ -40,7 +40,7 @@ export default function TextField(props: TextFieldProps) {
           placeholder={placeholder}
           aria-describedby={name}
           className={clsx(
-            "pl-12 border text-sm rounded block w-full px-4 py-2",
+            "pl-10 border text-sm rounded block w-full px-4 py-2",
             {
               "border-sky-950":
                 !errors[name]?.message || !errors[name]?.root?.message,
