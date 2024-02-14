@@ -4,7 +4,9 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Button from "../../../components/Button";
 import riderLogo from "../Images/Logo.png";
-import riderPhoto from "../Images/image 4.png";
+import riderPhoto from "../Images/Frame 8338.svg";
+import emailIcon from "../Images/Icon (1).png"; // Import email icon image
+import passwordIcon from "../Images/Vector (1).png";
 import { useNavigate } from "react-router-dom";
 
 type LoginFormValues = {
@@ -59,13 +61,16 @@ const LoginPage: React.FC = () => {
 
   return (
     <div className="flex flex-col md:flex-row h-screen bg-white">
-      <div className="w-full hidden md:flex md:w-4/6 relative h-80 md:h-screen overflow-hidden">
-        <img
-          src={riderPhoto}
-          alt="bikeman"
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 flex items-center justify-center text-white text-center bg-black bg-opacity-50">
+      <div className="hidden md:flex md:w-4/6 relative h-80 md:h-screen overflow-hidden">
+      
+  <img
+    src={riderPhoto}
+    alt="bikeman"
+    className="w-full h-full object-cover"
+  />
+
+
+        {/* <div className="absolute inset-0 flex items-center justify-center text-white text-center bg-black bg-opacity-50">
           <div>
             <p className="text-lg md:text-xl lg:text-4xl font-bold mt-[720px]">
               Delivery service just got <br />
@@ -74,7 +79,7 @@ const LoginPage: React.FC = () => {
               <span style={{ color: "orange" }}>Ryder</span>
             </p>
           </div>
-        </div>
+        </div> */}
       </div>
 
       <div className="w-full md:w-1/2 p-4 md:p-8 flex flex-col justify-center">
@@ -97,11 +102,17 @@ const LoginPage: React.FC = () => {
               className="block text-gray-700 text-sm font-bold mb-2"
               htmlFor="email"
             >
+               {/* Render email icon */}
+               <img
+                src={emailIcon}
+                alt="Email Icon"
+                className="absolute top-2/4 mt-3.5 left-3 transform -translate-y-1/2"
+              />
               Email
             </label>
             <input
               {...register("email")}
-              className="w-full px-3 py-2 text-gray-700 border rounded-md focus:outline-none focus:shadow-outline"
+              className="w-full px-10 py-2 text-gray-700 border rounded-md focus:outline-none focus:shadow-outline"
               id="email"
               type="text"
               placeholder="Enter your Email"
@@ -114,11 +125,17 @@ const LoginPage: React.FC = () => {
               className="block text-gray-700 text-sm font-bold mb-2"
               htmlFor="password"
             >
+                {/* Render password icon */}
+                <img
+                src={passwordIcon}
+                alt="Password Icon"
+                className="absolute top-2/4 mt-3.5 left-3 transform -translate-y-1/2"
+              />
               Password
             </label>
             <input
               {...register("password")}
-              className="w-full px-3 py-2 text-gray-700 border rounded-md focus:outline-none focus:shadow-outline"
+              className="w-full px-10 py-2 text-gray-700 border rounded-md focus:outline-none focus:shadow-outline"
               id="password"
               type="password"
               placeholder="Enter your password"
