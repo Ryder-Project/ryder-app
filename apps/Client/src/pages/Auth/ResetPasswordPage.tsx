@@ -15,14 +15,13 @@ export default function ResetPasswordPage() {
       confirm_password: "",
     },
   });
-  const { token } = useParams();
   const onSubmit = async (data: TResetPasswordSchema) => {
     try {
+      const token = new URLSearchParams(window.location.search).get("token");
       const response = await axios.post(
-        `http://localhost:5500/api/v1/customers/resetPassword`,
+        `http://localhost:5500/api/v1/customers/resetPassword?token=` + token,
         {
           newPassword: data.newPassword,
-          token: token,
         }
       );
       if (response.status === 200) {
