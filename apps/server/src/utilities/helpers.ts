@@ -1,11 +1,9 @@
 import { ENV } from "../config";
 import bcrypt from "bcrypt";
-import dotenv from "dotenv";
-
-dotenv.config();
+import nodemailer from "nodemailer";
 
 export const passwordUtils = {
-  length: 5,
+  length: 8,
   regex: ENV.IS_PROD
     ? /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?.&])[A-Za-z\d@$!%*?.&]{8,}$/
     : /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?.&])[A-Za-z\d@$!%*?.&]{8,}$/,
@@ -26,14 +24,45 @@ export class PasswordHarsher {
 }
 
 export const generateLongString = (length: number) => {
-  let result = ''
+  let result = "";
   const characters =
-    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-  const charactersLength = characters.length
-  let counter = 0
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  const charactersLength = characters.length;
+  let counter = 0;
   while (counter < length) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength))
-    counter += 1
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    counter += 1;
   }
-  return result
-}
+  return result;
+};
+
+export const validatePassword = (password: string) => {
+  if (!passwordUtils.regex.test(password)) {
+    throw new Error(passwordUtils.error);
+  }
+};
+
+export const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: ENV.GMAIL_USER,
+    pass: ENV.GMAIL_PASSWORD,
+  },
+});
+
+export const sendRegistrationEmail = async (
+  to: string,
+  user: { firstName: string; lastName: string },
+  url: string
+) => {
+  const longString = generateLongString(32);
+
+  const mailOptions = {
+    from: process.env.GMAIL_USER,
+    to,
+    subject: "Reset your password",
+    text: `Hi ${user.firstName} ${user.lastName},\n\nWelcome to our platform! We're excited to have you on board.\n\nThank you for registering. Please use the following link to complete your registration:\n\n${url}\n\nIf you have any questions or need assistance, feel free to contact our support team.\n\nBest regards,\nThe [Your Platform Name] Team. Find your token here: ${longString}`,
+  };
+
+  await transporter.sendMail(mailOptions);
+};
