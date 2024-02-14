@@ -50,8 +50,8 @@ export const registerCustomer = async (req: Request, res: Response) => {
           password: hashedPassword,
           isVerified: false,
         });
-
-        console.log("user", user);
+        // await user.save();
+        // console.log("user", user);
 
         // Send registration email with user info
         const info = {

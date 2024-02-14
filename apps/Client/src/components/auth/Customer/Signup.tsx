@@ -9,91 +9,10 @@ import {
 import VerifyMailModal from "../ResetPassword/VerifyMailModal";
 import TextField from "../../FormFields/TextField/TextField";
 import { useForm, FormProvider } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-
-const signupSchema = z
-  .object({
-    first_name: z
-      .string()
-      .min(2, { message: "Name must be at least 2 character long" })
-      .max(25, { message: "Name cannot exceed 25 characters" })
-      .refine((value: string) => value.trim() !== "", {
-        message: "Name cannot be made up of only spaces",
-      }),
-    last_name: z
-      .string()
-      .min(2, { message: "Name must be at least 2 character long" })
-      .max(25, { message: "Name cannot exceed 25 characters" })
-      .refine((value: string) => value.trim() !== "", {
-        message: "Name cannot be made up of only spaces",
-      }),
-    phone_number: z
-      .string()
-      .refine(
-        (value: string) =>
-          /^(?:\+?\d{1,3}[\s-]?)?(?:\(\d{1,4}\)[\s-]?)?\d{6,14}$/.test(value),
-        {
-          message:
-            "Invalid phone number format. It should contain between 6 to 14 digits.",
-        }
-      )
-      .refine((value: string) => value.trim() !== "", {
-        message: "Phone number cannot be made up of only spaces",
-      }),
-
-    email: z
-      .string()
-      .refine((value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value), {
-        message: "Invalid email format",
-      })
-      .refine((value: string) => value.trim() !== "", {
-        message: "Email cannot be made up of only spaces",
-      }),
-
-    password: z
-      .string()
-      .refine((value: string) => value.length >= 8, {
-        message: "Password must be at least 8 characters long",
-      })
-      .refine((value: string) => /[a-z]/.test(value), {
-        message: "Password must contain at least one lowercase letter",
-      })
-      .refine((value: string) => /[A-Z]/.test(value), {
-        message: "Password must contain at least one uppercase letter",
-      })
-      .refine((value: string) => /\d/.test(value), {
-        message: "Password must contain at least one digit",
-      })
-      .refine(
-        (value: string) => /[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]/.test(value),
-        {
-          message: "Password must contain at least one special character",
-        }
-      )
-      .refine((value: string) => value.trim() !== "", {
-        message: "Password cannot be made up of only spaces",
-      })
-      .refine((value: string) => value === value.trim(), {
-        message: "Password cannot have leading or trailing spaces",
-      }),
-
-    confirm_password: z
-      .string()
-      .refine((value: string) => value.trim() !== "", {
-        message: "Confirm password cannot be made up of only spaces",
-      }),
-  })
-  .refine(
-    (data: { password: string; confirm_password: string }) =>
-      data.password === data.confirm_password,
-    {
-      message: "Passwords must match",
-      path: ["confirm_password"],
-    }
-  );
-
-type TSignupSchema = z.infer<typeof signupSchema>;
+import { toast } from 'react-toastify';
+import axios, { AxiosError } from 'axios';
+import {signupSchema, TSignupSchema } from '../../../schemas/signupSchema'
 
 const SignUp: FC = () => {
   const [showModal, setShowModal] = useState(false);
@@ -101,19 +20,59 @@ const SignUp: FC = () => {
   const methods = useForm<TSignupSchema>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
-      first_name: "",
-      last_name: "",
-      phone_number: "",
+      firstName: "",
+      lastName: "",
+      phone: "",
       email: "",
       password: "",
       confirm_password: "",
     },
   });
 
-  const onSubmit = (data: TSignupSchema) => {
-    setShowModal(true);
-    console.log("hitting signup button")
-    console.log(data);
+  const onSubmit = async(data: TSignupSchema) => {
+    try {
+     const { confirm_password, ...requestData } = data;
+     const response = await axios.post(
+       `http://localhost:5500/api/v1/customers/registerCustomer`,
+       requestData,
+       { withCredentials: true }
+     );
+     if (response.status === 200) {
+       toast.success("Registration successful");
+       setShowModal(true);
+     } else {
+       toast.error("Unexpected status code: " + response.status);
+     }
+   } catch (error) {
+     handleAxiosError(error);
+    }
+  };
+
+  const handleAxiosError = (error: any) => {
+    if (axios.isAxiosError(error)) {
+      const axiosError = error as AxiosError<any>;
+      if (axiosError.response) {
+        const statusCode = axiosError.response.status;
+        switch (statusCode) {
+          case 400:
+            toast.error(
+              "Validation error: " + axiosError.response.data.message
+            );
+            break;
+          case 409:
+            toast.error(
+              "Account already exists: " + axiosError.response.data.message
+            );
+            break;
+          default:
+            toast.error("Error: " + axiosError.response.data.message);
+        }
+      } else {
+        toast.error("Network error: " + error.message);
+      }
+    } else {
+      console.error("Non-Axios error:", error);
+    }
   };
 
   return (
@@ -137,14 +96,14 @@ const SignUp: FC = () => {
             <div className="grid grid-cols-2 space-x-2">
                 <TextField
                   type="text"
-                  name="first_name"
+                  name="firstName"
                   label="First Name"
                   placeholder="First Name"
                   iconSrc={<NameFieldIcon />}
                 />
                 <TextField
                   type="text"
-                  name="last_name"
+                  name="lastName"
                   label="Last Name"
                   placeholder="Last Name"
                   iconSrc={<NameFieldIcon />}
@@ -152,7 +111,7 @@ const SignUp: FC = () => {
             </div>
             <TextField
               type="text"
-              name="phone_number"
+              name="phone"
               label="Phone Number"
               placeholder="Enter your phone number"
               iconSrc={<PhoneFieldIcon />}

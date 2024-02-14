@@ -1,78 +1,43 @@
 import { TextField } from "../../components/FormFields/TextField";
 import { RyderLogo, PasswordFieldIcon } from "../../assets/svg";
 import { useForm, FormProvider } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "react-toastify";
 import axios from "axios";
-const resetPasswordSchema = z
-  .object({
-    password: z
-      .string()
-      .refine((value: string) => value.length >= 8, {
-        message: "Password must be at least 8 characters long",
-      })
-      .refine((value: string) => /[a-z]/.test(value), {
-        message: "Password must contain at least one lowercase letter",
-      })
-      .refine((value: string) => /[A-Z]/.test(value), {
-        message: "Password must contain at least one uppercase letter",
-      })
-      .refine((value: string) => /\d/.test(value), {
-        message: "Password must contain at least one digit",
-      })
-      .refine(
-        (value: string) => /[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]/.test(value),
-        {
-          message: "Password must contain at least one special character",
-        }
-      )
-      .refine((value: string) => value.trim() !== "", {
-        message: "Password cannot be made up of only spaces",
-      })
-      .refine((value: string) => value === value.trim(), {
-        message: "Password cannot have leading or trailing spaces",
-      }),
-    confirm_password: z.string(),
-  })
-  .refine(
-    (data: { password: string; confirm_password: string }) =>
-      data.password === data.confirm_password,
-    {
-      message: "Passwords must match",
-      path: ["confirm_password"],
-    }
-  );
-
-type TResetPasswordSchema = z.infer<typeof resetPasswordSchema>;
+import {resetPasswordSchema, TResetPasswordSchema} from '../../schemas/resetPasswordSchema'
+import { useParams } from "react-router-dom";
 
 export default function ResetPasswordPage() {
   const methods = useForm<TResetPasswordSchema>({
     resolver: zodResolver(resetPasswordSchema),
     defaultValues: {
-      password: "",
+      newPassword: "",
       confirm_password: "",
     },
   });
-
   const onSubmit = async (data: TResetPasswordSchema) => {
     try {
+      const token = new URLSearchParams(window.location.search).get("token");
       const response = await axios.post(
-        "/api/user/reset-password",
+        `http://localhost:5500/api/v1/customers/resetPassword?token=` + token,
         {
-          password: data.password,
-          confirm_password: data.confirm_password,
-        },
-        { withCredentials: true }
+          newPassword: data.newPassword,
+        }
       );
       if (response.status === 200) {
-        toast.success(response.data.message, { toastId: "reset-password" });
+        toast.success(
+          "Password reset successfully. You can now log in with your new password.",
+          { toastId: "reset-password" }
+        );
       }
     } catch (err: any) {
-      //  console.log(err);
-      const message = "An error occurred";
+      const message =
+        "An error occurred while resetting your password. Please try again later.";
       if (err.code === "ERR_NETWORK") {
-        toast.error(message, { toastId: "errorResettingPassword" });
+        toast.error(
+          "Network error. Please check your internet connection and try again.",
+          { toastId: "errorResettingPassword" }
+        );
         return;
       }
       toast(err.response.data?.message || message, {
@@ -105,7 +70,7 @@ export default function ResetPasswordPage() {
             >
               <TextField
                 type="password"
-                name="password"
+                name="newPassword"
                 label="New Password"
                 placeholder="Enter new password"
                 iconSrc={<PasswordFieldIcon />}

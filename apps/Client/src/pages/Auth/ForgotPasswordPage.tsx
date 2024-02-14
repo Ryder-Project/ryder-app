@@ -2,26 +2,12 @@ import { FC, useState } from "react";
 import CheckEmail from "../../components/Auth/ResetPassword/CheckEmailModal";
 import PasswordContainer from "../../components/Auth/ResetPassword/PasswordContainer";
 import { useForm, FormProvider } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import TextField from "../../components/FormFields/TextField/TextField";
 import { EmailFieldIcon } from "../../assets/svg";
-
-const forgotPasswordSchema = z.object({
-  email: z
-    .string()
-    .refine((value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value), {
-      message: "Invalid email format",
-    })
-    .refine((value: string) => value.trim() !== "", {
-      message: "Email cannot be made up of only spaces",
-    })
-    .refine((value: string) => value === value.trim(), {
-      message: "Email cannot have leading or trailing spaces",
-    }),
-});
-
-type TForgotPasswordSchema = z.infer<typeof forgotPasswordSchema>;
+import {forgotPasswordSchema, TForgotPasswordSchema} from '../../schemas/forgotPasswordSchema'
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const ForgotPasswordPage: FC = () => {
   const [showModal, setShowModal] = useState(false);
@@ -33,9 +19,25 @@ const ForgotPasswordPage: FC = () => {
     },
   });
 
-  const onSubmit = (data: TForgotPasswordSchema) => {
-    setShowModal(true);
-    console.log(data);
+  const onSubmit = async(data: TForgotPasswordSchema) => {
+    try{
+      const response = await axios.post(
+        `http://localhost:5500/api/v1/customers/forgotPassword`,
+        { email: data.email }
+      );
+      if(response.status === 200) {
+        setShowModal(true);
+      }
+    }catch(error:any){
+      const message = "An error occurred";
+      if (error.code === "ERR_NETWORK") {
+        toast.error(message, { toastId: "errorSendingEmail" });
+        return;
+      }
+      toast(error.response.data?.message || message, {
+        toastId: "errorSendingEmail",
+      });
+    }
   };
 
   return (
