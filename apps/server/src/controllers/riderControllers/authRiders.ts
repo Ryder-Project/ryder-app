@@ -5,7 +5,7 @@ import { HTTP_STATUS_CODE } from "../../constants/httpStatusCode";
 import { passwordUtils, PasswordHarsher } from "../../utilities/helpers";
 import logger from "../../utilities/logger";
 import { riderRegisterSchema } from "../../utilities/validators";
-import Ryder from "../../models/ryder";
+import Ryder, { role } from "../../models/ryder";
 import * as jwt from "jsonwebtoken";
 import { APP_SECRET } from "../../config/env";
 import { v2 as cloudinary } from "cloudinary";
@@ -76,6 +76,7 @@ export const registerRyder = async (req: Request, res: Response) => {
           city,
           phone,
           password: hashedPassword,
+          role: role.RYDER,
           bikeDoc: bikeDocUrl,
           validIdCard: validIdCardUrl,
           passportPhoto: passportPhotoUrl,

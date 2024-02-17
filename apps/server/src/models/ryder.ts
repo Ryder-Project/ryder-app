@@ -9,6 +9,11 @@ import { db } from "../config";
 
 const TABLE_NAME = "Ryder";
 
+export const role = {
+  RYDER: "Rider",
+} as const;
+export type RoleType = (typeof role)[keyof typeof role];
+
 // https://sequelize.org/docs/v6/other-topics/typescript/
 class Ryder extends Model<
   InferAttributes<Ryder>,
@@ -22,6 +27,7 @@ class Ryder extends Model<
   declare profilePic: string | null;
   declare password: string;
   declare phone: string;
+  declare role: RoleType;
   declare bikeDoc: string;
   declare validIdCard: string;
   declare passportPhoto: string;
@@ -62,6 +68,10 @@ Ryder.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    role: {
+      type: DataTypes.ENUM(...Object.values(role)),
+      allowNull: false,
+    },
     profilePic: {
       type: DataTypes.STRING,
     },
@@ -97,7 +107,6 @@ Ryder.init(
   },
   {
     sequelize: db,
-    tableName: TABLE_NAME,
     modelName: TABLE_NAME,
     timestamps: true,
   }

@@ -11,7 +11,7 @@ import {
 } from "../../utilities/helpers";
 import logger from "../../utilities/logger";
 import { customerRegisterSchema } from "../../utilities/validators";
-import Customers from "../../models/customers";
+import Customers, { role } from "../../models/customers";
 import ENV, { APP_SECRET } from "../../config/env";
 import * as jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
@@ -46,12 +46,11 @@ export const registerCustomer = async (req: Request, res: Response) => {
           firstName,
           lastName,
           email: newEmail,
-          phone,
           password: hashedPassword,
+          phone,
+          role: role.CUSTOMER,
           isVerified: false,
         });
-        // await user.save();
-        // console.log("user", user);
 
         // Send registration email with user info
         const info = {

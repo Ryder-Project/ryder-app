@@ -5,7 +5,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "react-toastify";
 import axios from "axios";
 import {resetPasswordSchema, TResetPasswordSchema} from '../../schemas/resetPasswordSchema'
-import { useParams } from "react-router-dom";
 
 export default function ResetPasswordPage() {
   const methods = useForm<TResetPasswordSchema>({
@@ -17,9 +16,13 @@ export default function ResetPasswordPage() {
   });
   const onSubmit = async (data: TResetPasswordSchema) => {
     try {
+      const VITE_BE_BASE_URL = import.meta.env.VITE_BE_BASE_URL;
+      if (!VITE_BE_BASE_URL) {
+        throw new Error('VITE_LOGIN_URL is not defined');
+      }
       const token = new URLSearchParams(window.location.search).get("token");
       const response = await axios.post(
-        `http://localhost:5500/api/v1/customers/resetPassword?token=` + token,
+        `${VITE_BE_BASE_URL}/api/v1/customers/resetPassword?token=` + token,
         {
           newPassword: data.newPassword,
         }
