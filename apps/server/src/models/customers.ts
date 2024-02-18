@@ -9,6 +9,11 @@ import { db } from "../config";
 
 const TABLE_NAME = "Customers";
 
+export const role = {
+  CUSTOMER: "Customer",
+} as const;
+export type RoleType = (typeof role)[keyof typeof role];
+
 // https://sequelize.org/docs/v6/other-topics/typescript/
 class Customers extends Model<
   InferAttributes<Customers>,
@@ -18,9 +23,10 @@ class Customers extends Model<
   declare firstName: string;
   declare lastName: string;
   declare email: string;
-  declare profilePic: string | null;
+  declare profilePic: CreationOptional<string>;
   declare password: string;
   declare phone: string;
+  declare role: RoleType;
   declare resetToken: CreationOptional<string>;
   declare resetTokenExpires: CreationOptional<Date>;
   declare isVerified: boolean;
@@ -46,6 +52,9 @@ Customers.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    profilePic: {
+      type: DataTypes.STRING,
+    },
     password: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -54,8 +63,9 @@ Customers.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    profilePic: {
-      type: DataTypes.STRING,
+    role: {
+      type: DataTypes.ENUM(...Object.values(role)),
+      allowNull: false,
     },
     resetToken: {
       type: DataTypes.STRING,
@@ -77,7 +87,6 @@ Customers.init(
   },
   {
     sequelize: db,
-    tableName: TABLE_NAME,
     modelName: TABLE_NAME,
     timestamps: true,
   }

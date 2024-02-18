@@ -5,7 +5,10 @@ import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import TextField from "../../components/FormFields/TextField/TextField";
 import { EmailFieldIcon } from "../../assets/svg";
-import {forgotPasswordSchema, TForgotPasswordSchema} from '../../schemas/forgotPasswordSchema'
+import {
+  forgotPasswordSchema,
+  TForgotPasswordSchema,
+} from "../../schemas/forgotPasswordSchema";
 import axios from "axios";
 import { toast } from "react-toastify";
 
@@ -19,16 +22,20 @@ const ForgotPasswordPage: FC = () => {
     },
   });
 
-  const onSubmit = async(data: TForgotPasswordSchema) => {
-    try{
+  const onSubmit = async (data: TForgotPasswordSchema) => {
+    try {
+      const VITE_BE_BASE_URL = import.meta.env.VITE_BE_BASE_URL;
+      if (!VITE_BE_BASE_URL) {
+        throw new Error("VITE_LOGIN_URL is not defined");
+      }
       const response = await axios.post(
-        `http://localhost:5500/api/v1/customers/forgotPassword`,
+        `${VITE_BE_BASE_URL}/api/v1/customers/forgotPassword`,
         { email: data.email }
       );
-      if(response.status === 200) {
+      if (response.status === 200) {
         setShowModal(true);
       }
-    }catch(error:any){
+    } catch (error: any) {
       const message = "An error occurred";
       if (error.code === "ERR_NETWORK") {
         toast.error(message, { toastId: "errorSendingEmail" });
