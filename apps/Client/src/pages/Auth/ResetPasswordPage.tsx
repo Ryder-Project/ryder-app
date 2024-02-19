@@ -5,7 +5,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "react-toastify";
 import axios from "axios";
 import {resetPasswordSchema, TResetPasswordSchema} from '../../schemas/resetPasswordSchema'
-import { useParams } from "react-router-dom";
+import { getRyderServerUrl } from "../../utils/serverUtils";
+import Button from "../../components/Common/Button/Button";
 
 export default function ResetPasswordPage() {
   const methods = useForm<TResetPasswordSchema>({
@@ -17,9 +18,10 @@ export default function ResetPasswordPage() {
   });
   const onSubmit = async (data: TResetPasswordSchema) => {
     try {
+      const ryderServerUrl = getRyderServerUrl();
       const token = new URLSearchParams(window.location.search).get("token");
       const response = await axios.post(
-        `http://localhost:5500/api/v1/customers/resetPassword?token=` + token,
+        `${ryderServerUrl}/api/v1/customers/resetPassword?token=` + token,
         {
           newPassword: data.newPassword,
         }
@@ -82,12 +84,12 @@ export default function ResetPasswordPage() {
                 placeholder="Re-enter your password"
                 iconSrc={<PasswordFieldIcon />}
               />
-              <button
+              <Button
                 type="submit"
-                className="flex items-center justify-center w-full text-white bg-orange-500 hover:bg-orange-800 focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition duration-300 ease-in-out rounded-md text-sm p-2"
+                className="rounded-md text-sm p-2"
               >
                 Reset Password
-              </button>
+              </Button>
             </form>
           </FormProvider>
         </div>

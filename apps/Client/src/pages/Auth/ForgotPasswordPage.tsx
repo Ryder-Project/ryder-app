@@ -8,6 +8,8 @@ import { EmailFieldIcon } from "../../assets/svg";
 import {forgotPasswordSchema, TForgotPasswordSchema} from '../../schemas/forgotPasswordSchema'
 import axios from "axios";
 import { toast } from "react-toastify";
+import { getRyderServerUrl } from "../../utils/serverUtils";
+import Button from "../../components/Common/Button/Button";
 
 const ForgotPasswordPage: FC = () => {
   const [showModal, setShowModal] = useState(false);
@@ -20,9 +22,10 @@ const ForgotPasswordPage: FC = () => {
   });
 
   const onSubmit = async(data: TForgotPasswordSchema) => {
-    try{
+    try {
+      const ryderServerUrl = getRyderServerUrl();
       const response = await axios.post(
-        `http://localhost:5500/api/v1/customers/forgotPassword`,
+        `${ryderServerUrl}/api/v1/customers/forgotPassword`,
         { email: data.email }
       );
       if(response.status === 200) {
@@ -59,12 +62,12 @@ const ForgotPasswordPage: FC = () => {
               placeholder="Enter your email"
               iconSrc={<EmailFieldIcon />}
             />
-            <button
+            <Button
               type="submit"
-              className="flex items-center justify-center w-full text-white bg-orange-500 hover:bg-orange-800 focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition duration-300 ease-in-out rounded-md text-sm py-3 mt-6"
+              className="rounded-md text-sm py-3 mt-6"
             >
               Reset password
-            </button>
+            </Button>
           </form>
           {showModal && <CheckEmail />}
         </FormProvider>
@@ -77,3 +80,7 @@ const ForgotPasswordPage: FC = () => {
 };
 
 export default ForgotPasswordPage;
+
+
+
+// Titi123$
