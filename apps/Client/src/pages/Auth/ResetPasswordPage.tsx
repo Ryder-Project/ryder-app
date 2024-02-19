@@ -86,7 +86,7 @@ export default function ResetPasswordPage() {
               />
               <Button
                 type="submit"
-                className="rounded-md text-sm p-2"
+                className="bg-orange-500 hover:bg-orange-800 focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 rounded-md text-sm p-2"
               >
                 Reset Password
               </Button>

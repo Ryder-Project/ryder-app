@@ -1,5 +1,6 @@
 import { FC } from "react";
 import {Link} from 'react-router-dom'
+import Button from "../Common/Button/Button";
 const HeroSection: FC = () => {
   return (
     <div className="hero-background">
@@ -11,16 +12,16 @@ const HeroSection: FC = () => {
         <p className="font-normal mb-8 text-lg">Send. Track. Receive.</p>
       </div>
 
-      <div className="flex space-x-4">
-        <Link to="/signup/rider">
-          <button className="border-2 border-white hover:bg-orange-400 px-8 py-4 rounded-md transition duration-300">
-            Register as a Rider
-          </button>
-        </Link>
+      <div className="grid grid-cols-2 space-x-4">
         <Link to="/signup/customer">
-          <button className="border-2 border-white hover:bg-orange-400 px-8 py-4 rounded-md transition duration-300">
+          <Button className="border-2 border-white hover:bg-orange-400 hover:border-orange-400 px-8 py-4 rounded-md ">
             Register as a Customer
-          </button>
+          </Button>
+        </Link>
+        <Link to="/signup/rider">
+          <Button className=" border-2 border-white hover:bg-orange-400 hover:border-orange-400 px-8 py-4 rounded-md ">
+            Register as a Rider
+          </Button>
         </Link>
       </div>
     </div>

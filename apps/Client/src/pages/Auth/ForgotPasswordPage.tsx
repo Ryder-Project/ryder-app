@@ -21,9 +21,9 @@ const ForgotPasswordPage: FC = () => {
     },
   });
 
+  const ryderServerUrl = getRyderServerUrl();
   const onSubmit = async(data: TForgotPasswordSchema) => {
     try {
-      const ryderServerUrl = getRyderServerUrl();
       const response = await axios.post(
         `${ryderServerUrl}/api/v1/customers/forgotPassword`,
         { email: data.email }
@@ -43,6 +43,20 @@ const ForgotPasswordPage: FC = () => {
     }
   };
 
+   const resendPasswordResetLink = async () => {
+     try {
+       const email = methods.getValues("email");
+       const response = await axios.post(
+         `${ryderServerUrl}/api/v1/customers/forgotPassword`,
+         { email }
+       );
+       if (response.status === 200) {
+         toast.success("Password reset link resent successfully.");
+       }
+     } catch (error) {
+       toast.error("Error resending password reset link.");
+     }
+   };
   return (
     <PasswordContainer className="lg:px-[100px]">
       <div className="max-w-[432px]">
@@ -64,12 +78,12 @@ const ForgotPasswordPage: FC = () => {
             />
             <Button
               type="submit"
-              className="rounded-md text-sm py-3 mt-6"
+              className="bg-orange-500 hover:bg-orange-800 focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 rounded-md text-sm py-3 mt-6"
             >
               Reset password
             </Button>
           </form>
-          {showModal && <CheckEmail />}
+          {showModal && <CheckEmail onResend={resendPasswordResetLink} />}
         </FormProvider>
       </div>
       <a href="/login" className="mt-12 px-4 py-2 bg-stone-200 text-sm border">
