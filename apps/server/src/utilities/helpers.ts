@@ -55,14 +55,14 @@ export const sendRegistrationEmail = async (
   user: { firstName: string; lastName: string },
   url: string
 ) => {
-  const longString = generateLongString(32);
 
   const mailOptions = {
     from: process.env.GMAIL_USER,
     to,
     subject: "Get started with the Ryder App - Confirm your email",
-    text: `Hi ${user.firstName} ${user.lastName},\n\nWelcome to Ryder App! We're excited to have you on board.\n\nThank you for registering. Please use the following link to complete your registration:\n\n${url}\n\nIf you have any questions or need assistance, feel free to contact our support team.\n\nBest regards,\nThe [Your Platform Name] Team. Find your token here: ${longString}`,
+    text: `Hi ${user.firstName} ${user.lastName},\n\nWelcome to Ryder App! We're excited to have you on board.\n\nThank you for registering. Please use the following link to complete your registration:\n\n${url}\n\nIf you have any questions or need assistance, feel free to contact our support team.\n\nBest regards,\nThe [Your Platform Name] Team.`,
   };
 
-  await transporter.sendMail(mailOptions);
+  const info = await transporter.sendMail(mailOptions);
+  console.log("Email sent:" + info.response);
 };

@@ -28,13 +28,13 @@ class Ryder extends Model<
   declare password: string;
   declare phone: string;
   declare role: RoleType;
+  declare verifyEmailToken: string;
   declare bikeDoc: string;
   declare validIdCard: string;
   declare passportPhoto: string;
   declare resetToken: CreationOptional<string>;
-  declare resetTokenExpires: CreationOptional<Date>;
-  declare isVerified: boolean;
   declare resetTokenExpiry: CreationOptional<Date>;
+  declare isVerified: boolean;
 }
 
 Ryder.init(
@@ -42,56 +42,48 @@ Ryder.init(
     id: {
       type: DataTypes.UUID,
       primaryKey: true,
-      allowNull: false,
     },
     firstName: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     lastName: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     email: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     city: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     password: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     phone: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     role: {
       type: DataTypes.ENUM(...Object.values(role)),
-      allowNull: false,
+    },
+    verifyEmailToken: {
+      type: DataTypes.STRING,
     },
     profilePic: {
       type: DataTypes.STRING,
     },
     bikeDoc: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     validIdCard: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     passportPhoto: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     resetToken: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    resetTokenExpires: {
+    resetTokenExpiry: {
       type: DataTypes.DATE,
       allowNull: true,
     },
@@ -99,10 +91,6 @@ Ryder.init(
       type: DataTypes.BOOLEAN,
       allowNull: true,
       defaultValue: false,
-    },
-    resetTokenExpiry: {
-      type: DataTypes.DATE,
-      allowNull: true,
     },
   },
   {

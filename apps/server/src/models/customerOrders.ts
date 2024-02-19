@@ -34,35 +34,27 @@ CustomerOrders.init(
     id: {
       type: DataTypes.UUID,
       primaryKey: true,
-      allowNull: false,
     },
     customerId: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     totalOrders: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     status: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     orderNumber: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     pickUpLocation: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     dropOffLocation: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     dropOffPhoneNumber: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     offer: {
       type: DataTypes.STRING,

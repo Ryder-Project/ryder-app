@@ -26,27 +26,21 @@ RyderWallet.init(
     id: {
       type: DataTypes.UUID,
       primaryKey: true,
-      allowNull: false,
     },
     ryderId: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     totalEarnings: {
       type: DataTypes.INTEGER,
-      allowNull: false,
     },
     noOfRides: {
       type: DataTypes.INTEGER,
-      allowNull: false,
     },
     totalRideTime: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     earnings: {
       type: DataTypes.INTEGER,
-      allowNull: false,
     },
   },
   {

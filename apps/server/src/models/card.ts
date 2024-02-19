@@ -22,23 +22,18 @@ Card.init(
     id: {
       type: DataTypes.UUID,
       primaryKey: true,
-      allowNull: false,
     },
     cardNumber: {
       type: DataTypes.INTEGER,
-      allowNull: false,
     },
     cardName: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     expiryDate: {
       type: DataTypes.DATE,
-      allowNull: false,
     },
     cvv: {
       type: DataTypes.INTEGER,
-      allowNull: false,
     },
   },
   {
