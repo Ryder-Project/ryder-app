@@ -8,6 +8,7 @@ import {resetPasswordSchema, TResetPasswordSchema} from '../../schemas/resetPass
 import { getRyderServerUrl } from "../../utils/serverUtils";
 import Button from "../../components/Common/Button/Button";
 
+
 export default function ResetPasswordPage() {
   const methods = useForm<TResetPasswordSchema>({
     resolver: zodResolver(resetPasswordSchema),

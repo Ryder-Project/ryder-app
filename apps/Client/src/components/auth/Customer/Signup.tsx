@@ -16,6 +16,7 @@ import {signupSchema, TSignupSchema } from '../../../schemas/signupSchema'
 import { getRyderServerUrl } from "../../../utils/serverUtils";
 import Button from "../../Common/Button/Button";
 
+
 const SignUp: FC = () => {
   const [showModal, setShowModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -39,6 +40,7 @@ const SignUp: FC = () => {
       const { confirm_password, ...requestData } = data;
      const response = await axios.post(
        `${ryderServerUrl}/api/v1/customers/registerCustomer`,
+
        requestData,
        { withCredentials: true }
      );
@@ -52,6 +54,7 @@ const SignUp: FC = () => {
      handleAxiosError(error);
     } finally {
       setIsLoading(false);
+
     }
   };
 
@@ -115,6 +118,7 @@ const SignUp: FC = () => {
                 placeholder="Last Name"
                 iconSrc={<NameFieldIcon />}
               />
+
             </div>
             <TextField
               type="text"
