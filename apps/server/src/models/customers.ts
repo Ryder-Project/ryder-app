@@ -27,8 +27,8 @@ class Customers extends Model<
   declare password: string;
   declare phone: string;
   declare role: RoleType;
+  declare verifyEmailToken: string;
   declare resetToken: CreationOptional<string>;
-  declare resetTokenExpires: CreationOptional<Date>;
   declare isVerified: boolean;
   declare resetTokenExpiry: CreationOptional<Date>;
 }
@@ -38,41 +38,33 @@ Customers.init(
     id: {
       type: DataTypes.UUID,
       primaryKey: true,
-      allowNull: false,
     },
     firstName: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     lastName: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     email: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     profilePic: {
       type: DataTypes.STRING,
     },
     password: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     phone: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     role: {
       type: DataTypes.ENUM(...Object.values(role)),
-      allowNull: false,
+    },
+    verifyEmailToken: {
+      type: DataTypes.STRING,
     },
     resetToken: {
       type: DataTypes.STRING,
-      allowNull: true,
-    },
-    resetTokenExpires: {
-      type: DataTypes.DATE,
       allowNull: true,
     },
     isVerified: {
