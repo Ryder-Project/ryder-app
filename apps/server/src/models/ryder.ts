@@ -9,6 +9,11 @@ import { db } from "../config";
 
 const TABLE_NAME = "Ryder";
 
+export const role = {
+  RYDER: "Rider",
+} as const;
+export type RoleType = (typeof role)[keyof typeof role];
+
 // https://sequelize.org/docs/v6/other-topics/typescript/
 class Ryder extends Model<
   InferAttributes<Ryder>,
@@ -22,13 +27,14 @@ class Ryder extends Model<
   declare profilePic: string | null;
   declare password: string;
   declare phone: string;
+  declare role: RoleType;
+  declare verifyEmailToken: string;
   declare bikeDoc: string;
   declare validIdCard: string;
   declare passportPhoto: string;
   declare resetToken: CreationOptional<string>;
-  declare resetTokenExpires: CreationOptional<Date>;
-  declare isVerified: boolean;
   declare resetTokenExpiry: CreationOptional<Date>;
+  declare isVerified: boolean;
 }
 
 Ryder.init(
@@ -36,52 +42,48 @@ Ryder.init(
     id: {
       type: DataTypes.UUID,
       primaryKey: true,
-      allowNull: false,
     },
     firstName: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     lastName: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     email: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     city: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     password: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     phone: {
       type: DataTypes.STRING,
-      allowNull: false,
+    },
+    role: {
+      type: DataTypes.ENUM(...Object.values(role)),
+    },
+    verifyEmailToken: {
+      type: DataTypes.STRING,
     },
     profilePic: {
       type: DataTypes.STRING,
     },
     bikeDoc: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     validIdCard: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     passportPhoto: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     resetToken: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    resetTokenExpires: {
+    resetTokenExpiry: {
       type: DataTypes.DATE,
       allowNull: true,
     },
@@ -90,14 +92,9 @@ Ryder.init(
       allowNull: true,
       defaultValue: false,
     },
-    resetTokenExpiry: {
-      type: DataTypes.DATE,
-      allowNull: true,
-    },
   },
   {
     sequelize: db,
-    tableName: TABLE_NAME,
     modelName: TABLE_NAME,
     timestamps: true,
   }

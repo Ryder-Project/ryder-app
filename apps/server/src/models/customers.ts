@@ -9,6 +9,11 @@ import { db } from "../config";
 
 const TABLE_NAME = "Customers";
 
+export const role = {
+  CUSTOMER: "Customer",
+} as const;
+export type RoleType = (typeof role)[keyof typeof role];
+
 // https://sequelize.org/docs/v6/other-topics/typescript/
 class Customers extends Model<
   InferAttributes<Customers>,
@@ -18,11 +23,12 @@ class Customers extends Model<
   declare firstName: string;
   declare lastName: string;
   declare email: string;
-  declare profilePic: string | null;
+  declare profilePic: CreationOptional<string>;
   declare password: string;
   declare phone: string;
+  declare role: RoleType;
+  declare verifyEmailToken: string;
   declare resetToken: CreationOptional<string>;
-  declare resetTokenExpires: CreationOptional<Date>;
   declare isVerified: boolean;
   declare resetTokenExpiry: CreationOptional<Date>;
 }
@@ -32,37 +38,33 @@ Customers.init(
     id: {
       type: DataTypes.UUID,
       primaryKey: true,
-      allowNull: false,
     },
     firstName: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     lastName: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     email: {
       type: DataTypes.STRING,
-      allowNull: false,
-    },
-    password: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    phone: {
-      type: DataTypes.STRING,
-      allowNull: false,
     },
     profilePic: {
       type: DataTypes.STRING,
     },
+    password: {
+      type: DataTypes.STRING,
+    },
+    phone: {
+      type: DataTypes.STRING,
+    },
+    role: {
+      type: DataTypes.ENUM(...Object.values(role)),
+    },
+    verifyEmailToken: {
+      type: DataTypes.STRING,
+    },
     resetToken: {
       type: DataTypes.STRING,
-      allowNull: true,
-    },
-    resetTokenExpires: {
-      type: DataTypes.DATE,
       allowNull: true,
     },
     isVerified: {
@@ -77,7 +79,6 @@ Customers.init(
   },
   {
     sequelize: db,
-    tableName: TABLE_NAME,
     modelName: TABLE_NAME,
     timestamps: true,
   }

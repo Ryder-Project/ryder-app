@@ -30,28 +30,22 @@ Rides.init(
     id: {
       type: DataTypes.UUID,
       primaryKey: true,
-      allowNull: false,
     },
     location: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     contact: {
       type: DataTypes.INTEGER,
-      allowNull: false,
     },
     date: {
       type: DataTypes.DATE,
-      allowNull: false,
     },
     status: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
   },
   {
     sequelize: db,
-    tableName: TABLE_NAME,
     modelName: TABLE_NAME,
     timestamps: true,
   }

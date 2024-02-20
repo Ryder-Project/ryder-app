@@ -10,7 +10,6 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { getRyderServerUrl } from "../../utils/serverUtils";
 import Button from "../../components/Common/Button/Button";
-
 const ForgotPasswordPage: FC = () => {
   const [showModal, setShowModal] = useState(false);
 

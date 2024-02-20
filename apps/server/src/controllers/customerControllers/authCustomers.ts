@@ -11,7 +11,7 @@ import {
 } from "../../utilities/helpers";
 import logger from "../../utilities/logger";
 import { customerRegisterSchema } from "../../utilities/validators";
-import Customers from "../../models/customers";
+import Customers, { role } from "../../models/customers";
 import ENV, { APP_SECRET } from "../../config/env";
 import * as jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
@@ -40,33 +40,35 @@ export const registerCustomer = async (req: Request, res: Response) => {
       if (!userExist) {
         const hashedPassword = await PasswordHarsher.hash(password);
         const id = uuidV4();
+        const longString = generateLongString(50);
 
         const user = await Customers.create({
           id,
           firstName,
           lastName,
           email: newEmail,
-          phone,
           password: hashedPassword,
+          phone,
+          role: role.CUSTOMER,
           isVerified: false,
+          verifyEmailToken: longString
         });
-        // await user.save();
-        // console.log("user", user);
+
 
         // Send registration email with user info
         const info = {
           firstName: user.firstName,
           lastName: user.lastName,
-          email: user.email,
         };
 
-        const url = `${process.env.FE_BASE_URL}/login`;
+        const url = `${process.env.FE_BASE_URL}/verify-email?token=${longString}`;
 
         await sendRegistrationEmail(user.email, info, url);
 
         return res.status(HTTP_STATUS_CODE.SUCCESS).json({
           message: `Registration Successful`,
           user: {
+            id: user.id,
             firstName: user.firstName,
             lastName: user.lastName,
             email: user.email,
@@ -108,6 +110,12 @@ export const loginCustomer = async (req: Request, res: Response) => {
       return res
         .status(HTTP_STATUS_CODE.NOT_FOUND)
         .json({ message: "Rider not found" });
+    }
+
+    if (customer.isVerified !== true) {
+      return res.status(HTTP_STATUS_CODE.UNAUTHORIZED).json({
+        message: "You are not verified. Please verify your email address."
+      })
     }
 
     const isValidPassword = await PasswordHarsher.compare(
@@ -269,5 +277,35 @@ export const customerResetPassword = async (req: Request, res: Response) => {
         { message: `This is our fault, our team is working to resolve this.` },
       ],
     });
+  }
+};
+
+export const verifyUser = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.body;
+    const { token } = req.query;
+
+    const user = await Customers.findOne({
+      where: { id: userId }
+    });
+
+    if (!user) {
+      return res.status(HTTP_STATUS_CODE.NOT_FOUND).json({ error: "User not found" });
+    }
+
+    if (token !== user.verifyEmailToken) {
+      return res.status(HTTP_STATUS_CODE.UNAUTHORIZED).json({ error: "Token is invalid" });
+    }
+
+    user.isVerified = true;
+    user.verifyEmailToken = "";
+
+    await user.save();
+    const username = `${user.firstName} ${user.lastName}`;
+
+    res.status(HTTP_STATUS_CODE.SUCCESS).json({ message: "User successfully verified", username });
+  } catch (error) {
+    console.error(error);
+    res.status(HTTP_STATUS_CODE.INTERNAL_SERVER).json({ error: "Verification failed" });
   }
 };
