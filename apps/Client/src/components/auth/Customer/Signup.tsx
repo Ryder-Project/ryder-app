@@ -13,9 +13,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from 'react-toastify';
 import axios, { AxiosError } from 'axios';
 import {signupSchema, TSignupSchema } from '../../../schemas/signupSchema'
+import { getRyderServerUrl } from "../../../utils/serverUtils";
+import Button from "../../Common/Button/Button";
+
 
 const SignUp: FC = () => {
   const [showModal, setShowModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const methods = useForm<TSignupSchema>({
     resolver: zodResolver(signupSchema),
@@ -31,9 +35,12 @@ const SignUp: FC = () => {
 
   const onSubmit = async(data: TSignupSchema) => {
     try {
-     const { confirm_password, ...requestData } = data;
+      const ryderServerUrl = getRyderServerUrl();
+      setIsLoading(true);
+      const { confirm_password, ...requestData } = data;
      const response = await axios.post(
-       `http://localhost:5500/api/v1/customers/registerCustomer`,
+       `${ryderServerUrl}/api/v1/customers/registerCustomer`,
+
        requestData,
        { withCredentials: true }
      );
@@ -45,6 +52,9 @@ const SignUp: FC = () => {
      }
    } catch (error) {
      handleAxiosError(error);
+    } finally {
+      setIsLoading(false);
+
     }
   };
 
@@ -94,20 +104,21 @@ const SignUp: FC = () => {
         <FormProvider {...methods}>
           <form className="space-y-3" onSubmit={methods.handleSubmit(onSubmit)}>
             <div className="grid grid-cols-2 space-x-2">
-                <TextField
-                  type="text"
-                  name="firstName"
-                  label="First Name"
-                  placeholder="First Name"
-                  iconSrc={<NameFieldIcon />}
-                />
-                <TextField
-                  type="text"
-                  name="lastName"
-                  label="Last Name"
-                  placeholder="Last Name"
-                  iconSrc={<NameFieldIcon />}
-                />
+              <TextField
+                type="text"
+                name="firstName"
+                label="First Name"
+                placeholder="First Name"
+                iconSrc={<NameFieldIcon />}
+              />
+              <TextField
+                type="text"
+                name="lastName"
+                label="Last Name"
+                placeholder="Last Name"
+                iconSrc={<NameFieldIcon />}
+              />
+
             </div>
             <TextField
               type="text"
@@ -137,12 +148,13 @@ const SignUp: FC = () => {
               placeholder="Re-enter your password"
               iconSrc={<PasswordFieldIcon />}
             />
-            <button
+            <Button
               type="submit"
-              className="flex items-center justify-center w-full text-white bg-orange-500 hover:bg-orange-800 focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition duration-300 ease-in-out font-medium rounded-md text-sm p-2"
+              className="bg-orange-500 hover:bg-orange-800 focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 font-medium rounded-md text-sm p-2"
+              disabled={isLoading}
             >
-              Sign Up
-            </button>
+              {isLoading ? "Signing up..." : "Sign Up"}
+            </Button>
           </form>
           {showModal && <VerifyMailModal />}
         </FormProvider>

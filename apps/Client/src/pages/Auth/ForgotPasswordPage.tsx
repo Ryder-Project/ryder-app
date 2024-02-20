@@ -5,13 +5,11 @@ import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import TextField from "../../components/FormFields/TextField/TextField";
 import { EmailFieldIcon } from "../../assets/svg";
-import {
-  forgotPasswordSchema,
-  TForgotPasswordSchema,
-} from "../../schemas/forgotPasswordSchema";
+import {forgotPasswordSchema, TForgotPasswordSchema} from '../../schemas/forgotPasswordSchema'
 import axios from "axios";
 import { toast } from "react-toastify";
-
+import { getRyderServerUrl } from "../../utils/serverUtils";
+import Button from "../../components/Common/Button/Button";
 const ForgotPasswordPage: FC = () => {
   const [showModal, setShowModal] = useState(false);
 
@@ -22,20 +20,17 @@ const ForgotPasswordPage: FC = () => {
     },
   });
 
-  const onSubmit = async (data: TForgotPasswordSchema) => {
+  const ryderServerUrl = getRyderServerUrl();
+  const onSubmit = async(data: TForgotPasswordSchema) => {
     try {
-      const VITE_BE_BASE_URL = import.meta.env.VITE_BE_BASE_URL;
-      if (!VITE_BE_BASE_URL) {
-        throw new Error("VITE_LOGIN_URL is not defined");
-      }
       const response = await axios.post(
-        `${VITE_BE_BASE_URL}/api/v1/customers/forgotPassword`,
+        `${ryderServerUrl}/api/v1/customers/forgotPassword`,
         { email: data.email }
       );
-      if (response.status === 200) {
+      if(response.status === 200) {
         setShowModal(true);
       }
-    } catch (error: any) {
+    }catch(error:any){
       const message = "An error occurred";
       if (error.code === "ERR_NETWORK") {
         toast.error(message, { toastId: "errorSendingEmail" });
@@ -47,6 +42,20 @@ const ForgotPasswordPage: FC = () => {
     }
   };
 
+   const resendPasswordResetLink = async () => {
+     try {
+       const email = methods.getValues("email");
+       const response = await axios.post(
+         `${ryderServerUrl}/api/v1/customers/forgotPassword`,
+         { email }
+       );
+       if (response.status === 200) {
+         toast.success("Password reset link resent successfully.");
+       }
+     } catch (error) {
+       toast.error("Error resending password reset link.");
+     }
+   };
   return (
     <PasswordContainer className="lg:px-[100px]">
       <div className="max-w-[432px]">
@@ -66,14 +75,14 @@ const ForgotPasswordPage: FC = () => {
               placeholder="Enter your email"
               iconSrc={<EmailFieldIcon />}
             />
-            <button
+            <Button
               type="submit"
-              className="flex items-center justify-center w-full text-white bg-orange-500 hover:bg-orange-800 focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition duration-300 ease-in-out rounded-md text-sm py-3 mt-6"
+              className="bg-orange-500 hover:bg-orange-800 focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 rounded-md text-sm py-3 mt-6"
             >
               Reset password
-            </button>
+            </Button>
           </form>
-          {showModal && <CheckEmail />}
+          {showModal && <CheckEmail onResend={resendPasswordResetLink} />}
         </FormProvider>
       </div>
       <a href="/login" className="mt-12 px-4 py-2 bg-stone-200 text-sm border">
@@ -84,3 +93,7 @@ const ForgotPasswordPage: FC = () => {
 };
 
 export default ForgotPasswordPage;
+
+
+
+// Titi123$

@@ -1,5 +1,6 @@
 import { EmailCheckIcon } from "../../../assets/svg";
 import { FC } from "react";
+import Button from "../../Common/Button/Button";
 
 const VerifyMailModal: FC = () => {
   const handleVerifyMail = () => {
@@ -18,12 +19,12 @@ const VerifyMailModal: FC = () => {
             Hi there, use the link below to verify your email and start enjoying
             Ryder
           </p>
-          <button
-            className="px-10 py-4 bg-orange-500 text-sm text-white"
+          <Button
+            className="px-12 py-4 bg-orange-500 text-sm w-auto"
             onClick={handleVerifyMail}
           >
             Verify email
-          </button>
+          </Button>
         </div>
       </div>
     </div>

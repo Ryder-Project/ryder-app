@@ -54,6 +54,7 @@ export const registerCustomer = async (req: Request, res: Response) => {
           verifyEmailToken: longString
         });
 
+
         // Send registration email with user info
         const info = {
           firstName: user.firstName,

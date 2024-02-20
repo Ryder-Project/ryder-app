@@ -1,7 +1,13 @@
 import { FC } from "react";
+import { Link } from "react-router-dom";
 import { EmailCheckIcon } from "../../../assets/svg";
+import Button from "../../Common/Button/Button";
 
-const CheckEmail: FC = () => {
+interface CheckEmailProps {
+  onResend: () => void;
+}
+
+const CheckEmail: FC<CheckEmailProps> = ({onResend}) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="fixed inset-0 bg-neutral-100 "></div>
@@ -17,16 +23,15 @@ const CheckEmail: FC = () => {
           </p>
           <p className="text-sm text-sky-950">
             Didn’t receive the email?{" "}
-            <a href="#" className="text-orange-500 hover:cursor">
+            <a href="#" className="text-orange-500 hover:cursor" onClick={onResend}>
               Click to Resend link
             </a>
           </p>
-          <a
-            href="/login"
-            className="mt-6 px-14 py-4 bg-orange-500 text-sm text-white border-orange-500"
-          >
-            Back to Login
-          </a>
+          <Link to="/login">
+            <Button className="mt-6 px-12 py-4 bg-orange-500 text-sm border-orange-500">
+              Back to Login
+            </Button>
+          </Link>
         </div>
       </div>
     </div>
