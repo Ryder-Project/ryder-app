@@ -54,7 +54,6 @@ export const registerCustomer = async (req: Request, res: Response) => {
           verifyEmailToken: longString
         });
 
-
         // Send registration email with user info
         const info = {
           firstName: user.firstName,
@@ -284,11 +283,10 @@ export const customerResetPassword = async (req: Request, res: Response) => {
 
 export const verifyUser = async (req: Request, res: Response) => {
   try {
-    const { userId } = req.body;
     const { token } = req.query;
 
     const user = await Customers.findOne({
-      where: { id: userId }
+      where: { verifyEmailToken: token as string }
     });
 
     if (!user) {

@@ -20,23 +20,35 @@ const LoginPage: React.FC = () => {
   const onSubmit: SubmitHandler<LoginFormValues> = async (data) => {
     try {
       const VITE_BE_BASE_URL = import.meta.env.VITE_BE_BASE_URL;
-
+  
       if (!VITE_BE_BASE_URL) {
         throw new Error('VITE_LOGIN_URL is not defined');
       }
+  
       setIsLoading(true);
-      const response = await fetch(
-        `${VITE_BE_BASE_URL}/api/v1/riders/login`,
-        {
+      let loginUrl = `${VITE_BE_BASE_URL}/api/v1/riders/login`;
+  
+      let response = await fetch(loginUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+        credentials: "include",
+      });
+  
+      if (!response.ok) {
+        loginUrl = `${VITE_BE_BASE_URL}/api/v1/customers/login`;
+        response = await fetch(loginUrl, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(data),
           credentials: "include",
-        }
-      );
-
+        });
+      }
+  
       if (response.ok) {
         const responseData = await response.json();
         localStorage.setItem("token", responseData.token);
@@ -61,6 +73,7 @@ const LoginPage: React.FC = () => {
       setIsLoading(false);
     }
   };
+  
 
   return (
     <div className="flex flex-col md:flex-row h-screen bg-white">

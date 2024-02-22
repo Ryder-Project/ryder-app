@@ -1,11 +1,14 @@
 import { FC, useState } from "react";
-import CheckEmail from "../../components/Auth/ResetPassword/CheckEmailModal";
-import PasswordContainer from "../../components/Auth/ResetPassword/PasswordContainer";
+import CheckEmailResetPassword from "../../components/auth/resetPassword/CheckEmailResetPassword";
+import PasswordContainer from "../../components/common/Auth/PasswordContainer";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import TextField from "../../components/FormFields/TextField/TextField";
 import { EmailFieldIcon } from "../../assets/svg";
-import {forgotPasswordSchema, TForgotPasswordSchema} from '../../schemas/forgotPasswordSchema'
+import {
+  forgotPasswordSchema,
+  TForgotPasswordSchema,
+} from "../../schemas/forgotPasswordSchema";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { getRyderServerUrl } from "../../utils/serverUtils";
@@ -21,16 +24,16 @@ const ForgotPasswordPage: FC = () => {
   });
 
   const ryderServerUrl = getRyderServerUrl();
-  const onSubmit = async(data: TForgotPasswordSchema) => {
+  const onSubmit = async (data: TForgotPasswordSchema) => {
     try {
       const response = await axios.post(
         `${ryderServerUrl}/api/v1/customers/forgotPassword`,
         { email: data.email }
       );
-      if(response.status === 200) {
+      if (response.status === 200) {
         setShowModal(true);
       }
-    }catch(error:any){
+    } catch (error: any) {
       const message = "An error occurred";
       if (error.code === "ERR_NETWORK") {
         toast.error(message, { toastId: "errorSendingEmail" });
@@ -42,20 +45,20 @@ const ForgotPasswordPage: FC = () => {
     }
   };
 
-   const resendPasswordResetLink = async () => {
-     try {
-       const email = methods.getValues("email");
-       const response = await axios.post(
-         `${ryderServerUrl}/api/v1/customers/forgotPassword`,
-         { email }
-       );
-       if (response.status === 200) {
-         toast.success("Password reset link resent successfully.");
-       }
-     } catch (error) {
-       toast.error("Error resending password reset link.");
-     }
-   };
+  const resendPasswordResetLink = async () => {
+    try {
+      const email = methods.getValues("email");
+      const response = await axios.post(
+        `${ryderServerUrl}/api/v1/customers/forgotPassword`,
+        { email }
+      );
+      if (response.status === 200) {
+        toast.success("Password reset link resent successfully.");
+      }
+    } catch (error) {
+      toast.error("Error resending password reset link.");
+    }
+  };
   return (
     <PasswordContainer className="lg:px-[100px]">
       <div className="max-w-[432px]">
@@ -82,7 +85,9 @@ const ForgotPasswordPage: FC = () => {
               Reset password
             </Button>
           </form>
-          {showModal && <CheckEmail onResend={resendPasswordResetLink} />}
+          {showModal && (
+            <CheckEmailResetPassword onResend={resendPasswordResetLink} />
+          )}
         </FormProvider>
       </div>
       <a href="/login" className="mt-12 px-4 py-2 bg-stone-200 text-sm border">
@@ -93,7 +98,5 @@ const ForgotPasswordPage: FC = () => {
 };
 
 export default ForgotPasswordPage;
-
-
 
 // Titi123$
