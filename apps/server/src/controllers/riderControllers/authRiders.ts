@@ -166,6 +166,7 @@ export const login = async (req: Request, res: Response) => {
 
     res.status(HTTP_STATUS_CODE.SUCCESS).json({
       message: "You have successfully logged in",
+      role: rider.role,
       token: token,
     });
   } catch (error) {
