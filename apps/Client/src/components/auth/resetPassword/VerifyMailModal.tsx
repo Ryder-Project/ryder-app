@@ -1,6 +1,6 @@
 import { EmailCheckIcon } from "../../../assets/svg";
 import { FC } from "react";
-import Button from "../../Common/Button/Button";
+import Button from "../../common/Button/Button";
 
 const VerifyMailModal: FC = () => {
   const handleVerifyMail = () => {

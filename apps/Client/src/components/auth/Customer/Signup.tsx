@@ -6,7 +6,7 @@ import {
   PhoneFieldIcon,
   RyderLogo,
 } from "../../../assets/svg";
-import VerifyMailModal from "../ResetPassword/VerifyMailModal";
+import VerifyMailModal from "../resetPassword/VerifyMailModal";
 import TextField from "../../FormFields/TextField/TextField";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,7 +14,7 @@ import { toast } from 'react-toastify';
 import axios, { AxiosError } from 'axios';
 import {signupSchema, TSignupSchema } from '../../../schemas/signupSchema'
 import { getRyderServerUrl } from "../../../utils/serverUtils";
-import Button from "../../Common/Button/Button";
+import Button from "../../common/Button/Button";
 
 
 const SignUp: FC = () => {
