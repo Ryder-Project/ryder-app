@@ -26,20 +26,15 @@ const LoginPage: React.FC = () => {
       }
   
       setIsLoading(true);
-      let loginUrl = `${VITE_BE_BASE_URL}/api/v1/riders/login`;
+      const loginEndpoints = [
+        `${VITE_BE_BASE_URL}/api/v1/customers/login`,
+        `${VITE_BE_BASE_URL}/api/v1/riders/login`
+      ];
   
-      let response = await fetch(loginUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-        credentials: "include",
-      });
+      let loginResponse;
   
-      if (!response.ok) {
-        loginUrl = `${VITE_BE_BASE_URL}/api/v1/customers/login`;
-        response = await fetch(loginUrl, {
+      for (const endpoint of loginEndpoints) {
+        loginResponse = await fetch(endpoint, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -47,25 +42,29 @@ const LoginPage: React.FC = () => {
           body: JSON.stringify(data),
           credentials: "include",
         });
+  
+        if (loginResponse.ok) {
+          break;
+        }
       }
   
-      if (response.ok) {
-        const responseData = await response.json();
-        localStorage.setItem("token", responseData.token);
-        localStorage.setItem("role", responseData.role); 
-        toast.success("Login successful");
-        setTimeout(() => {
-          if (responseData.role === 'Customer') {
-            navigate("/customerDashboard"); 
-          } else if (responseData.role === 'Rider') {
-            navigate("/riderDashboard"); 
-          }
-        }, 2000);
-      } else {
-        const errorData = await response.json();
-        console.error("Login failed:", errorData.message);
-        toast.error("Login failed");
+      if (!loginResponse || !loginResponse.ok) {
+        throw new Error("Login failed");
       }
+  
+      const responseData = await loginResponse.json();
+      localStorage.setItem("token", responseData.token);
+      localStorage.setItem("role", responseData.role); 
+      toast.success("Login successful");
+  
+      setTimeout(() => {
+        if (responseData.role === 'Customer') {
+          navigate("/customerDashboard"); 
+        } else if (responseData.role === 'Rider') {
+          navigate("/riderDashboard"); 
+        }
+      }, 2000);
+  
     } catch (error) {
       console.error("Error during login:", error);
       toast.error("Error during login");
@@ -74,7 +73,8 @@ const LoginPage: React.FC = () => {
     }
   };
   
-
+  
+  
   return (
     <div className="flex flex-col md:flex-row h-screen bg-white">
       <div className="w-full hidden md:flex md:w-4/6 relative bg-cover bg-center h-80 md:h-screen overflow-hidden">
