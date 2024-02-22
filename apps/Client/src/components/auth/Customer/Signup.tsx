@@ -4,23 +4,21 @@ import {
   NameFieldIcon,
   PasswordFieldIcon,
   PhoneFieldIcon,
-  RyderLogo,
 } from "../../../assets/svg";
-import VerifyMailModal from "../ResetPassword/VerifyMailModal";
 import TextField from "../../FormFields/TextField/TextField";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from 'react-toastify';
-import axios, { AxiosError } from 'axios';
-import {signupSchema, TSignupSchema } from '../../../schemas/signupSchema'
+import { toast } from "react-toastify";
+import axios, { AxiosError } from "axios";
+import { signupSchema, TSignupSchema } from "../../../schemas/signupSchema";
 import { getRyderServerUrl } from "../../../utils/serverUtils";
 import Button from "../../Common/Button/Button";
-
+import CheckEmailVerify from "../resetPassword/CheckEmailVerify";
+import AuthPageContainer from "../../common/Auth/AuthPageContainer";
 
 const SignUp: FC = () => {
   const [showModal, setShowModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
   const methods = useForm<TSignupSchema>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
@@ -33,28 +31,28 @@ const SignUp: FC = () => {
     },
   });
 
-  const onSubmit = async(data: TSignupSchema) => {
+  const onSubmit: (data: TSignupSchema) => Promise<void> = async (
+    data: TSignupSchema
+  ) => {
     try {
       const ryderServerUrl = getRyderServerUrl();
       setIsLoading(true);
       const { confirm_password, ...requestData } = data;
-     const response = await axios.post(
-       `${ryderServerUrl}/api/v1/customers/registerCustomer`,
-
-       requestData,
-       { withCredentials: true }
-     );
-     if (response.status === 200) {
-       toast.success("Registration successful");
-       setShowModal(true);
-     } else {
-       toast.error("Unexpected status code: " + response.status);
-     }
-   } catch (error) {
-     handleAxiosError(error);
+      const response = await axios.post(
+        `${ryderServerUrl}/api/v1/customers/registerCustomer`,
+        requestData,
+        { withCredentials: true }
+      );
+      if (response.status === 200) {
+        toast.success("Registration successful");
+        setShowModal(true);
+      } else {
+        toast.error("Unexpected status code: " + response.status);
+      }
+    } catch (error) {
+      handleAxiosError(error);
     } finally {
       setIsLoading(false);
-
     }
   };
 
@@ -86,86 +84,70 @@ const SignUp: FC = () => {
   };
 
   return (
-    <div className="grid grid-cols-5">
-      <div className="loginBackground">
-        <h1 className="max-w-[474px] w-full text-4xl font-bold">
-          Delivery service just got easier, elegant & superb with{" "}
-          <span className="text-orange-500">Ryder</span>
-        </h1>
-      </div>
-      <div className="ml-20 mr-32 col-span-2 flex flex-col pt-20">
-        <div className="flex items-center mb-10">
-          <RyderLogo />
-          <span className="font-bold text-3xl text-gray-900 pl-2">Ryder</span>
-        </div>
-        <h1 className="mb-8 text-xl font-bold  text-sky-950">
-          Sign Up as a Customer
-        </h1>
-        <FormProvider {...methods}>
-          <form className="space-y-3" onSubmit={methods.handleSubmit(onSubmit)}>
-            <div className="grid grid-cols-2 space-x-2">
-              <TextField
-                type="text"
-                name="firstName"
-                label="First Name"
-                placeholder="First Name"
-                iconSrc={<NameFieldIcon />}
-              />
-              <TextField
-                type="text"
-                name="lastName"
-                label="Last Name"
-                placeholder="Last Name"
-                iconSrc={<NameFieldIcon />}
-              />
-
-            </div>
+    <AuthPageContainer title="Signup as a Customer">
+      <FormProvider {...methods}>
+        <form className="space-y-3" onSubmit={methods.handleSubmit(onSubmit)}>
+          <div className="grid grid-cols-2 space-x-2">
             <TextField
               type="text"
-              name="phone"
-              label="Phone Number"
-              placeholder="Enter your phone number"
-              iconSrc={<PhoneFieldIcon />}
+              name="firstName"
+              label="First Name"
+              placeholder="First Name"
+              iconSrc={<NameFieldIcon />}
             />
             <TextField
               type="text"
-              name="email"
-              label="Email"
-              placeholder="Enter your email"
-              iconSrc={<EmailFieldIcon />}
+              name="lastName"
+              label="Last Name"
+              placeholder="Last Name"
+              iconSrc={<NameFieldIcon />}
             />
-            <TextField
-              type="password"
-              name="password"
-              label="Password"
-              placeholder="Enter new password"
-              iconSrc={<PasswordFieldIcon />}
-            />
-            <TextField
-              type="password"
-              name="confirm_password"
-              label="Confirm Password"
-              placeholder="Re-enter your password"
-              iconSrc={<PasswordFieldIcon />}
-            />
-            <Button
-              type="submit"
-              className="bg-orange-500 hover:bg-orange-800 focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 font-medium rounded-md text-sm p-2"
-              disabled={isLoading}
-            >
-              {isLoading ? "Signing up..." : "Sign Up"}
-            </Button>
-          </form>
-          {showModal && <VerifyMailModal />}
-        </FormProvider>
-        <p className="text-sm text-sky-950 mt-4">
-          Already have an account?{" "}
-          <a href="/login" className="text-orange-500 hover:cursor">
-            Sign In
-          </a>
-        </p>
-      </div>
-    </div>
+          </div>
+          <TextField
+            type="text"
+            name="phone"
+            label="Phone Number"
+            placeholder="Enter your phone number"
+            iconSrc={<PhoneFieldIcon />}
+          />
+          <TextField
+            type="text"
+            name="email"
+            label="Email"
+            placeholder="Enter your email"
+            iconSrc={<EmailFieldIcon />}
+          />
+          <TextField
+            type="password"
+            name="password"
+            label="Password"
+            placeholder="Enter new password"
+            iconSrc={<PasswordFieldIcon />}
+          />
+          <TextField
+            type="password"
+            name="confirm_password"
+            label="Confirm Password"
+            placeholder="Re-enter your password"
+            iconSrc={<PasswordFieldIcon />}
+          />
+          <Button
+            type="submit"
+            className="bg-orange-500 hover:bg-orange-800 focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 font-medium rounded-md text-sm p-2"
+            disabled={isLoading}
+          >
+            {isLoading ? "Signing up..." : "Sign Up"}
+          </Button>
+        </form>
+      </FormProvider>
+      {showModal && <CheckEmailVerify />}
+      <p className="text-sm text-sky-950 mt-4">
+        Already have an account?{" "}
+        <a href="/login" className="text-orange-500 hover:cursor">
+          Sign In
+        </a>
+      </p>
+    </AuthPageContainer>
   );
 };
 
