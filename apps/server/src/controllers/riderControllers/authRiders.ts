@@ -150,6 +150,7 @@ export const login = async (req: Request, res: Response) => {
         lastName: rider.lastName,
         email: rider.email,
         phone: rider.phone,
+        role: rider.role 
       },
       `${APP_SECRET}`,
       {
@@ -165,6 +166,7 @@ export const login = async (req: Request, res: Response) => {
 
     res.status(HTTP_STATUS_CODE.SUCCESS).json({
       message: "You have successfully logged in",
+      role: rider.role,
       token: token,
     });
   } catch (error) {

@@ -135,6 +135,7 @@ export const loginCustomer = async (req: Request, res: Response) => {
         lastName: customer.lastName,
         email: customer.email,
         phone: customer.phone,
+        role: customer.role 
       },
       `${APP_SECRET}`,
       {
@@ -153,6 +154,7 @@ export const loginCustomer = async (req: Request, res: Response) => {
       firstName: customer.firstName,
       lastName: customer.lastName,
       email: customer.email,
+      role: customer.role,
       token: token,
     });
   } catch (error) {

@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Link } from "react-router-dom";
-import Button from "../../Common/Button/Button";
+import Button from "../../common/Button/Button";
 import CheckMailContainer from "../../common/Auth/CheckMailContainer";
 
 interface CheckEmailProps {

@@ -12,8 +12,8 @@ import { toast } from "react-toastify";
 import axios, { AxiosError } from "axios";
 import { signupSchema, TSignupSchema } from "../../../schemas/signupSchema";
 import { getRyderServerUrl } from "../../../utils/serverUtils";
-import Button from "../../Common/Button/Button";
-import CheckEmailVerify from "../resetPassword/CheckEmailVerify";
+import Button from "../../common/Button/Button";
+import CheckEmailVerify from '../resetPassword/CheckEmailVerify';
 import AuthPageContainer from "../../common/Auth/AuthPageContainer";
 
 const SignUp: FC = () => {
