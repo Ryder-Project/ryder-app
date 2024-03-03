@@ -11,6 +11,8 @@ node_modules
 dist
 dist-ssr
 *.local
+.yarnrc.yml
+/.yarn
 
 # dotenv environment variable files
 **/.env*

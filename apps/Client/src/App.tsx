@@ -12,6 +12,7 @@ import RiderProfileSettings from "./pages/RiderProfileSettings";
 import LoginPage from "./pages/Auth/Login/LoginPage";
 import CustomerSignupPage from "./pages/Auth/Customer/SignupPage";
 import VerifyMail from "./components/auth/resetPassword/VerifyMail";
+import Signup from "./components/auth/Rider/Signup";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup/customer" element={<CustomerSignupPage />} />
           <Route path="/verify-email" element={<VerifyMail />} />
+          <Route path="/rider-signup" element={<Signup />} />
         </Routes>
       </Router>
     </>

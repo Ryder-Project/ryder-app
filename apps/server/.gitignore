@@ -4,3 +4,5 @@
 # dotenv environment variable files
 **/.env*
 !**/.env.sample
+.yarnrc.yml
+/.yarn
