@@ -1,9 +1,9 @@
-import {FC} from "react";
+import { FC } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 interface NavLinkProps {
-    to: string;
-    children: React.ReactNode;
+  to: string;
+  children: React.ReactNode;
 }
 
 const NavLink: FC<NavLinkProps> = ({ to, children }) => {

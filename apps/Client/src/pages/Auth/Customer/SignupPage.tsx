@@ -1,12 +1,11 @@
-import SignUp from '../../../components/Auth/Customer/Signup';
-
+import SignUp from "../../../components/auth/customer/Signup";
 
 const SignupPage = () => {
   return (
     <div>
-      <SignUp/>
+      <SignUp />
     </div>
   );
-}
+};
 
 export default SignupPage;

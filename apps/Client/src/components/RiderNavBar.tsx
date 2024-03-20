@@ -1,8 +1,8 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
 
-import Logo from '../../src/pages/Auth/Images/Logo.png';  
-import userImage from '../../src/assets/Ellipse 5.svg';
+import Logo from "../../src/pages/Auth/Images/Logo.png";
+import userImage from "../../src/assets/Ellipse 5.svg";
 import notificationIcon from "../../src/assets/Notification.svg";
 
 const Navbar: React.FC = () => {
@@ -31,7 +31,11 @@ const Navbar: React.FC = () => {
       <div className="flex items-center gap-[32px]">
         <div className="mr-4">
           {/* Notification Bell Icon */}
-          <img src={notificationIcon} alt="Notification Bell" className="h-6 w-6 text-white cursor-pointer" />
+          <img
+            src={notificationIcon}
+            alt="Notification Bell"
+            className="h-6 w-6 text-white cursor-pointer"
+          />
         </div>
 
         <div className="flex items-center mr-40">

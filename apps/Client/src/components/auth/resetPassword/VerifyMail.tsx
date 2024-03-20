@@ -1,11 +1,11 @@
 import { EmailCheckIcon } from "../../../assets/svg";
 import { FC } from "react";
-import Button from "../../Common/Button/Button";
+import Button from "../../common/button/Button";
 import { getRyderServerUrl } from "../../../utils/serverUtils";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import PasswordContainer from "../../common/Auth/PasswordContainer";
+import PasswordContainer from "../../common/auth/PasswordContainer";
 
 const VerifyMail: FC = () => {
   const navigate = useNavigate();
@@ -22,7 +22,7 @@ const VerifyMail: FC = () => {
           navigate("/login");
         }, 2000);
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error("Verification failed:", error);
       toast.error("Verification failed");
     }
@@ -48,5 +48,6 @@ const VerifyMail: FC = () => {
     </PasswordContainer>
   );
 };
+
 
 export default VerifyMail;

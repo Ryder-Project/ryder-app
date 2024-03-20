@@ -1,4 +1,3 @@
-// testimonialData.ts
 export interface TestimonialDataProps {
   avatar: string;
   comment: string;

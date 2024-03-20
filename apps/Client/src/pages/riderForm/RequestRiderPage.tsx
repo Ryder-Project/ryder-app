@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import Button from "../../components/Button";
 import Line from "../../assets/Line.svg";
 import BackArrow from "../../assets/BackArrow.svg";
-import Navbar from "../../components/RiderNavBar"; // Import the Navbar component
+import Navbar from "../../components/RiderNavBar";
 
 interface FormData {
   pickupLocation: string;

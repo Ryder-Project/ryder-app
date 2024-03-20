@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { FooterNav, SocialsNav } from './Nav';
+import { FooterNav, SocialsNav } from "./Nav";
 import {
   FacebookLogo,
   LinkedInLogo,
@@ -7,7 +7,7 @@ import {
   GoogleLogo,
   RyderWhiteLogo,
 } from "../../../assets/svg";
-import MaxContainer from '../MaxContainer';
+import MaxContainer from "../MaxContainer";
 
 const Footer: FC = () => {
   return (

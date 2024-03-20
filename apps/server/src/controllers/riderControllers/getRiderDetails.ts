@@ -5,7 +5,7 @@ import logger from "../../utilities/logger";
 import Ryder from "../../models/ryder";
 
 // Define the endpoint handler function
-export const getRiders = async (_req: Request, res: Response) => {
+export const getRiderDetails = async (_req: Request, res: Response) => {
   try {
     // Query all riders from the database
     const riders = await Ryder.findAll();
@@ -32,4 +32,4 @@ export const getRiders = async (_req: Request, res: Response) => {
   }
 };
 
-export default getRiders;
+export default getRiderDetails;

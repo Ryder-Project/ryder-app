@@ -1,8 +1,8 @@
 import { FC } from "react";
 import { Star } from "../../../assets/svg";
- 
+
 interface RatingProps {
-    rating: number;
+  rating: number;
 }
 
 const RatingStars: FC<RatingProps> = ({ rating }) => {
@@ -23,4 +23,4 @@ const RatingStars: FC<RatingProps> = ({ rating }) => {
     </div>
   );
 };
-export default RatingStars
+export default RatingStars;
