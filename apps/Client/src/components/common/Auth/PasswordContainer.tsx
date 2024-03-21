@@ -1,11 +1,11 @@
 import { FC, ReactNode } from "react";
 
 interface ClassName {
-    className: string;
-    children: ReactNode
+  className: string;
+  children: ReactNode;
 }
 
-const PasswordContainer: FC<ClassName> = ({className, children}) => {
+const PasswordContainer: FC<ClassName> = ({ className, children }) => {
   return (
     <div
       style={{ height: "100vh", width: "100%" }}
@@ -18,6 +18,6 @@ const PasswordContainer: FC<ClassName> = ({className, children}) => {
       </div>
     </div>
   );
-}
+};
 
-export default PasswordContainer
+export default PasswordContainer;

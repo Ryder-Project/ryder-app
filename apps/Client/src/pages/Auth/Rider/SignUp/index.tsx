@@ -1,6 +1,6 @@
 import riderLogo from "../../../Auth/Images/Logo.png";
 import riderPhoto from "../../../Auth/Images/image 4.png";
-import { Button, InputField } from "../../../../routes/Auth";
+import { Button, InputField } from "../../../../routes/auth";
 import "./index.css";
 
 const RiderSignUpPage = () => {

@@ -1,5 +1,5 @@
 import { FC } from "react";
-import MaxContainer from "../../Common/MaxContainer";
+import MaxContainer from "../../common/MaxContainer";
 import TestCard from "./TestCard";
 import testimonialData, {
   TestimonialDataProps,

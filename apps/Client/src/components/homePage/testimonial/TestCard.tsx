@@ -1,14 +1,19 @@
 import { FC } from "react";
-import RatingStars from "../../HomePage/Testimonial/RatingsStars";
+import RatingStars from "./RatingsStars";
 
 interface TestCardProps {
   avatar: string;
   comment: string;
-    clientName: string;
-    rating: number;
+  clientName: string;
+  rating: number;
 }
 
-const TestCard: FC<TestCardProps> = ({ avatar, comment, clientName, rating }) => {
+const TestCard: FC<TestCardProps> = ({
+  avatar,
+  comment,
+  clientName,
+  rating,
+}) => {
   return (
     <div className="border-2 border-gray-300 py-10 px-5 size-full text-zinc-800">
       <div className="flex items-center justify-center mb-4">

@@ -8,7 +8,7 @@ import {
   TrackShipment,
 } from "../../../assets/svg";
 import MaxContainer from "../../common/MaxContainer";
-import ServiceCard from './ServiceCard';
+import ServiceCard from "./ServiceCard";
 
 const Services: FC = () => {
   return (

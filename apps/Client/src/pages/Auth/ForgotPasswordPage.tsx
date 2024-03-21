@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { FC, useState } from "react";
 import CheckEmailResetPassword from "../../components/auth/resetPassword/CheckEmailResetPassword";
-import PasswordContainer from "../../components/common/Auth/PasswordContainer";
+import PasswordContainer from "../../components/common/auth/PasswordContainer";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import TextField from "../../components/FormFields/TextField/TextField";
+import TextField from "../../components/formFields/textField/TextField";
 import { EmailFieldIcon } from "../../assets/svg";
 import {
   forgotPasswordSchema,
@@ -12,7 +13,7 @@ import {
 import axios from "axios";
 import { toast } from "react-toastify";
 import { getRyderServerUrl } from "../../utils/serverUtils";
-import Button from "../../components/Common/Button/Button";
+import Button from "../../components/common/button/Button";
 const ForgotPasswordPage: FC = () => {
   const [showModal, setShowModal] = useState(false);
 
@@ -39,7 +40,7 @@ const ForgotPasswordPage: FC = () => {
         toast.error(message, { toastId: "errorSendingEmail" });
         return;
       }
-      toast(error.response.data?.message || message, {
+      toast(error.response?.data?.message || message, {
         toastId: "errorSendingEmail",
       });
     }
@@ -59,6 +60,7 @@ const ForgotPasswordPage: FC = () => {
       toast.error("Error resending password reset link.");
     }
   };
+
   return (
     <PasswordContainer className="lg:px-[100px]">
       <div className="max-w-[432px]">
@@ -96,6 +98,7 @@ const ForgotPasswordPage: FC = () => {
     </PasswordContainer>
   );
 };
+
 
 export default ForgotPasswordPage;
 

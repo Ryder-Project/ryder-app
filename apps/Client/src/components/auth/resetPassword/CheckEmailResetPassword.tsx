@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { Link } from "react-router-dom";
-import Button from "../../common/Button/Button";
-import CheckMailContainer from "../../common/Auth/CheckMailContainer";
+import Button from "../../common/button/Button";
+import CheckMailContainer from "../../common/auth/CheckMailContainer";
 
 interface CheckEmailProps {
   onResend: () => void;

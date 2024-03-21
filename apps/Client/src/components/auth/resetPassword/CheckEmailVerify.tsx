@@ -1,5 +1,5 @@
 import { FC } from "react";
-import CheckMailContainer from "../../common/Auth/CheckMailContainer";
+import CheckMailContainer from "../../common/auth/CheckMailContainer";
 
 const CheckEmailVerify: FC = () => {
   return (

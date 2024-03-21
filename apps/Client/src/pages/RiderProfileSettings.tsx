@@ -69,7 +69,7 @@ const Settings: React.FC = () => {
         const VITE_BE_BASE_URL = import.meta.env.VITE_BE_BASE_URL;
 
         if (!VITE_BE_BASE_URL) {
-          throw new Error('VITE_LOGIN_URL is not defined');
+          throw new Error("VITE_LOGIN_URL is not defined");
         }
         const response = await fetch(
           `${VITE_BE_BASE_URL}/api/v1/riders/editriderprofile/${userId}`,

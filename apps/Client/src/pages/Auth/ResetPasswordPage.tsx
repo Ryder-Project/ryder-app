@@ -1,4 +1,5 @@
-import { TextField } from "../../components/FormFields/TextField";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { TextField } from "../../components/formFields/textField";
 import { PasswordFieldIcon } from "../../assets/svg";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,8 +10,8 @@ import {
   TResetPasswordSchema,
 } from "../../schemas/resetPasswordSchema";
 import { getRyderServerUrl } from "../../utils/serverUtils";
-import Button from "../../components/Common/Button/Button";
-import AuthPageContainer from "../../components/common/Auth/AuthPageContainer";
+import Button from "../../components/common/button/Button";
+import AuthPageContainer from "../../components/common/auth/AuthPageContainer";
 
 export default function ResetPasswordPage() {
   const methods = useForm<TResetPasswordSchema>({

@@ -54,7 +54,7 @@ export const signupSchema = z
         message: "Password must contain at least one digit",
       })
       .refine(
-        (value: string) => /[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]/.test(value),
+        (value: string) => /[!@#$%^&*()_+{}[\]:;<>,.?~\\/-]/.test(value),
         {
           message: "Password must contain at least one special character",
         }
@@ -64,9 +64,7 @@ export const signupSchema = z
       })
       .refine((value: string) => value === value.trim(), {
         message: "Password cannot have leading or trailing spaces",
-    })
-    ,
-
+      }),
     confirm_password: z
       .string()
       .refine((value: string) => value.trim() !== "", {

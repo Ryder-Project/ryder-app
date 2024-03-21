@@ -1,9 +1,5 @@
-import React from 'react'
-
 function SignUp() {
-  return (
-    <div>index</div>
-  )
+  return <div>index</div>;
 }
 
-export default SignUp
+export default SignUp;

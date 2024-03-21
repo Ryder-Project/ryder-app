@@ -66,6 +66,10 @@ export const registerRyder = async (req: Request, res: Response) => {
             files["passportPhoto"][0].buffer.toString("base64")
           );
           passportPhotoUrl = passportPhotoResult.secure_url;
+        } else {
+          return res.status(HTTP_STATUS_CODE.BAD_REQUEST).json({
+            message: "Please upload the required files",
+          });
         }
         const longString = generateLongString(50);
 

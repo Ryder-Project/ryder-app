@@ -2,8 +2,8 @@ import React, { MouseEventHandler, ReactNode } from "react";
 
 interface ButtonProps {
   onClick?: MouseEventHandler<HTMLButtonElement>;
-  type?: "button" | "submit" | "reset"; 
-  disabled?: boolean; 
+  type?: "button" | "submit" | "reset";
+  disabled?: boolean;
   children: ReactNode;
 }
 

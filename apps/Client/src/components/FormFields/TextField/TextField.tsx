@@ -4,7 +4,7 @@ import clsx from "clsx";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useFormContext } from "react-hook-form";
 
-export default function TextField(props: TextFieldProps) {
+const TextField = (props: TextFieldProps) => {
   const { label, name, type = "text", placeholder, className, iconSrc } = props;
   const [activeType, setActiveType] = useState<"text" | "password">("password");
   const {
@@ -28,9 +28,11 @@ export default function TextField(props: TextFieldProps) {
       ) : null}
 
       <div className=" relative">
-        {iconSrc ? 
-          <span className="absolute pointer-events-none top-1/2 transform -translate-y-1/2 left-3">{iconSrc}</span>
-         : null}
+        {iconSrc ? (
+          <span className="absolute pointer-events-none top-1/2 transform -translate-y-1/2 left-3">
+            {iconSrc}
+          </span>
+        ) : null}
         <input
           {...register(name, {
             valueAsNumber: type === "number",
@@ -62,7 +64,7 @@ export default function TextField(props: TextFieldProps) {
 
       {!!errors[name]?.message || !!errors[name]?.root ? (
         <p className="mt-1 text-xs text-red-700">
-          {!!errors[name]
+          {!errors[name]
             ? errors[name]?.message
               ? errors[name]?.message?.toString()
               : errors[name]?.root?.message
@@ -73,4 +75,6 @@ export default function TextField(props: TextFieldProps) {
       ) : null}
     </div>
   );
-}
+};
+
+export default TextField;

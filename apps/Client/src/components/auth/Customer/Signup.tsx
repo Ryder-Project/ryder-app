@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { FC, useState } from "react";
 import {
   EmailFieldIcon,
@@ -5,16 +6,16 @@ import {
   PasswordFieldIcon,
   PhoneFieldIcon,
 } from "../../../assets/svg";
-import TextField from "../../FormFields/TextField/TextField";
+import { TextField } from "../../formFields/textField";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "react-toastify";
 import axios, { AxiosError } from "axios";
 import { signupSchema, TSignupSchema } from "../../../schemas/signupSchema";
 import { getRyderServerUrl } from "../../../utils/serverUtils";
-import Button from "../../common/Button/Button";
-import CheckEmailVerify from '../resetPassword/CheckEmailVerify';
-import AuthPageContainer from "../../common/Auth/AuthPageContainer";
+import Button from "../../common/button/Button";
+import CheckEmailVerify from "../resetPassword/CheckEmailVerify";
+import AuthPageContainer from "../../common/auth/AuthPageContainer";
 
 const SignUp: FC = () => {
   const [showModal, setShowModal] = useState(false);
@@ -31,13 +32,13 @@ const SignUp: FC = () => {
     },
   });
 
-  const onSubmit: (data: TSignupSchema) => Promise<void> = async (
+    const onSubmit: (data: TSignupSchema) => Promise<void> = async (
     data: TSignupSchema
   ) => {
     try {
       const ryderServerUrl = getRyderServerUrl();
       setIsLoading(true);
-      const { confirm_password, ...requestData } = data;
+      const { ...requestData } = data;
       const response = await axios.post(
         `${ryderServerUrl}/api/v1/customers/registerCustomer`,
         requestData,

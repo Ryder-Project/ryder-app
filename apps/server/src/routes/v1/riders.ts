@@ -3,7 +3,7 @@ import { auth } from "../../middleware/authorization";
 import { upload } from "../../middleware/upload";
 import {
   registerRyder,
-  getRiders,
+  getRiderDetails,
   login,
   editRiderProfile,
 } from "../../controllers/riderControllers";
@@ -20,7 +20,7 @@ router.post(
   registerRyder
 );
 router.post("/login", login);
-router.get("/getRiders", auth, getRiders);
+router.get("/getRiders", auth, getRiderDetails);
 router.put("/editriderprofile/:userId", auth, editRiderProfile);
 
 export default router;
