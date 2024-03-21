@@ -22,4 +22,4 @@ jobs:
         cache: 'yarn'
         cache-dependency-path: './apps/server/yarn.lock'
     - run: yarn build
-      working-directory: ./apps/server
+      working-directory: ./apps/server/
