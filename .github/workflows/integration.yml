@@ -22,7 +22,3 @@ jobs:
 
     - name: Install Dependencies
       run: yarn --frozen-lockfile
-
-    - name: Compile Project
-      run: yarn build
-      working-directory: ./apps/server/
