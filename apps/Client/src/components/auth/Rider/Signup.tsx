@@ -11,15 +11,15 @@ import AuthPageContainer from "../../common/Auth/AuthPageContainer";
 import Button from "../../Common/Button/Button";
 import { TextField } from "../../FormFields/TextField";
 import { FileUploadField } from "../../FormFields/FileUploadField";
-import { zodResolver } from "@hookform/resolvers/zod";
 import {
   riderSignupSchema,
   TRiderSignupSchema,
 } from "../../../schemas/riderSignupSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { cities } from "../../../data/cities";
 import { getRyderServerUrl } from "../../../utils/serverUtils";
 import { toast } from "react-toastify";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import CheckEmailVerify from "../resetPassword/CheckEmailVerify";
 
 const Signup: FC = () => {
@@ -41,32 +41,57 @@ const Signup: FC = () => {
     },
   });
 
-    const onSubmit = async (data: TRiderSignupSchema) => {
-        const { bikeDoc, validIdCard, passportPhoto, confirm_password, ...otherData } = data
-        const formData = new FormData();
-        const files = [bikeDoc, validIdCard, passportPhoto];
-        const filesArray: File[] = Array.from(files);
-        filesArray.forEach((file, index) => {
-          formData.append(
-            index === 0
-              ? "bikeDoc"
-              : index === 1
-              ? "validIdCard"
-              : "passportPhoto",
-            file
-          );
-        });
-        const requestData = {
-            ...otherData, formData
-        }
+  const onSubmit = async (data: TRiderSignupSchema) => {
+    const {
+      bikeDoc,
+      validIdCard,
+      passportPhoto,
+      confirm_password,
+      ...otherData
+    } = data;
+    const formData = new FormData();
+    Object.entries(otherData).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
+    // const files = [bikeDoc, validIdCard, passportPhoto];
+    // const filesArray: File[] = Array.from(files);
+    // filesArray.forEach((file, index) => {
+    //   if (file instanceof Blob) {
+    //     const reader = new FileReader();
+    //     reader.onload = () => {
+    //       const base64String = reader.result
+    //         ?.toString()
+    //         .split(",")[1] as string;
+    //       formData.append(
+    //         index === 0
+    //           ? "bikeDoc"
+    //           : index === 1
+    //           ? "validIdCard"
+    //           : "passportPhoto",
+    //         base64String
+    //       );
+    //     };
+    //     reader.readAsDataURL(file);
+    //   }
+    // });
+     if (bikeDoc && validIdCard && passportPhoto) {
+       formData.append("bikeDoc", bikeDoc[0]);
+       formData.append("validIdCard", validIdCard[0]);
+       formData.append("passportPhoto", passportPhoto[0]);
+     } 
+    // const requestData = {
+    //   ...otherData,
+    //   formData,
+    // };
     try {
       const ryderServerUrl = getRyderServerUrl();
-        setIsLoading(true);
+      setIsLoading(true);
       const response = await axios.post(
         `${ryderServerUrl}/api/v1/riders/registerRider`,
-        requestData,
+        formData,
         { withCredentials: true }
       );
+      console.log(response, formData);
       if (response.status === 200) {
         toast.success("Registration successful");
         setShowModal(true);
@@ -79,24 +104,21 @@ const Signup: FC = () => {
       setIsLoading(false);
     }
   };
-  const handleAxiosError = (error: any) => {
+  const handleAxiosError = (error: unknown) => {
     if (axios.isAxiosError(error)) {
-      const axiosError = error as AxiosError<any>;
-      if (axiosError.response) {
-        const statusCode = axiosError.response.status;
+      if (error.response) {
+        const statusCode = error.response.status;
         switch (statusCode) {
           case 400:
-            toast.error(
-              "Validation error: " + axiosError.response.data.message
-            );
+            toast.error("Validation error: " + error.response.data.message);
             break;
           case 409:
             toast.error(
-              "Account already exists: " + axiosError.response.data.message
+              "Account already exists: " + error.response.data.message
             );
             break;
           default:
-            toast.error("Error: " + axiosError.response.data.message);
+            toast.error("Error: " + error.response.data.message);
         }
       } else {
         toast.error("Network error: " + error.message);
@@ -146,10 +168,11 @@ const Signup: FC = () => {
             </label>
             <select
               id="city"
+              defaultValue=""
               className="pl-3 pr-8 border border-sky-950 text-sm rounded block w-full px-4 py-2 appearance-none"
               {...methods.register("city")}
             >
-              <option value="" disabled selected hidden>
+              <option value="" disabled hidden>
                 Select a city
               </option>
               {cities.map((city, index) => (

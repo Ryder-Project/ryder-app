@@ -1,5 +1,5 @@
 import { FC, useState } from "react";
-import CheckEmailResetPassword from "../../components/auth/resetPassword/CheckEmailResetPassword";
+import CheckEmailResetPassword from "../../components/Auth/resetPassword/CheckEmailResetPassword";
 import PasswordContainer from "../../components/common/Auth/PasswordContainer";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
