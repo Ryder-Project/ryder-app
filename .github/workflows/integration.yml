@@ -19,6 +19,7 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'yarn'  
+        cache: 'yarn'
+        cache-dependency-path: './apps/server/yarn.lock'
     - run: yarn build-watch
       working-directory: ./apps/server
