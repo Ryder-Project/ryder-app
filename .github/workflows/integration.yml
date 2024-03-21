@@ -11,7 +11,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [20.x]
 
     steps:
     - uses: actions/checkout@v3
@@ -21,5 +21,10 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
         cache-dependency-path: './apps/server/yarn.lock'
-    - run: yarn build
+
+    - name: Install Dependencies
+      run: yarn --frozen-lockfile
+
+    - name: Compile Project
+      run: yarn build
       working-directory: ./apps/server/
