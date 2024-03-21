@@ -19,8 +19,6 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'yarn'
-        cache-dependency-path: './apps/server/yarn.lock'
 
     - name: Install Dependencies
       run: yarn --frozen-lockfile
