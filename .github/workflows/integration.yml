@@ -2,11 +2,10 @@ name: Integration
 
 on:
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -14,18 +13,52 @@ jobs:
         node-version: [20.x]
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: "yarn"
-        cache-dependency-path: './apps/server/yarn.lock'
+      - uses: actions/checkout@v3
 
-    - name: Install Dependencies
-      run: yarn --frozen-lockfile
-      working-directory: ./apps/server
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          path: ./apps/server/node_modules
+          key: ${{ runner.os }}-server-${{ hashFiles('**/apps/server/yarn.lock') }}
+          cache: "yarn"
+          cache-dependency-path: "./apps/server/yarn.lock"
 
-    - name: Compile
-      run: yarn build
-      working-directory: ./apps/server/
+      - name: Install Dependencies
+        run: yarn --frozen-lockfile
+        working-directory: ./apps/server
+
+      - name: Compile
+        run: yarn build
+        working-directory: ./apps/server
+
+      - name: Lint
+        run: yarn lint
+        working-directory: ./apps/server
+
+  lint-client:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20.x]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          path: ./apps/client/node_modules
+          key: ${{ runner.os }}-client-${{ hashFiles('**/apps/client/yarn.lock') }}
+          cache: "yarn"
+          cache-dependency-path: "./apps/client/yarn.lock"
+
+      - name: Install dependencies
+        run: yarn --frozen-lockfile
+        working-directory: ./apps/client
+
+      - name: Lint
+        run: yarn lint
+        working-directory: ./apps/client
