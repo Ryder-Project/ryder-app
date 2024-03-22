@@ -1,8 +1,8 @@
-import { Request, Response } from "express";
-import Ryder from "../../models/ryder";
-import { editRiderProfileSchema } from "../../utilities/validators";
-import { HTTP_STATUS_CODE } from "../../constants/httpStatusCode";
-import logger from "../../utilities/logger";
+import { Request, Response } from 'express';
+import Ryder from '../../models/ryder';
+import { editRiderProfileSchema } from '../../utilities/validators';
+import { HTTP_STATUS_CODE } from '../../constants/httpStatusCode';
+import logger from '../../utilities/logger';
 
 export const editRiderProfile = async (req: Request, res: Response) => {
   const userId = req.params.userId;
@@ -11,7 +11,7 @@ export const editRiderProfile = async (req: Request, res: Response) => {
 
   if (!userValidate.success) {
     return res.status(HTTP_STATUS_CODE.BAD_REQUEST).json({
-      message: "Invalid user data",
+      message: 'Invalid user data',
       details: userValidate.error.issues,
     });
   }
@@ -24,7 +24,7 @@ export const editRiderProfile = async (req: Request, res: Response) => {
     if (!user) {
       return res
         .status(HTTP_STATUS_CODE.NOT_FOUND)
-        .json({ message: "User not found" });
+        .json({ message: 'User not found' });
     }
 
     user.firstName = firstName;
@@ -35,7 +35,7 @@ export const editRiderProfile = async (req: Request, res: Response) => {
     await user.save();
 
     res.status(HTTP_STATUS_CODE.SUCCESS).json({
-      message: "Profile updated successfully",
+      message: 'Profile updated successfully',
       user: {
         firstName: user.firstName,
         lastName: user.lastName,
@@ -45,9 +45,9 @@ export const editRiderProfile = async (req: Request, res: Response) => {
       },
     });
   } catch (error) {
-    logger.error("Error updating user profile:", error);
+    logger.error('Error updating user profile:', error);
     res
       .status(HTTP_STATUS_CODE.INTERNAL_SERVER)
-      .json({ message: "Internal server error" });
+      .json({ message: 'Internal server error' });
   }
 };

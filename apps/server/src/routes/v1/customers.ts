@@ -1,5 +1,11 @@
-import { Router } from "express";
-import { customerForgotPassword, loginCustomer, registerCustomer, customerResetPassword, verifyUser } from "../../controllers/customerControllers";
+import { Router } from 'express';
+import {
+  customerForgotPassword,
+  loginCustomer,
+  registerCustomer,
+  customerResetPassword,
+  verifyUser,
+} from '../../controllers/customerControllers';
 
 const router = Router();
 
@@ -118,7 +124,7 @@ const router = Router();
  *                           type: string
  */
 
-router.post("/registerCustomer", registerCustomer);
+router.post('/registerCustomer', registerCustomer);
 
 /**
  * @swagger
@@ -202,9 +208,9 @@ router.post("/registerCustomer", registerCustomer);
  *                         message:
  *                           type: string
  */
-router.post("/login", loginCustomer);
-router.post("/forgotPassword", customerForgotPassword);
-router.post("/resetPassword", customerResetPassword);
-router.post("/verifyEmail", verifyUser)
+router.post('/login', loginCustomer);
+router.post('/forgotPassword', customerForgotPassword);
+router.post('/resetPassword', customerResetPassword);
+router.post('/verifyEmail', verifyUser);
 
 export default router;

@@ -3,14 +3,14 @@ import {
   DataTypes,
   InferAttributes,
   InferCreationAttributes,
-} from "sequelize";
-import { db } from "../config";
+} from 'sequelize';
+import { db } from '../config';
 
-const TABLE_NAME = "CustomerOrders";
+const TABLE_NAME = 'CustomerOrders';
 
 export enum Status {
-  PENDING = "pending",
-  DELIVERED = "delivered",
+  PENDING = 'pending',
+  DELIVERED = 'delivered',
 }
 
 // https://sequelize.org/docs/v6/other-topics/typescript/
@@ -21,7 +21,7 @@ class CustomerOrders extends Model<
   declare id: string;
   declare customerId: string;
   declare totalOrders: string;
-  declare status: "pending" | "delivered";
+  declare status: 'pending' | 'delivered';
   declare orderNumber: number;
   declare pickUpLocation: string;
   declare dropOffLocation: string;

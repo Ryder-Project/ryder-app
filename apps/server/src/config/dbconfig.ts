@@ -1,5 +1,5 @@
-import { Sequelize } from "sequelize";
-import ENV from "./env";
+import { Sequelize } from 'sequelize';
+import ENV from './env';
 
 export const db = new Sequelize(
   ENV.DB_NAME!,
@@ -8,7 +8,7 @@ export const db = new Sequelize(
   {
     host: ENV.DB_HOST,
     port: ENV.DB_PORT as unknown as number,
-    dialect: "postgres",
+    dialect: 'postgres',
     logging: false,
     dialectOptions: {
       encrypt: true,
