@@ -1,5 +1,5 @@
-import { FC } from "react";
-import RatingStars from "./RatingsStars";
+import { FC } from 'react';
+import RatingStars from './RatingsStars';
 
 interface TestCardProps {
   avatar: string;

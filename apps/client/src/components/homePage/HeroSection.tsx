@@ -1,6 +1,6 @@
-import { FC } from "react";
-import { Link } from "react-router-dom";
-import Button from "../common/button/Button";
+import { FC } from 'react';
+import { Link } from 'react-router-dom';
+import Button from '../common/button/Button';
 const HeroSection: FC = () => {
   return (
     <div className="hero-background">

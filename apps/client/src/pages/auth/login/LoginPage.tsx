@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import Button from "../../../components/Button";
-import riderLogo from "../Images/Logo.png";
-import riderPhoto from "../Images/image 4.png";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Button from '../../../components/Button';
+import riderLogo from '../Images/Logo.png';
+import riderPhoto from '../Images/image 4.png';
+import { useNavigate } from 'react-router-dom';
 
 type LoginFormValues = {
   email: string;
@@ -22,7 +22,7 @@ const LoginPage: React.FC = () => {
       const VITE_BE_BASE_URL = import.meta.env.VITE_BE_BASE_URL;
 
       if (!VITE_BE_BASE_URL) {
-        throw new Error("VITE_LOGIN_URL is not defined");
+        throw new Error('VITE_LOGIN_URL is not defined');
       }
 
       setIsLoading(true);
@@ -35,12 +35,12 @@ const LoginPage: React.FC = () => {
 
       for (const endpoint of loginEndpoints) {
         loginResponse = await fetch(endpoint, {
-          method: "POST",
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify(data),
-          credentials: "include",
+          credentials: 'include',
         });
 
         if (loginResponse.ok) {
@@ -49,24 +49,24 @@ const LoginPage: React.FC = () => {
       }
 
       if (!loginResponse || !loginResponse.ok) {
-        throw new Error("Login failed");
+        throw new Error('Login failed');
       }
 
       const responseData = await loginResponse.json();
-      localStorage.setItem("token", responseData.token);
-      localStorage.setItem("role", responseData.role);
-      toast.success("Login successful");
+      localStorage.setItem('token', responseData.token);
+      localStorage.setItem('role', responseData.role);
+      toast.success('Login successful');
 
       setTimeout(() => {
-        if (responseData.role === "Customer") {
-          navigate("/customerDashboard");
-        } else if (responseData.role === "Rider") {
-          navigate("/riderDashboard");
+        if (responseData.role === 'Customer') {
+          navigate('/customerDashboard');
+        } else if (responseData.role === 'Rider') {
+          navigate('/riderDashboard');
         }
       }, 2000);
     } catch (error) {
-      console.error("Error during login:", error);
-      toast.error("Error during login");
+      console.error('Error during login:', error);
+      toast.error('Error during login');
     } finally {
       setIsLoading(false);
     }
@@ -85,8 +85,8 @@ const LoginPage: React.FC = () => {
             <p className="text-lg md:text-xl lg:text-4xl font-bold mt-[720px]">
               Delivery service just got <br />
               easier, elegant & superb <br />
-              <span style={{ marginLeft: "-15rem" }}>with</span>{" "}
-              <span style={{ color: "orange" }}>Ryder</span>
+              <span style={{ marginLeft: '-15rem' }}>with</span>{' '}
+              <span style={{ color: 'orange' }}>Ryder</span>
             </p>
           </div>
         </div>
@@ -115,12 +115,12 @@ const LoginPage: React.FC = () => {
               Email
             </label>
             <input
-              {...register("email")}
+              {...register('email')}
               className="w-full px-3 py-2 text-gray-700 border rounded-md focus:outline-none focus:shadow-outline"
               id="email"
               type="text"
               placeholder="Enter your Email"
-              style={{ width: "110%" }}
+              style={{ width: '110%' }}
             />
           </div>
 
@@ -132,12 +132,12 @@ const LoginPage: React.FC = () => {
               Password
             </label>
             <input
-              {...register("password")}
+              {...register('password')}
               className="w-full px-3 py-2 text-gray-700 border rounded-md focus:outline-none focus:shadow-outline"
               id="password"
               type="password"
               placeholder="Enter your password"
-              style={{ width: "110%" }}
+              style={{ width: '110%' }}
             />
           </div>
 
@@ -149,13 +149,13 @@ const LoginPage: React.FC = () => {
 
           <div>
             <Button type="submit" disabled={isLoading}>
-              {isLoading ? "Loading..." : "Log In"}
+              {isLoading ? 'Loading...' : 'Log In'}
             </Button>
           </div>
           <div className="mt-7 text-center">
             <span>
-              Don’t have an account?{" "}
-              <span style={{ color: "orange" }}>Create account</span>
+              Don’t have an account?{' '}
+              <span style={{ color: 'orange' }}>Create account</span>
             </span>
           </div>
         </form>

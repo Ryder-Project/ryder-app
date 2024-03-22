@@ -1,6 +1,6 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import RequestRiderPage from "../pages/riderForm/RequestRiderPage";
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import RequestRiderPage from '../pages/riderForm/RequestRiderPage';
 
 const AppRoutes: React.FC = () => {
   return (

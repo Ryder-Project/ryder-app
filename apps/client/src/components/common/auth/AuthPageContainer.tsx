@@ -1,5 +1,5 @@
-import { FC, ReactNode } from "react";
-import { RyderLogo } from "../../../assets/svg";
+import { FC, ReactNode } from 'react';
+import { RyderLogo } from '../../../assets/svg';
 
 interface AuthPageProps {
   title: string;
@@ -11,7 +11,7 @@ const AuthPageContainer: FC<AuthPageProps> = ({ title, children }) => {
     <div className="grid grid-cols-5">
       <div className="authBackground">
         <h1 className="max-w-[474px] w-full text-4xl font-bold">
-          Delivery service just got easier, elegant & superb with{" "}
+          Delivery service just got easier, elegant & superb with{' '}
           <span className="text-orange-500">Ryder</span>
         </h1>
       </div>

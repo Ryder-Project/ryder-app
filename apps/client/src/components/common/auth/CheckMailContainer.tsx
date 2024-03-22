@@ -1,5 +1,5 @@
-import { FC, ReactNode } from "react";
-import { EmailCheckIcon } from "../../../assets/svg";
+import { FC, ReactNode } from 'react';
+import { EmailCheckIcon } from '../../../assets/svg';
 
 interface ClassName {
   children: ReactNode;

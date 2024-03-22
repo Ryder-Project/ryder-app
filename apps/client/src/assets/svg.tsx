@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC } from 'react';
 
 export const RyderLogo: FC = () => {
   return (
@@ -148,7 +148,7 @@ export const Star: FC<StarProps> = ({ filled }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className={`w-5 h-5 ${filled ? "text-yellow-500" : "text-gray-300"}`}
+      className={`w-5 h-5 ${filled ? 'text-yellow-500' : 'text-gray-300'}`}
       fill="none"
       stroke="currentColor"
       viewBox="0 0 24 24"

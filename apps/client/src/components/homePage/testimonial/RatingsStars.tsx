@@ -1,5 +1,5 @@
-import { FC } from "react";
-import { Star } from "../../../assets/svg";
+import { FC } from 'react';
+import { Star } from '../../../assets/svg';
 
 interface RatingProps {
   rating: number;

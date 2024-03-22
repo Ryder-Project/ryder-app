@@ -1,9 +1,9 @@
-import React from "react";
-import { useForm } from "react-hook-form";
-import Button from "../../components/Button";
-import Line from "../../assets/Line.svg";
-import BackArrow from "../../assets/BackArrow.svg";
-import Navbar from "../../components/RiderNavBar";
+import React from 'react';
+import { useForm } from 'react-hook-form';
+import Button from '../../components/Button';
+import Line from '../../assets/Line.svg';
+import BackArrow from '../../assets/BackArrow.svg';
+import Navbar from '../../components/RiderNavBar';
 
 interface FormData {
   pickupLocation: string;
@@ -17,7 +17,7 @@ const RequestRiderPage: React.FC = () => {
 
   const onSubmit = (data: FormData) => {
     // Handle the logic for requesting a rider using the form data
-    console.log("Requesting rider with data:", data);
+    console.log('Requesting rider with data:', data);
     // Add additional logic such as sending a request to your backend
   };
 
@@ -54,8 +54,8 @@ const RequestRiderPage: React.FC = () => {
                 type="text"
                 id="pickupLocation"
                 placeholder="Enter pickup location"
-                {...register("pickupLocation", { required: true })}
-                onChange={(e) => setValue("pickupLocation", e.target.value)}
+                {...register('pickupLocation', { required: true })}
+                onChange={(e) => setValue('pickupLocation', e.target.value)}
                 className="w-full border border-gray-300 p-2"
               />
             </div>
@@ -72,8 +72,8 @@ const RequestRiderPage: React.FC = () => {
                 type="text"
                 id="dropOffLocation"
                 placeholder="Enter drop off location"
-                {...register("dropOffLocation", { required: true })}
-                onChange={(e) => setValue("dropOffLocation", e.target.value)}
+                {...register('dropOffLocation', { required: true })}
+                onChange={(e) => setValue('dropOffLocation', e.target.value)}
                 className="w-full border border-gray-300 p-2"
               />
             </div>
@@ -90,8 +90,8 @@ const RequestRiderPage: React.FC = () => {
                 type="tel"
                 id="dropOffPhoneNumber"
                 placeholder="Enter drop off phone number"
-                {...register("dropOffPhoneNumber", { required: true })}
-                onChange={(e) => setValue("dropOffPhoneNumber", e.target.value)}
+                {...register('dropOffPhoneNumber', { required: true })}
+                onChange={(e) => setValue('dropOffPhoneNumber', e.target.value)}
                 className="w-full border border-gray-300 p-2"
               />
             </div>
@@ -108,8 +108,8 @@ const RequestRiderPage: React.FC = () => {
                 type="number"
                 id="offerAmount"
                 placeholder="Enter an amount (NGN)"
-                {...register("offerAmount", { required: true })}
-                onChange={(e) => setValue("offerAmount", e.target.value)}
+                {...register('offerAmount', { required: true })}
+                onChange={(e) => setValue('offerAmount', e.target.value)}
                 className="w-full border border-gray-300 p-2"
               />
             </div>

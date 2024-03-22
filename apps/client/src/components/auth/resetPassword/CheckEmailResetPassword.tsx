@@ -1,7 +1,7 @@
-import { FC } from "react";
-import { Link } from "react-router-dom";
-import Button from "../../common/button/Button";
-import CheckMailContainer from "../../common/auth/CheckMailContainer";
+import { FC } from 'react';
+import { Link } from 'react-router-dom';
+import Button from '../../common/button/Button';
+import CheckMailContainer from '../../common/auth/CheckMailContainer';
 
 interface CheckEmailProps {
   onResend: () => void;
@@ -15,7 +15,7 @@ const CheckEmailResetPassword: FC<CheckEmailProps> = ({ onResend }) => {
         reset your password
       </p>
       <p className="text-sm text-sky-950">
-        Didn’t receive the email?{" "}
+        Didn’t receive the email?{' '}
         <a href="#" className="text-orange-500 hover:cursor" onClick={onResend}>
           Click to Resend link
         </a>

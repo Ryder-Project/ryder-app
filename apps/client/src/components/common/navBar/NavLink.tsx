@@ -1,5 +1,5 @@
-import { FC } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { FC } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
 interface NavLinkProps {
   to: string;
@@ -10,7 +10,7 @@ const NavLink: FC<NavLinkProps> = ({ to, children }) => {
   const location = useLocation();
   const isActive = location.pathname === to;
 
-  const activeClassName = isActive ? "text-orange-400" : "text-blue-900";
+  const activeClassName = isActive ? 'text-orange-400' : 'text-blue-900';
 
   return (
     <Link

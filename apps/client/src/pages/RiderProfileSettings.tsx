@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef } from "react";
-import { TiPencil } from "react-icons/ti";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { jwtDecode } from "jwt-decode";
+import React, { useState, useEffect, useRef } from 'react';
+import { TiPencil } from 'react-icons/ti';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { jwtDecode } from 'jwt-decode';
 
 interface JwtPayload {
   userId: string;
@@ -14,10 +14,10 @@ interface JwtPayload {
 
 const Settings: React.FC = () => {
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    phone: "",
-    email: "",
+    firstName: '',
+    lastName: '',
+    phone: '',
+    email: '',
   });
 
   const [isSaving, setIsSaving] = useState(false);
@@ -26,10 +26,10 @@ const Settings: React.FC = () => {
   const tokenTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
     if (token) {
       const decodedToken = jwtDecode(token) as JwtPayload;
-      const storedFormData = localStorage.getItem("formData");
+      const storedFormData = localStorage.getItem('formData');
       if (storedFormData) {
         setFormData(JSON.parse(storedFormData));
       } else {
@@ -59,7 +59,7 @@ const Settings: React.FC = () => {
     e.preventDefault();
     setIsSaving(true);
 
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
 
     if (token) {
       const decodedToken = jwtDecode(token) as JwtPayload;
@@ -69,18 +69,18 @@ const Settings: React.FC = () => {
         const VITE_BE_BASE_URL = import.meta.env.VITE_BE_BASE_URL;
 
         if (!VITE_BE_BASE_URL) {
-          throw new Error("VITE_LOGIN_URL is not defined");
+          throw new Error('VITE_LOGIN_URL is not defined');
         }
         const response = await fetch(
           `${VITE_BE_BASE_URL}/api/v1/riders/editriderprofile/${userId}`,
           {
-            method: "PUT",
+            method: 'PUT',
             headers: {
-              "Content-Type": "application/json",
+              'Content-Type': 'application/json',
               Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify(formData),
-            credentials: "include",
+            credentials: 'include',
           }
         );
 
@@ -92,10 +92,10 @@ const Settings: React.FC = () => {
               updatedFormData[key as keyof typeof formData];
           }
           setFormData(updatedFormData);
-          localStorage.setItem("formData", JSON.stringify(updatedFormData));
+          localStorage.setItem('formData', JSON.stringify(updatedFormData));
 
           setTimeout(() => {
-            toast.success("Profile updated successfully");
+            toast.success('Profile updated successfully');
             setIsSaving(false);
           }, 1000);
 
@@ -103,21 +103,27 @@ const Settings: React.FC = () => {
             clearTimeout(formDataTimeoutRef.current);
           if (tokenTimeoutRef.current) clearTimeout(tokenTimeoutRef.current);
 
-          formDataTimeoutRef.current = setTimeout(() => {
-            localStorage.removeItem("formData");
-          }, 10 * 60 * 60 * 1000);
+          formDataTimeoutRef.current = setTimeout(
+            () => {
+              localStorage.removeItem('formData');
+            },
+            10 * 60 * 60 * 1000
+          );
 
-          tokenTimeoutRef.current = setTimeout(() => {
-            localStorage.removeItem("token");
-          }, 10 * 60 * 60 * 1000);
+          tokenTimeoutRef.current = setTimeout(
+            () => {
+              localStorage.removeItem('token');
+            },
+            10 * 60 * 60 * 1000
+          );
         } else {
           setIsSaving(false);
-          toast.error("Failed to update profile");
+          toast.error('Failed to update profile');
         }
       } catch (error) {
         setIsSaving(false);
-        console.error("Error:", error);
-        toast.error("An error occurred while updating your profile");
+        console.error('Error:', error);
+        toast.error('An error occurred while updating your profile');
       }
     } else {
       setIsSaving(false);
@@ -130,7 +136,7 @@ const Settings: React.FC = () => {
         <div className="max-w-md w-full  rounded-md pt-2">
           <h1
             className="text-xl text-center font-semibold mb-8"
-            style={{ background: "#FFF", color: "#03435F" }}
+            style={{ background: '#FFF', color: '#03435F' }}
           >
             Profile Settings
           </h1>
@@ -234,10 +240,10 @@ const Settings: React.FC = () => {
               <button
                 type="submit"
                 className={`bg-orange-500 w-full text-white mt-4 py-2 px-4 rounded-none hover:bg-orange-600 focus:outline-none focus:ring focus:border-orange-300 ${
-                  isSaving ? "saving-animation" : ""
+                  isSaving ? 'saving-animation' : ''
                 }`}
               >
-                {isSaving ? "Saving..." : "Save"}
+                {isSaving ? 'Saving...' : 'Save'}
               </button>
             </form>
           </div>

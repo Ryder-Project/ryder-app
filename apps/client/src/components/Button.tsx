@@ -1,15 +1,15 @@
-import React, { MouseEventHandler, ReactNode } from "react";
+import React, { MouseEventHandler, ReactNode } from 'react';
 
 interface ButtonProps {
   onClick?: MouseEventHandler<HTMLButtonElement>;
-  type?: "button" | "submit" | "reset";
+  type?: 'button' | 'submit' | 'reset';
   disabled?: boolean;
   children: ReactNode;
 }
 
 const Button: React.FC<ButtonProps> = ({
   onClick,
-  type = "button",
+  type = 'button',
   disabled = false,
   children,
 }) => {
@@ -19,9 +19,9 @@ const Button: React.FC<ButtonProps> = ({
       onClick={onClick}
       disabled={disabled}
       className={`bg-[#FB8500] w-full text-white py-2 px-4 hover:bg-[#FB8500] ${
-        disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer"
+        disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'
       }`}
-      style={{ width: "110%" }}
+      style={{ width: '110%' }}
     >
       {children}
     </button>

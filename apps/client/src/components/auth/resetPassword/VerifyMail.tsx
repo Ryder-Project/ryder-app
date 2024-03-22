@@ -1,30 +1,30 @@
-import { EmailCheckIcon } from "../../../assets/svg";
-import { FC } from "react";
-import Button from "../../common/button/Button";
-import { getRyderServerUrl } from "../../../utils/serverUtils";
-import axios from "axios";
-import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
-import PasswordContainer from "../../common/auth/PasswordContainer";
+import { EmailCheckIcon } from '../../../assets/svg';
+import { FC } from 'react';
+import Button from '../../common/button/Button';
+import { getRyderServerUrl } from '../../../utils/serverUtils';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+import PasswordContainer from '../../common/auth/PasswordContainer';
 
 const VerifyMail: FC = () => {
   const navigate = useNavigate();
   const handleVerifyMail = async () => {
     try {
       const ryderServerUrl = getRyderServerUrl();
-      const token = new URLSearchParams(window.location.search).get("token");
+      const token = new URLSearchParams(window.location.search).get('token');
       const response = await axios.post(
         `${ryderServerUrl}/api/v1/customers/verifyEmail?token=` + token
       );
       if (response.status === 200) {
-        toast.success("Your email has been confirmed");
+        toast.success('Your email has been confirmed');
         setTimeout(() => {
-          navigate("/login");
+          navigate('/login');
         }, 2000);
       }
     } catch (error) {
-      console.error("Verification failed:", error);
-      toast.error("Verification failed");
+      console.error('Verification failed:', error);
+      toast.error('Verification failed');
     }
   };
   return (
@@ -48,6 +48,5 @@ const VerifyMail: FC = () => {
     </PasswordContainer>
   );
 };
-
 
 export default VerifyMail;

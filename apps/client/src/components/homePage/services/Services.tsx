@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC } from 'react';
 import {
   CustomerService,
   Nationwide,
@@ -6,9 +6,9 @@ import {
   SecureService,
   TimelyDelivery,
   TrackShipment,
-} from "../../../assets/svg";
-import MaxContainer from "../../common/MaxContainer";
-import ServiceCard from "./ServiceCard";
+} from '../../../assets/svg';
+import MaxContainer from '../../common/MaxContainer';
+import ServiceCard from './ServiceCard';
 
 const Services: FC = () => {
   return (

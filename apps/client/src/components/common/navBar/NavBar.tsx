@@ -1,8 +1,8 @@
-import { FC } from "react";
-import NavLink from "./NavLink";
-import { RyderLogo } from "../../../assets/svg";
-import MaxContainer from "../MaxContainer";
-import { Link } from "react-router-dom";
+import { FC } from 'react';
+import NavLink from './NavLink';
+import { RyderLogo } from '../../../assets/svg';
+import MaxContainer from '../MaxContainer';
+import { Link } from 'react-router-dom';
 const NavBar: FC = () => {
   return (
     <nav className="">

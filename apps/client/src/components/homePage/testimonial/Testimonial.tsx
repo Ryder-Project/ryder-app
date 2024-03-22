@@ -1,9 +1,9 @@
-import { FC } from "react";
-import MaxContainer from "../../common/MaxContainer";
-import TestCard from "./TestCard";
+import { FC } from 'react';
+import MaxContainer from '../../common/MaxContainer';
+import TestCard from './TestCard';
 import testimonialData, {
   TestimonialDataProps,
-} from "../../../data/testimonialData";
+} from '../../../data/testimonialData';
 const Testimonial: FC = () => {
   return (
     <MaxContainer>

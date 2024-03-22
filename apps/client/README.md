@@ -13,17 +13,17 @@ Before you begin, ensure you have the following installed on your machine:
 
 1. **Clone the Repository:**
 
-    ```bash
-    git clone https://github.com/Ryder-Project/ryder-app.git
-    cd ryder-app/apps/client
-    ```
+   ```bash
+   git clone https://github.com/Ryder-Project/ryder-app.git
+   cd ryder-app/apps/client
+   ```
 
 2. **Install Dependencies:**
 
-    ```bash
-    # Using yarn
-    yarn
-    ```
+   ```bash
+   # Using yarn
+   yarn
+   ```
 
 ## Scripts
 
@@ -34,10 +34,12 @@ In the `package.json` file, you'll find the following scripts:
 - `lint`: Lint the TypeScript and TypeScript React files using ESLint.
 - `preview`: Run Vite in preview mode.
 
-
 ## Running the App
+
 To start the development server, run:
+
 # Using yarn
+
 yarn dev
 
 ## Additional Information
@@ -45,5 +47,3 @@ yarn dev
 - The app uses React, TypeScript, and Vite for development.
 - ESLint is configured for linting TypeScript files.
 - Tailwind CSS is used for styling, and styles are compiled during the build process.
-
-

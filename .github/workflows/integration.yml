@@ -33,7 +33,9 @@ jobs:
         working-directory: ./apps/server
 
       - name: Lint
-        run: yarn lint
+        run: |
+          yarn lint
+          yarn format
         working-directory: ./apps/server
 
   lint-client:
@@ -57,7 +59,9 @@ jobs:
         run: yarn --frozen-lockfile
         working-directory: ./apps/client
 
-      - name: Lint
-        run: yarn lint
+      - name: Lint and Format
+        run: |
+          yarn lint
+          yarn format
         working-directory: ./apps/client
 

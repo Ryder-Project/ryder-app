@@ -1,22 +1,22 @@
-import { useState } from "react";
-import { TextFieldProps } from "./TextField.types";
-import clsx from "clsx";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { useFormContext } from "react-hook-form";
+import { useState } from 'react';
+import { TextFieldProps } from './TextField.types';
+import clsx from 'clsx';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { useFormContext } from 'react-hook-form';
 
 const TextField = (props: TextFieldProps) => {
-  const { label, name, type = "text", placeholder, className, iconSrc } = props;
-  const [activeType, setActiveType] = useState<"text" | "password">("password");
+  const { label, name, type = 'text', placeholder, className, iconSrc } = props;
+  const [activeType, setActiveType] = useState<'text' | 'password'>('password');
   const {
     register,
     formState: { errors },
   } = useFormContext();
 
   const toggleType = () => {
-    if (activeType === "text") {
-      setActiveType("password");
+    if (activeType === 'text') {
+      setActiveType('password');
     } else {
-      setActiveType("text");
+      setActiveType('text');
     }
   };
   return (
@@ -35,29 +35,29 @@ const TextField = (props: TextFieldProps) => {
         ) : null}
         <input
           {...register(name, {
-            valueAsNumber: type === "number",
+            valueAsNumber: type === 'number',
           })}
           id={name}
-          type={type === "password" ? activeType : type}
+          type={type === 'password' ? activeType : type}
           placeholder={placeholder}
           aria-describedby={name}
           className={clsx(
-            "pl-10 border text-sm rounded block w-full px-4 py-2",
+            'pl-10 border text-sm rounded block w-full px-4 py-2',
             {
-              "border-sky-950":
+              'border-sky-950':
                 !errors[name]?.message || !errors[name]?.root?.message,
-              "border-red-700":
+              'border-red-700':
                 !!errors[name]?.message || !!errors[name]?.root?.message,
             }
           )}
         />
-        {type === "password" ? (
+        {type === 'password' ? (
           <button
             type="button"
             onClick={toggleType}
             className="absolute outline-none border-none bg-transparent top-1/2 -translate-y-1/2 right-3 w-6 h-6 flex items-center z-10"
           >
-            {activeType === "password" ? <FaEye /> : <FaEyeSlash />}
+            {activeType === 'password' ? <FaEye /> : <FaEyeSlash />}
           </button>
         ) : null}
       </div>
@@ -68,8 +68,8 @@ const TextField = (props: TextFieldProps) => {
             ? errors[name]?.message
               ? errors[name]?.message?.toString()
               : errors[name]?.root?.message
-              ? errors[name]?.root?.message?.toString()
-              : "There was an error"
+                ? errors[name]?.root?.message?.toString()
+                : 'There was an error'
             : null}
         </p>
       ) : null}

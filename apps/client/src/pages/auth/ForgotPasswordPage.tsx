@@ -1,26 +1,26 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { FC, useState } from "react";
-import CheckEmailResetPassword from "../../components/auth/resetPassword/CheckEmailResetPassword";
-import PasswordContainer from "../../components/common/auth/PasswordContainer";
-import { useForm, FormProvider } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import TextField from "../../components/formFields/textField/TextField";
-import { EmailFieldIcon } from "../../assets/svg";
+import { FC, useState } from 'react';
+import CheckEmailResetPassword from '../../components/auth/resetPassword/CheckEmailResetPassword';
+import PasswordContainer from '../../components/common/auth/PasswordContainer';
+import { useForm, FormProvider } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import TextField from '../../components/formFields/textField/TextField';
+import { EmailFieldIcon } from '../../assets/svg';
 import {
   forgotPasswordSchema,
   TForgotPasswordSchema,
-} from "../../schemas/forgotPasswordSchema";
-import axios from "axios";
-import { toast } from "react-toastify";
-import { getRyderServerUrl } from "../../utils/serverUtils";
-import Button from "../../components/common/button/Button";
+} from '../../schemas/forgotPasswordSchema';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import { getRyderServerUrl } from '../../utils/serverUtils';
+import Button from '../../components/common/button/Button';
 const ForgotPasswordPage: FC = () => {
   const [showModal, setShowModal] = useState(false);
 
   const methods = useForm<TForgotPasswordSchema>({
     resolver: zodResolver(forgotPasswordSchema),
     defaultValues: {
-      email: "",
+      email: '',
     },
   });
 
@@ -35,29 +35,29 @@ const ForgotPasswordPage: FC = () => {
         setShowModal(true);
       }
     } catch (error: any) {
-      const message = "An error occurred";
-      if (error.code === "ERR_NETWORK") {
-        toast.error(message, { toastId: "errorSendingEmail" });
+      const message = 'An error occurred';
+      if (error.code === 'ERR_NETWORK') {
+        toast.error(message, { toastId: 'errorSendingEmail' });
         return;
       }
       toast(error.response?.data?.message || message, {
-        toastId: "errorSendingEmail",
+        toastId: 'errorSendingEmail',
       });
     }
   };
 
   const resendPasswordResetLink = async () => {
     try {
-      const email = methods.getValues("email");
+      const email = methods.getValues('email');
       const response = await axios.post(
         `${ryderServerUrl}/api/v1/customers/forgotPassword`,
         { email }
       );
       if (response.status === 200) {
-        toast.success("Password reset link resent successfully.");
+        toast.success('Password reset link resent successfully.');
       }
     } catch (error) {
-      toast.error("Error resending password reset link.");
+      toast.error('Error resending password reset link.');
     }
   };
 
@@ -98,7 +98,6 @@ const ForgotPasswordPage: FC = () => {
     </PasswordContainer>
   );
 };
-
 
 export default ForgotPasswordPage;
 

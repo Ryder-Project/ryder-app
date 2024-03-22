@@ -1,4 +1,4 @@
-import { FC, ReactNode } from "react";
+import { FC, ReactNode } from 'react';
 
 interface ClassName {
   className: string;
@@ -8,7 +8,7 @@ interface ClassName {
 const PasswordContainer: FC<ClassName> = ({ className, children }) => {
   return (
     <div
-      style={{ height: "100vh", width: "100%" }}
+      style={{ height: '100vh', width: '100%' }}
       className="flex justify-center items-center bg-neutral-100"
     >
       <div
