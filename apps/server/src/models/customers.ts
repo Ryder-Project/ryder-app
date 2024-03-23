@@ -4,13 +4,13 @@ import {
   InferAttributes,
   InferCreationAttributes,
   CreationOptional,
-} from "sequelize";
-import { db } from "../config";
+} from 'sequelize';
+import { db } from '../config';
 
-const TABLE_NAME = "Customers";
+const TABLE_NAME = 'Customers';
 
 export const role = {
-  CUSTOMER: "Customer",
+  CUSTOMER: 'Customer',
 } as const;
 export type RoleType = (typeof role)[keyof typeof role];
 

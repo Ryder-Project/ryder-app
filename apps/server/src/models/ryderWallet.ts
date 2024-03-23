@@ -3,10 +3,10 @@ import {
   DataTypes,
   InferAttributes,
   InferCreationAttributes,
-} from "sequelize";
-import { db } from "../config";
+} from 'sequelize';
+import { db } from '../config';
 
-const TABLE_NAME = "RyderWallet";
+const TABLE_NAME = 'RyderWallet';
 
 // https://sequelize.org/docs/v6/other-topics/typescript/
 class RyderWallet extends Model<

@@ -1,0 +1,67 @@
+name: Integration
+
+on:
+  pull_request:
+    branches: ["main"]
+    types: ["opened", "synchronize", "reopened"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20.x]
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "yarn"
+          cache-dependency-path: "./apps/server/yarn.lock"
+
+      - name: Install Dependencies
+        run: yarn --frozen-lockfile
+        working-directory: ./apps/server
+
+      - name: Compile
+        run: yarn build
+        working-directory: ./apps/server
+
+      - name: Lint
+        run: |
+          yarn lint
+          yarn format
+        working-directory: ./apps/server
+
+  lint-client:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20.x]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "yarn"
+          cache-dependency-path: "./apps/client/yarn.lock"
+
+      - name: Install dependencies
+        run: yarn --frozen-lockfile
+        working-directory: ./apps/client
+
+      - name: Lint and Format
+        run: |
+          yarn lint
+          yarn format
+        working-directory: ./apps/client
+

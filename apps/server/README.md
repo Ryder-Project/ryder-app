@@ -1,4 +1,5 @@
 # Ryder App
+
 Server Side
 
 # Project Setup
@@ -12,11 +13,14 @@ Server Side
 7. build the app.
 
 # To build the app
+
 1. run `build-watch` to build in watch mode.
 2. run `build` to build the app instantly.
 
 # To Start the server in development mode.
+
 1. run `yarn dev`.
 
 # To Start the server in production mode.
+
 1. run `yarn prod`.
