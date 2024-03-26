@@ -21,7 +21,7 @@ const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
     folder: 'Ryder-Uploads',
-    allowedFormats: ['jpg', 'jpeg', 'png', 'webp'],
+    allowedFormats: ['pdf', 'jpg', 'jpeg', 'png', 'svg'],
     transformation: [{ width: 500, height: 500, crop: 'limit' }],
     public_id: `file_${Date.now()}`,
   } as MyParams,

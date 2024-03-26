@@ -7,13 +7,14 @@ import {
   PasswordHarsher,
   validatePassword,
   generateLongString,
+  endsWithFileExtension,
+  uploadFile,
 } from '../../utilities/helpers';
 import logger from '../../utilities/logger';
 import { riderRegisterSchema } from '../../utilities/validators';
 import Ryder, { role } from '../../models/ryder';
 import * as jwt from 'jsonwebtoken';
 import ENV, { APP_SECRET } from '../../config/env';
-import { v2 as cloudinary } from 'cloudinary';
 import nodemailer from 'nodemailer';
 
 export const registerRyder = async (req: Request, res: Response) => {
@@ -39,43 +40,31 @@ export const registerRyder = async (req: Request, res: Response) => {
           message: passwordUtils.error,
         });
       }
+      // Validation for file extensions
+      const invalidFiles = [bikeDoc, validIdCard, passportPhoto].filter(
+        (file) => !endsWithFileExtension(file)
+      );
+      if (invalidFiles.length > 0) {
+        return res.status(HTTP_STATUS_CODE.BAD_REQUEST).json({
+          message: 'Invalid file extensions',
+          invalidFiles,
+        });
+      }
       const userExist = await Ryder.findOne({
         where: {
           [Op.or]: [{ email: newEmail }, { phone: phone }],
         },
       });
       if (!userExist) {
+        console.log(req.files);
+        const [bikeDocUrl, validIdCardUrl, passportPhotoUrl] =
+          await Promise.all([
+            uploadFile('bikeDoc', req),
+            uploadFile('validIdCard', req),
+            uploadFile('passportPhoto', req),
+          ]);
         const hashedPassword = await PasswordHarsher.hash(password);
         const id = uuidV4();
-        const files = req.files as {
-          [fieldname: string]: Express.Multer.File[];
-        };
-
-        let bikeDocUrl = bikeDoc;
-        let validIdCardUrl = validIdCard;
-        let passportPhotoUrl = passportPhoto;
-
-        if (req.files) {
-          // Upload image to Cloudinary
-          const bikeDocResult = await cloudinary.uploader.upload(
-            files['bikeDoc'][0].buffer.toString('base64')
-          );
-          bikeDocUrl = bikeDocResult.secure_url;
-
-          const validIdCardResult = await cloudinary.uploader.upload(
-            files['validIdCard'][0].buffer.toString('base64')
-          );
-          validIdCardUrl = validIdCardResult.secure_url;
-
-          const passportPhotoResult = await cloudinary.uploader.upload(
-            files['passportPhoto'][0].buffer.toString('base64')
-          );
-          passportPhotoUrl = passportPhotoResult.secure_url;
-        } else {
-          return res.status(HTTP_STATUS_CODE.BAD_REQUEST).json({
-            message: 'Please upload the required files',
-          });
-        }
         const longString = generateLongString(50);
 
         const user = await Ryder.create({
@@ -115,6 +104,7 @@ export const registerRyder = async (req: Request, res: Response) => {
     }
   } catch (error) {
     logger.error(error);
+    // console.log(error)
     return res.status(HTTP_STATUS_CODE.INTERNAL_SERVER).json({
       message: [
         { message: 'This is our fault, our team are working to resolve this.' },
