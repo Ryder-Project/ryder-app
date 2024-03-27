@@ -1,3 +1,5 @@
+import { Request } from 'express';
+// import { v2 as cloudinary } from 'cloudinary';
 import { ENV } from '../config';
 import bcrypt from 'bcrypt';
 import nodemailer from 'nodemailer';
@@ -23,7 +25,7 @@ export class PasswordHarsher {
   }
 }
 
-export const generateLongString = (length: number) => {
+export const generateLongString = (length: number): string => {
   let result = '';
   const characters =
     'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -65,3 +67,18 @@ export const sendRegistrationEmail = async (
   const info = await transporter.sendMail(mailOptions);
   console.log('Email sent:' + info.response);
 };
+
+export function endsWithFileExtension(str: string) {
+  return /\.(pdf|png|svg|jpg|jpeg)\b/i.test(str);
+}
+
+export async function uploadFile(fieldName: string, req: Request) {
+  const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+  if (!files[fieldName] || files[fieldName].length === 0) {
+    throw new Error(`File '${fieldName}' is missing`);
+  }
+
+  const filePath = files[fieldName][0].path;
+
+  return filePath;
+}
