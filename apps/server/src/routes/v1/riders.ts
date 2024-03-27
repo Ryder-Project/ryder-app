@@ -10,15 +10,7 @@ import {
 
 const router = Router();
 
-router.post(
-  '/registerRider',
-  upload.fields([
-    { name: 'bikeDoc', maxCount: 1 },
-    { name: 'validIdCard', maxCount: 1 },
-    { name: 'passportPhoto', maxCount: 1 },
-  ]),
-  registerRyder
-);
+router.post('/registerRider', upload, registerRyder);
 router.post('/login', login);
 router.get('/getRiders', auth, getRiderDetails);
 router.put('/editriderprofile/:userId', auth, editRiderProfile);
