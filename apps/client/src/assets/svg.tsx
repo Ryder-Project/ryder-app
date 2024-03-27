@@ -223,7 +223,6 @@ export const PhoneFieldIcon: FC = () => {
     </svg>
   );
 };
-<<<<<<< HEAD:apps/Client/src/assets/svg.tsx
 export const UploadFrame: FC = () => {
   return (
     <svg
@@ -252,5 +251,3 @@ export const SelectIcon: FC = () => {
       </svg>
   );
 };
-=======
->>>>>>> 79dce7fc742c8ab58f34094bf58589c1f44716bb:apps/client/src/assets/svg.tsx
