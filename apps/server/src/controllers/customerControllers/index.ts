@@ -1,1 +1,1 @@
-export * from './authCustomers'
+export * from './authCustomers';

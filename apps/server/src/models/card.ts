@@ -3,10 +3,10 @@ import {
   DataTypes,
   InferAttributes,
   InferCreationAttributes,
-} from "sequelize";
-import { db } from "../config";
+} from 'sequelize';
+import { db } from '../config';
 
-const TABLE_NAME = "Card";
+const TABLE_NAME = 'Card';
 
 // https://sequelize.org/docs/v6/other-topics/typescript/
 class Card extends Model<InferAttributes<Card>, InferCreationAttributes<Card>> {
