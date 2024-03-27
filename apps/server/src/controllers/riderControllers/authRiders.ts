@@ -7,7 +7,6 @@ import {
   PasswordHarsher,
   validatePassword,
   generateLongString,
-  endsWithFileExtension,
   uploadFile,
 } from '../../utilities/helpers';
 import logger from '../../utilities/logger';
@@ -19,50 +18,30 @@ import nodemailer from 'nodemailer';
 
 export const registerRyder = async (req: Request, res: Response) => {
   const passwordRegex = passwordUtils.regex;
+
   try {
     const userValidate = riderRegisterSchema.strict().safeParse(req.body);
 
     if (userValidate.success) {
-      const {
-        firstName,
-        lastName,
-        email,
-        phone,
-        city,
-        bikeDoc,
-        validIdCard,
-        passportPhoto,
-        password,
-      } = userValidate.data;
+      const { firstName, lastName, email, phone, city, password } =
+        userValidate.data;
       const newEmail = email.trim().toLowerCase();
       if (!passwordRegex.test(password)) {
         return res.status(HTTP_STATUS_CODE.BAD_REQUEST).json({
           message: passwordUtils.error,
         });
       }
-      // Validation for file extensions
-      const invalidFiles = [bikeDoc, validIdCard, passportPhoto].filter(
-        (file) => !endsWithFileExtension(file)
-      );
-      if (invalidFiles.length > 0) {
-        return res.status(HTTP_STATUS_CODE.BAD_REQUEST).json({
-          message: 'Invalid file extensions',
-          invalidFiles,
-        });
-      }
+
       const userExist = await Ryder.findOne({
         where: {
           [Op.or]: [{ email: newEmail }, { phone: phone }],
         },
       });
       if (!userExist) {
-        console.log(req.files);
-        const [bikeDocUrl, validIdCardUrl, passportPhotoUrl] =
-          await Promise.all([
-            uploadFile('bikeDoc', req),
-            uploadFile('validIdCard', req),
-            uploadFile('passportPhoto', req),
-          ]);
+        const bikeDocUrl = await uploadFile('bikeDoc', req);
+        const validIdCardUrl = await uploadFile('validIdCard', req);
+        const passportPhotoUrl = await uploadFile('passportPhoto', req);
+
         const hashedPassword = await PasswordHarsher.hash(password);
         const id = uuidV4();
         const longString = generateLongString(50);
@@ -104,7 +83,6 @@ export const registerRyder = async (req: Request, res: Response) => {
     }
   } catch (error) {
     logger.error(error);
-    // console.log(error)
     return res.status(HTTP_STATUS_CODE.INTERNAL_SERVER).json({
       message: [
         { message: 'This is our fault, our team are working to resolve this.' },

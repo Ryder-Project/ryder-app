@@ -1,5 +1,5 @@
 import { Request } from 'express';
-import { v2 as cloudinary } from 'cloudinary';
+// import { v2 as cloudinary } from 'cloudinary';
 import { ENV } from '../config';
 import bcrypt from 'bcrypt';
 import nodemailer from 'nodemailer';
@@ -25,7 +25,7 @@ export class PasswordHarsher {
   }
 }
 
-export const generateLongString = (length: number) => {
+export const generateLongString = (length: number): string => {
   let result = '';
   const characters =
     'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -77,8 +77,8 @@ export async function uploadFile(fieldName: string, req: Request) {
   if (!files[fieldName] || files[fieldName].length === 0) {
     throw new Error(`File '${fieldName}' is missing`);
   }
-  const result = await cloudinary.uploader.upload(
-    files[fieldName][0].buffer.toString('base64')
-  );
-  return result.secure_url;
+
+  const filePath = files[fieldName][0].path;
+
+  return filePath;
 }

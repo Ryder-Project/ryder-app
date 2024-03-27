@@ -2,8 +2,8 @@ import ENV from '../config/env';
 import multer from 'multer';
 import { v2 as cloudinary } from 'cloudinary';
 import { CloudinaryStorage } from 'multer-storage-cloudinary';
+import { endsWithFileExtension } from '../utilities/helpers';
 
-// const storage = multer.memoryStorage()
 interface MyParams {
   folder: string;
   allowedFormats?: string[];
@@ -23,8 +23,20 @@ const storage = new CloudinaryStorage({
     folder: 'Ryder-Uploads',
     allowedFormats: ['pdf', 'jpg', 'jpeg', 'png', 'svg'],
     transformation: [{ width: 500, height: 500, crop: 'limit' }],
-    public_id: `file_${Date.now()}`,
   } as MyParams,
 });
 
-export const upload = multer({ storage: storage });
+export const upload = multer({
+  storage: storage,
+  fileFilter: (_req, file, cb) => {
+    // Check file extensions
+    if (!endsWithFileExtension(file.originalname)) {
+      return cb(new Error('Invalid file extension'));
+    }
+    cb(null, true);
+  },
+}).fields([
+  { name: 'bikeDoc', maxCount: 1 },
+  { name: 'validIdCard', maxCount: 1 },
+  { name: 'passportPhoto', maxCount: 1 },
+]);
