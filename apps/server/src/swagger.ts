@@ -1,15 +1,16 @@
-import swaggerJsdoc from "swagger-jsdoc";
+import swaggerJsdoc from 'swagger-jsdoc';
 
 const options = {
   definition: {
-    openapi: "3.0.0",
+    openapi: '3.0.0',
     info: {
-      title: "Ryder Api",
-      version: "1.0.0",
-      description: "Describes all the available  APIs on the Ryder App",
+      title: 'Ryder Api',
+      version: '1.0.0',
+      description: 'Describes all the available  APIs on the Ryder App',
     },
   },
-  apis: ["src/routes/v1/*.ts"], // Path to your route files
+  // Path to your route files
+  apis: ['src/routes/v1/*.ts'],
 };
 
 const specs = swaggerJsdoc(options);

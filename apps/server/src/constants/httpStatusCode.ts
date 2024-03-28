@@ -7,4 +7,4 @@ export const HTTP_STATUS_CODE = {
   NOT_FOUND: 404,
   CONFLICT: 409,
   INTERNAL_SERVER: 500,
-} as const
+} as const;

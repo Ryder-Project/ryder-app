@@ -1,0 +1,121 @@
+.register__container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.register__container-img {
+  position: relative;
+  flex: 1;
+}
+.register__container-input {
+  flex: 1;
+}
+
+.register__container-img img {
+  width: 100%;
+  padding: 0.3em;
+  height: 100%;
+}
+
+.register__container-img_text {
+  position: absolute;
+  font-family: var(--font-family);
+  font-weight: 700;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #fff;
+  font-size: 40px;
+  text-align: center;
+  min-height: 200px;
+}
+
+.register__container-img_text span {
+  color: #fb8500;
+  font-family: var(--font-family);
+  font-size: 40px;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.register__container-input img {
+  margin: 98.5px 369px 0 98px;
+}
+
+.register__container-input h2 {
+  color: #012a4a;
+  font-family: var(--font-family);
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 24px;
+  margin: 80px 0 32px 98px;
+}
+
+@media (max-width: 600px) {
+  .register__container {
+    flex-direction: column;
+  }
+  .register__container-img_text {
+    line-height: 1em;
+    margin-bottom: -1em;
+    font-size: 2em;
+  }
+
+  .register__container-img img {
+    display: block;
+    max-width: 100%;
+  }
+}
+
+@media screen and (min-width: 601px) {
+  .register__container {
+    flex-direction: column;
+  }
+  .register__container-img_text {
+    line-height: 1em;
+    margin-bottom: -1em;
+    font-size: 2.5em;
+  }
+}
+
+@media screen and (min-width: 850px) {
+  .register__container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .register__container-input {
+    flex: 1;
+  }
+  .register__container-img {
+    flex: 1;
+  }
+
+  .register__container-img_text {
+    line-height: 0.9.3em;
+    margin-bottom: -1em;
+    font-size: 1.9em;
+  }
+}
+@media screen and (min-width: 992px) {
+  .register__container-img_text {
+    line-height: 0.9.5em;
+    margin-bottom: -2em;
+    font-size: 2.1em;
+  }
+}
+@media screen and (max-width: 430px) {
+  .register__container-img {
+    flex: 1;
+    width: 135%;
+  }
+
+  .register__container-input {
+    margin-top: 6em;
+    width: 100%;
+    flex: 1;
+  }
+}

@@ -3,10 +3,10 @@ import {
   DataTypes,
   InferAttributes,
   InferCreationAttributes,
-} from "sequelize";
-import { db } from "../config";
+} from 'sequelize';
+import { db } from '../config';
 
-const TABLE_NAME = "RyderWallet";
+const TABLE_NAME = 'RyderWallet';
 
 // https://sequelize.org/docs/v6/other-topics/typescript/
 class RyderWallet extends Model<
@@ -26,32 +26,25 @@ RyderWallet.init(
     id: {
       type: DataTypes.UUID,
       primaryKey: true,
-      allowNull: false,
     },
     ryderId: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     totalEarnings: {
       type: DataTypes.INTEGER,
-      allowNull: false,
     },
     noOfRides: {
       type: DataTypes.INTEGER,
-      allowNull: false,
     },
     totalRideTime: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     earnings: {
       type: DataTypes.INTEGER,
-      allowNull: false,
     },
   },
   {
     sequelize: db,
-    tableName: TABLE_NAME,
     modelName: TABLE_NAME,
     timestamps: true,
   }
