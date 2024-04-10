@@ -1,16 +1,27 @@
-import { FileUploadProps } from "./FileUploadField.types";
-import clsx from "clsx";
-import { useFormContext } from "react-hook-form";
-import { UploadFrame} from "../../../assets/svg"
+import { FileUploadProps } from './FileUploadField.types';
+import clsx from 'clsx';
+import { useFormContext } from 'react-hook-form';
+import { UploadFrame } from '../../../assets/svg';
+import { useState } from 'react';
 
 export default function FileUploadField(props: FileUploadProps) {
   const { label, name, className, accept } = props;
   const {
     register,
-    watch,
+    setValue,
     formState: { errors },
   } = useFormContext();
-  const file: File[] | null = watch(name);
+  const [fileName, setFileName] = useState<string>('');
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const fileList = event.target.files;
+    if (fileList && fileList.length > 0) {
+      const selectedFile = fileList[0];
+      console.log('Selected File:', selectedFile);
+      setValue(name, selectedFile);
+      setFileName(selectedFile.name);
+    }
+  };
 
   return (
     <div className={clsx(className)}>
@@ -26,7 +37,7 @@ export default function FileUploadField(props: FileUploadProps) {
           type="file"
           accept={accept}
           multiple={false}
-          // onChange={handleFileChange}
+          onChange={handleFileChange}
           className="hidden"
         />
         <label
@@ -34,9 +45,9 @@ export default function FileUploadField(props: FileUploadProps) {
           className="pl-2 border border-sky-950 text-sm rounded w-full px-4 py-1.5 cursor-pointer items-center flex"
         >
           <UploadFrame />
-          {file && (
+          {fileName && (
             <span className="overflow-hidden text-ellipsis whitespace-nowrap">
-              {file[0].name}
+              {fileName}
             </span>
           )}
         </label>
@@ -47,8 +58,8 @@ export default function FileUploadField(props: FileUploadProps) {
             ? errors[name]?.message
               ? errors[name]?.message?.toString()
               : errors[name]?.root?.message
-              ? errors[name]?.root?.message?.toString()
-              : "There was an error"
+                ? errors[name]?.root?.message?.toString()
+                : 'There was an error'
             : null}
         </p>
       )}

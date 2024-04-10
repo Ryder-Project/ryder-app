@@ -1,26 +1,26 @@
-import { FC, useState } from "react";
-import { FormProvider, useForm } from "react-hook-form";
+import { FC, useState } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
 import {
   EmailFieldIcon,
   NameFieldIcon,
   PasswordFieldIcon,
   PhoneFieldIcon,
   SelectIcon,
-} from "../../assets/svg";
-import AuthPageContainer from '../common/auth/AuthPageContainer'
-import Button from "../common/button/Button";
-import { TextField } from "../formFields/textField";
-import { FileUploadField } from "../formFields/fileUploadField";
+} from '../../assets/svg';
+import AuthPageContainer from '../common/auth/AuthPageContainer';
+import Button from '../common/button/Button';
+import { TextField } from '../formFields/textField';
+import { FileUploadField } from '../formFields/fileUploadField';
 import {
   riderSignupSchema,
   TRiderSignupSchema,
-} from "../../schemas/riderSignupSchema";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { cities } from "../../data/cities";
-import { getRyderServerUrl } from "../../utils/serverUtils";
-import { toast } from "react-toastify";
-import axios from "axios";
-import CheckEmailVerify from "./resetPassword/CheckEmailVerify";
+} from '../../schemas/riderSignupSchema';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { cities } from '../../data/cities';
+import { getRyderServerUrl } from '../../utils/serverUtils';
+import { toast } from 'react-toastify';
+import axios from 'axios';
+import CheckEmailVerify from './resetPassword/CheckEmailVerify';
 
 const Signup: FC = () => {
   const [showModal, setShowModal] = useState(false);
@@ -28,78 +28,56 @@ const Signup: FC = () => {
   const methods = useForm<TRiderSignupSchema>({
     resolver: zodResolver(riderSignupSchema),
     defaultValues: {
-      firstName: "",
-      lastName: "",
-      phone: "",
-      email: "",
-      city: "",
-      bikeDoc: "",
-      validIdCard: "",
-      passportPhoto: "",
-      password: "",
-      confirm_password: "",
+      firstName: '',
+      lastName: '',
+      phone: '',
+      email: '',
+      city: '',
+      bikeDoc: null,
+      validIdCard: null,
+      passportPhoto: null,
+      password: '',
     },
   });
 
   const onSubmit = async (data: TRiderSignupSchema) => {
-    const {
-      bikeDoc,
-      validIdCard,
-      passportPhoto,
-      confirm_password,
-      ...otherData
-    } = data;
-    const formData = new FormData();
-    Object.entries(otherData).forEach(([key, value]) => {
-      formData.append(key, value);
-    });
-    // const files = [bikeDoc, validIdCard, passportPhoto];
-    // const filesArray: File[] = Array.from(files);
-    // filesArray.forEach((file, index) => {
-    //   if (file instanceof Blob) {
-    //     const reader = new FileReader();
-    //     reader.onload = () => {
-    //       const base64String = reader.result
-    //         ?.toString()
-    //         .split(",")[1] as string;
-    //       formData.append(
-    //         index === 0
-    //           ? "bikeDoc"
-    //           : index === 1
-    //           ? "validIdCard"
-    //           : "passportPhoto",
-    //         base64String
-    //       );
-    //     };
-    //     reader.readAsDataURL(file);
-    //   }
-    // });
-     if (bikeDoc && validIdCard && passportPhoto) {
-       formData.append("bikeDoc", bikeDoc[0]);
-       formData.append("validIdCard", validIdCard[0]);
-       formData.append("passportPhoto", passportPhoto[0]);
-     } 
-    // const requestData = {
-    //   ...otherData,
-    //   formData,
-    // };
+    const { confirm_password, ...otherData } = data;
+    
+    // console.log('Form Data:', data);
+
     try {
       const ryderServerUrl = getRyderServerUrl();
       setIsLoading(true);
+      const formData = new FormData();
+      Object.entries(otherData).forEach(([key, value]) => {
+        if (value instanceof File) {
+          formData.append(key, value);
+        } else if (value !== null && value !== undefined) {
+          formData.append(key, value.toString());
+        }
+      });
+      console.log(formData);
       const response = await axios.post(
         `${ryderServerUrl}/api/v1/riders/registerRider`,
         formData,
-        { withCredentials: true }
+        {
+          // withCredentials: true,
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Accept: 'multipart/form-data',
+          },
+        }
       );
       console.log(response, formData);
       if (response.status === 200) {
-        toast.success("Registration successful");
+        toast.success('Registration successful');
         setShowModal(true);
       } else {
-        toast.error("Unexpected status code: " + response.status);
+        toast.error('Unexpected status code: ' + response.status);
       }
     } catch (error) {
       handleAxiosError(error);
+      console.log(error);
     } finally {
       setIsLoading(false);
     }
@@ -110,21 +88,21 @@ const Signup: FC = () => {
         const statusCode = error.response.status;
         switch (statusCode) {
           case 400:
-            toast.error("Validation error: " + error.response.data.message);
+            toast.error('Validation error: ' + error.response.data.message);
             break;
           case 409:
             toast.error(
-              "Account already exists: " + error.response.data.message
+              'Account already exists: ' + error.response.data.message
             );
             break;
           default:
-            toast.error("Error: " + error.response.data.message);
+            toast.error('Error: ' + error.response.data.message);
         }
       } else {
-        toast.error("Network error: " + error.message);
+        toast.error('Network error: ' + error.message);
       }
     } else {
-      console.error("Non-Axios error:", error);
+      console.error('Non-Axios error:', error);
     }
   };
 
@@ -170,7 +148,8 @@ const Signup: FC = () => {
               id="city"
               defaultValue=""
               className="pl-3 pr-8 border border-sky-950 text-sm rounded block w-full px-4 py-2 appearance-none"
-              {...methods.register("city")}
+              {...methods.register('city')}
+              onChange={(e) => console.log('Selected city:', e.target.value)}
             >
               <option value="" disabled hidden>
                 Select a city
@@ -219,13 +198,13 @@ const Signup: FC = () => {
             className="bg-orange-500 hover:bg-orange-800 focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 font-medium rounded-md text-sm p-2"
             disabled={isLoading}
           >
-            {isLoading ? "Signing up..." : "Sign Up"}
+            {isLoading ? 'Signing up...' : 'Sign Up'}
           </Button>
         </form>
       </FormProvider>
       {showModal && <CheckEmailVerify />}
       <p className="text-sm text-sky-950 mt-4">
-        Already have an account?{" "}
+        Already have an account?{' '}
         <a href="/login" className="text-orange-500 hover:cursor">
           Sign In
         </a>
