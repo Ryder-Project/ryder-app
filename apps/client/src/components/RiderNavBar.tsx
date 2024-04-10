@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import Logo from '../pages/auth/Images/Logo.png';
+import Logo from '../pages/auth/images/Logo.png';
 import userImage from '../../src/assets/Ellipse 5.svg';
 import notificationIcon from '../../src/assets/Notification.svg';
 

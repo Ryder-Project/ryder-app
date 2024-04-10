@@ -3,8 +3,8 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Button from '../../../components/Button';
-import riderLogo from '../Images/Logo.png';
-import riderPhoto from '../Images/image 4.png';
+import riderLogo from '../images/Logo.png';
+import riderPhoto from '../images/image 4.png';
 import { useNavigate } from 'react-router-dom';
 
 type LoginFormValues = {

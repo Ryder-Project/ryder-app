@@ -1,4 +1,4 @@
-import  { useState } from 'react';
+import  { ChangeEvent, useState } from 'react';
 import { TextFieldProps } from './TextField.types';
 import clsx from 'clsx';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
@@ -11,6 +11,10 @@ const TextField = (props: TextFieldProps) => {
     register,
     formState: { errors },
   } = useFormContext();
+
+const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+  console.log(`${name} value:`, event.target.value);
+};
 
   const toggleType = () => {
     if (activeType === 'text') {
@@ -50,6 +54,7 @@ const TextField = (props: TextFieldProps) => {
                 !!errors[name]?.message || !!errors[name]?.root?.message,
             }
           )}
+          onChange={handleInputChange}
         />
         {type === 'password' ? (
           <button
