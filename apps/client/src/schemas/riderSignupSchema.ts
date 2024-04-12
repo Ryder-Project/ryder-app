@@ -62,7 +62,7 @@ export const riderSignupSchema = z
         message: "Password must contain at least one digit",
       })
       .refine(
-        (value: string) => /[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]/.test(value),
+        (value: string) => /[!@#$%^&*()_+{}[\]:;<>,.?~\\/-]/.test(value),
         {
           message: "Password must contain at least one special character",
         }
