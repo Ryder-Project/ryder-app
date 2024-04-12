@@ -54,7 +54,7 @@ export default function FileUploadField(props: FileUploadProps) {
       </div>
       {(!!errors[name]?.message || !!errors[name]?.root) && (
         <p className="mt-1 text-xs text-red-700">
-          {!!errors[name]
+          {errors[name]
             ? errors[name]?.message
               ? errors[name]?.message?.toString()
               : errors[name]?.root?.message

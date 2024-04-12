@@ -41,8 +41,9 @@ const Signup: FC = () => {
   });
 
   const onSubmit = async (data: TRiderSignupSchema) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { confirm_password, ...otherData } = data;
-    
+
     // console.log('Form Data:', data);
 
     try {
