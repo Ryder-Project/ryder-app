@@ -10,7 +10,7 @@ import {
 import AuthPageContainer from '../common/auth/AuthPageContainer';
 import Button from '../common/button/Button';
 import { TextField } from '../formFields/textField';
-import { FileUploadField } from '../formFields/fileUploadField';
+import { FileUploadField } from '../formFields/FileUploadField';
 import {
   riderSignupSchema,
   TRiderSignupSchema,
@@ -44,8 +44,6 @@ const Signup: FC = () => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { confirm_password, ...otherData } = data;
 
-    // console.log('Form Data:', data);
-
     try {
       const ryderServerUrl = getRyderServerUrl();
       setIsLoading(true);
@@ -57,19 +55,16 @@ const Signup: FC = () => {
           formData.append(key, value.toString());
         }
       });
-      console.log(formData);
       const response = await axios.post(
         `${ryderServerUrl}/api/v1/riders/registerRider`,
         formData,
         {
-          // withCredentials: true,
           headers: {
             'Content-Type': 'multipart/form-data',
             Accept: 'multipart/form-data',
           },
         }
       );
-      console.log(response, formData);
       if (response.status === 200) {
         toast.success('Registration successful');
         setShowModal(true);

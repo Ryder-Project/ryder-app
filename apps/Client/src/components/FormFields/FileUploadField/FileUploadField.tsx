@@ -1,4 +1,4 @@
-import { FileUploadProps } from './FileUploadField.types';
+import { FileUploadProps } from '../FileUploadField/FileUploadField.types';
 import clsx from 'clsx';
 import { useFormContext } from 'react-hook-form';
 import { UploadFrame } from '../../../assets/svg';
@@ -9,7 +9,6 @@ export default function FileUploadField(props: FileUploadProps) {
   const {
     register,
     setValue,
-    formState: { errors },
   } = useFormContext();
   const [fileName, setFileName] = useState<string>('');
 
@@ -52,17 +51,6 @@ export default function FileUploadField(props: FileUploadProps) {
           )}
         </label>
       </div>
-      {(!!errors[name]?.message || !!errors[name]?.root) && (
-        <p className="mt-1 text-xs text-red-700">
-          {errors[name]
-            ? errors[name]?.message
-              ? errors[name]?.message?.toString()
-              : errors[name]?.root?.message
-                ? errors[name]?.root?.message?.toString()
-                : 'There was an error'
-            : null}
-        </p>
-      )}
     </div>
   );
 }
