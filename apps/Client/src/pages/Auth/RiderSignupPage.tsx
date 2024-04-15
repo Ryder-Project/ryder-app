@@ -1,9 +1,9 @@
-import SignUp from '../../../components/auth/customer/Signup';
+import RiderSignUp from "../../components/auth/RiderSignup";
 
 const SignupPage = () => {
   return (
     <div>
-      <SignUp />
+      <RiderSignUp />
     </div>
   );
 };

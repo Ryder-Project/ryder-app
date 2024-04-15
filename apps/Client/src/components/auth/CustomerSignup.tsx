@@ -1,21 +1,20 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { FC, useState } from 'react';
 import {
   EmailFieldIcon,
   NameFieldIcon,
   PasswordFieldIcon,
   PhoneFieldIcon,
-} from '../../../assets/svg';
-import { TextField } from '../../formFields/textField';
+} from '../../assets/svg';
+import { TextField } from '../formFields/textField';
 import { useForm, FormProvider } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'react-toastify';
-import axios, { AxiosError } from 'axios';
-import { signupSchema, TSignupSchema } from '../../../schemas/signupSchema';
-import { getRyderServerUrl } from '../../../utils/serverUtils';
-import Button from '../../common/button/Button';
-import CheckEmailVerify from '../resetPassword/CheckEmailVerify';
-import AuthPageContainer from '../../common/auth/AuthPageContainer';
+import axios from 'axios';
+import { signupSchema, TSignupSchema } from '../../schemas/signupSchema';
+import { getRyderServerUrl } from '../../utils/serverUtils';
+import Button from '../common/button/Button';
+import CheckEmailVerify from './resetPassword/CheckEmailVerify';
+import AuthPageContainer from '../common/auth/AuthPageContainer';
 
 const SignUp: FC = () => {
   const [showModal, setShowModal] = useState(false);
@@ -32,7 +31,7 @@ const SignUp: FC = () => {
     },
   });
 
-  const onSubmit: (data: TSignupSchema) => Promise<void> = async (
+  const onSubmit = async (
     data: TSignupSchema
   ) => {
     try {
@@ -57,24 +56,21 @@ const SignUp: FC = () => {
     }
   };
 
-  const handleAxiosError = (error: any) => {
+  const handleAxiosError = (error: unknown) => {
     if (axios.isAxiosError(error)) {
-      const axiosError = error as AxiosError<any>;
-      if (axiosError.response) {
-        const statusCode = axiosError.response.status;
+      if (error.response) {
+        const statusCode = error.response.status;
         switch (statusCode) {
           case 400:
-            toast.error(
-              'Validation error: ' + axiosError.response.data.message
-            );
+            toast.error("Validation error: " + error.response.data.message);
             break;
           case 409:
             toast.error(
-              'Account already exists: ' + axiosError.response.data.message
+              "Account already exists: " + error.response.data.message
             );
             break;
           default:
-            toast.error('Error: ' + axiosError.response.data.message);
+            toast.error("Error: " + error.response.data.message);
         }
       } else {
         toast.error('Network error: ' + error.message);
